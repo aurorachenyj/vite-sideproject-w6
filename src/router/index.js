@@ -46,6 +46,17 @@ const router = createRouter({
           component: () => import("../views/front/OrderView.vue"),
         },
         {
+          path: "orderCheck/:id",
+          name: "orderCheck",
+          component: () => import("../views/front/OrderCheckView.vue"),
+        },
+        {
+          path: "/:pathMatch(.*)*",
+          name: "notFound",
+          component: () => import("../views/front/NotFoundView.vue"),
+        },
+
+        {
           path: "adminLogin",
           name: "adminLogin",
           component: () => import("../views/front/AdminLoginView.vue"),

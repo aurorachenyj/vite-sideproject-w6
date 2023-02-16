@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <h3 class="my-3 d-inline me-2">結帳</h3>
-    {{ cartList }}
+
     <a
       href="/cart"
       class="badge bg-secondary text-decoration-none align-middle text-white mb-2"
@@ -15,8 +15,8 @@
 
           <div class="form-check">
             <input
-              v-model="orderForm.payment"
-              value="card"
+              v-model="orderForm.user.payment"
+              value="信用卡"
               class="form-check-input"
               type="radio"
               name="payment"
@@ -27,7 +27,7 @@
 
           <div class="form-check">
             <input
-              v-model="orderForm.payment"
+              v-model="orderForm.user.payment"
               value="ATM"
               class="form-check-input"
               type="radio"
@@ -39,8 +39,8 @@
 
           <div class="form-check">
             <input
-              v-model="orderForm.payment"
-              value="store"
+              v-model="orderForm.user.payment"
+              value="超商付款"
               class="form-check-input"
               type="radio"
               name="payment"
@@ -177,9 +177,9 @@ export default {
           tel: "09",
           email: "",
           address: "免填地址",
+          payment: "信用卡",
         },
         message: "",
-        payment: "card",
       },
     };
   },
@@ -202,8 +202,10 @@ export default {
       this.$http
         .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/order`, { data })
         .then((res) => {
-          console.log(res);
+          const { orderId } = res.data;
+
           alert(res.data.message);
+          this.$router.push(`/orderCheck/${orderId}`);
         })
         .catch((err) => {
           alert(err.response.data.message);

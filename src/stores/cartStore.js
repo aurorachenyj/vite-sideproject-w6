@@ -13,13 +13,11 @@ export default defineStore("cartStore", {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
         .then((res) => {
-          console.log(res.data.data);
-
           this.cartListData = res.data.data;
           this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
+          alert(err.response.data.message);
         });
     },
   },

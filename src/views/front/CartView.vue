@@ -137,12 +137,9 @@ export default {
     // },
 
     delCartItem(id) {
-      console.log(id);
-
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart/${id}`)
         .then((res) => {
-          console.log(res.data);
           alert(res.data.message);
           this.getCartList();
         })

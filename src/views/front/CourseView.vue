@@ -16,18 +16,14 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$router); // 路由方法
-    console.log(this.$route.params.id); // 路由 屬性 值
     this.classId = this.$route.params.id;
     this.getClassData();
   },
   methods: {
     getClassData() {
-      console.log("classid", this.classId);
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/product/${this.classId}`)
         .then((res) => {
-          console.log(res.data);
           this.classData = res.data.product;
         })
         .catch((err) => {

@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
 .img-cover {
   object-fit: cover;
 }
@@ -19,7 +19,7 @@
 .btn-hover-light:hover {
   color: white;
 }
-</style>
+</style> -->
 
 <template>
   <div class="container">
@@ -73,6 +73,7 @@
               <button
                 v-else
                 @click="addToCart(course.id)"
+                :disabled="loadItem"
                 type="button"
                 class="btn btn-outline-primary"
               >
@@ -93,63 +94,71 @@
 </template>
 
 <script>
-// import cartStore from "../../stores/cartStore.js";
-// import { mapActions, mapState } from "pinia";
+import cartStore from "../../stores/cartStore.js";
+import { mapActions, mapState } from "pinia";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {
     return {
+      loadItem: false,
       isLoading: false,
       courseList: [],
-      cartList: { carts: [], final_total: 0, total: 0 },
+      // cartList: { carts: [], final_total: 0, total: 0 },
       check: [],
     };
   },
   mounted() {
     this.getAllCourse();
   },
+  computed: {
+    ...mapState(cartStore, ["cartList"]),
+  },
+  watch: {
+    courseList() {
+      this.getCartList();
+    },
+    cartList() {
+      this.checkedClass();
+    },
+  },
 
   methods: {
-    checkedClass() {
-      console.log(this.courseList);
-      console.log(this.cartList.carts);
+    ...mapActions(cartStore, ["getCartList"]),
 
+    checkedClass() {
       this.courseList.forEach((item) => {
         this.cartList.carts.forEach((i) => {
           if (item.id === i.product_id) {
             this.check.push(item.id);
-            console.log(this.check);
           }
         });
       });
-      console.log(this.check);
     },
 
-    getCartList() {
-      this.$http
-        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
-        .then((res) => {
-          console.log(res.data.data);
+    // getCartList() {
+    //   this.$http
+    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
+    //     .then((res) => {
+    //       console.log(res.data.data);
 
-          this.cartList = res.data.data;
-          console.log(this.cartList);
-          this.checkedClass();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    //       this.cartList = res.data.data;
+    //       console.log(this.cartList);
+    //       this.checkedClass();
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
     getAllCourse() {
       this.isLoading = true;
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          console.log("courseList", res.data.products);
-          this.courseList = res.data.products;
-          this.getCartList();
+          //console.log("courseList", res.data.products);
           this.isLoading = false;
+          this.courseList = res.data.products;
         })
         .catch((err) => {
           alert(err.response.data.message);
@@ -157,12 +166,10 @@ export default {
     },
 
     goToClassPage(id) {
-      console.log(id);
       this.$router.push(`/course/${id}`);
     },
     addToCart(product_id) {
-      console.log(product_id);
-
+      this.loadItem = true;
       const data = {
         product_id,
         qty: 1,
@@ -172,11 +179,12 @@ export default {
         .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`, { data })
         .then((res) => {
           this.getAllCourse();
+          this.loadItem = false;
           alert(res.data.message);
         })
 
         .catch((err) => {
-          console.log(err);
+          alert(err.response.data.message);
         });
     },
   },
