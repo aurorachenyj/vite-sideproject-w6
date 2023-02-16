@@ -64,7 +64,7 @@
               >
               <a
                 v-if="check.includes(course.id)"
-                href="./cart"
+                href="#/cart"
                 type="button"
                 class="btn btn-primary link-light"
               >

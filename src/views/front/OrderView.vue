@@ -3,7 +3,7 @@
     <h3 class="my-3 d-inline me-2">結帳</h3>
 
     <a
-      href="/cart"
+      href="#/cart"
       class="badge bg-secondary text-decoration-none align-middle text-white mb-2"
     >
       <i class="bi bi-arrow-bar-left"></i> 回購物車頁</a

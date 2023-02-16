@@ -25,7 +25,7 @@
               <tr v-if="cartList.carts.length === 0">
                 <td colspan="5" class="text-center">
                   購物車尚無商品 <br />
-                  <a href="./courses" class="btn btn-outline-primary my-2">
+                  <a href="#/courses" class="btn btn-outline-primary my-2">
                     探索課程
                   </a>
                 </td>

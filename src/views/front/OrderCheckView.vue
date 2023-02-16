@@ -54,7 +54,7 @@
             </tbody>
           </table>
           <div class="text-end">
-            <a href="/" class="btn btn-outline-primary my-5"> 回首頁 </a>
+            <a href="#/" class="btn btn-outline-primary my-5"> 回首頁 </a>
           </div>
         </div>
       </div>
