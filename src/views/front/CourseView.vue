@@ -27,7 +27,7 @@ export default {
           this.classData = res.data.product;
         })
         .catch((err) => {
-          console.log(err);
+          this.$router.push("/notFound");
         });
     },
   },

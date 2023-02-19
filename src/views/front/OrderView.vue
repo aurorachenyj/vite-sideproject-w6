@@ -13,7 +13,7 @@
         <div class="bg-light mb-3 p-3">
           <h5 class="mb-3 pb-3 border-bottom">付款方式</h5>
 
-          <div class="form-check">
+          <div class="form-check pb-2">
             <input
               v-model="orderForm.user.payment"
               value="信用卡"
@@ -25,7 +25,7 @@
             <label class="form-check-label" for="card"> 信用卡 </label>
           </div>
 
-          <div class="form-check">
+          <div class="form-check pb-2">
             <input
               v-model="orderForm.user.payment"
               value="ATM"
@@ -37,7 +37,7 @@
             <label class="form-check-label" for="ATM"> ATM </label>
           </div>
 
-          <div class="form-check">
+          <div class="form-check pb-2">
             <input
               v-model="orderForm.user.payment"
               value="超商付款"
@@ -203,7 +203,7 @@ export default {
         .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/order`, { data })
         .then((res) => {
           const { orderId } = res.data;
-
+          this.clearCartList();
           alert(res.data.message);
           this.$router.push(`/orderCheck/${orderId}`);
         })
@@ -211,7 +211,7 @@ export default {
           alert(err.response.data.message);
         });
     },
-    ...mapActions(cartStore, ["getCartList"]),
+    ...mapActions(cartStore, ["getCartList", "clearCartList"]),
   },
 };
 </script>

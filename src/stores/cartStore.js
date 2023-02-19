@@ -20,6 +20,10 @@ export default defineStore("cartStore", {
           alert(err.response.data.message);
         });
     },
+
+    clearCartList() {
+      this.cartListData = {};
+    },
   },
   getters: {
     cartList: ({ cartListData }) => {
