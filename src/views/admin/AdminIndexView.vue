@@ -40,31 +40,7 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.checkAdmin();
-  },
-  methods: {
-    checkAdmin() {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      this.$http.defaults.headers.common["Authorization"] = token;
-
-      this.$http
-        .post(`${VITE_APP_URL}/api/user/check`)
-        .then((res) => {
-          if (!res.data.success) {
-            this.$router.push("/adminLogin");
-          }
-          alert("管理者 您好");
-        })
-        .catch((err) => {
-          alert("請重新登入驗證");
-          this.$router.push("/adminLogin");
-        });
-    },
-  },
+  mounted() {},
+  methods: {},
 };
 </script>

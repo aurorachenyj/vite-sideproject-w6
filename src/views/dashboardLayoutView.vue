@@ -18,7 +18,7 @@
 <template>
   <div class="overflow-auto">
     <nav
-      class="navbar navbar-expand-lg navbar-light bg-light text-nowrap flex-nowrap justify-content-evenly"
+      class="fixed-top navbar navbar-expand-lg navbar-light bg-light text-nowrap flex-nowrap justify-content-evenly"
     >
       <RouterLink to="/admin/index" class="nav-link me-3 navbar-hover"
         >後台首頁</RouterLink
@@ -27,6 +27,11 @@
       <RouterLink to="/admin/order" class="nav-link me-3 navbar-hover"
         >訂單管理</RouterLink
       >
+
+      <RouterLink to="/admin/coupon" class="nav-link me-3 navbar-hover"
+        >優惠券管理</RouterLink
+      >
+
       <RouterLink to="/admin/courses" class="nav-link me-3"
         >課程管理</RouterLink
       >
@@ -78,7 +83,7 @@
       >
     </aside> -->
 
-  <main class="main-content">
+  <main class="main-content" style="margin-top: 80px">
     <div class="container my-4">
       <div class="row gy-3">
         <div class="col">
@@ -137,7 +142,7 @@ export default {
           if (!res.data.success) {
             this.$router.push("/adminLogin");
           }
-          alert("管理者 您好");
+          // alert("管理者 您好");
         })
         .catch((err) => {
           alert("請重新登入驗證");

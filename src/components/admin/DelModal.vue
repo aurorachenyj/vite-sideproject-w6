@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="modal"
     class="modal fade"
     tabindex="-1"
     aria-labelledby="deleteModalLabel"
@@ -8,7 +9,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">確認刪除此訂單?</h5>
+          <h5 class="modal-title" id="deleteModalLabel">確定刪除?</h5>
           <button
             type="button"
             class="btn-close"
@@ -17,15 +18,27 @@
           ></button>
         </div>
 
+        <div class="modal-body">
+          <p v-if="delId">
+            id： <span class="text-danger"> {{ delId }} </span> 的訂單
+          </p>
+
+          <p v-else-if="del">
+            優惠券名稱： <span class="text-danger"> {{ del }} </span>
+          </p>
+
+          （注意，刪除後無法復原！）
+        </div>
+
         <div class="modal-footer justify-content-center">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline-dark"
             data-bs-dismiss="modal"
           >
             取消
           </button>
-          <button @click="delOrder" type="button" class="btn btn-danger">
+          <button @click="delItem" type="button" class="btn btn-danger">
             確定刪除
           </button>
         </div>
@@ -43,6 +56,7 @@ export default {
       modal: "",
     };
   },
+  props: ["delId", "del"],
 
   methods: {
     hideModal() {
@@ -52,6 +66,11 @@ export default {
     showModal() {
       console.log("showModal");
       this.modal.show();
+    },
+
+    delItem() {
+      this.$emit("delItem");
+      this.modal.hide();
     },
   },
   mounted() {

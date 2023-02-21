@@ -94,6 +94,8 @@
 </template>
 
 <script>
+// import Swal from "sweetalert2/dist/sweetalert2.js";
+import Toast from "../../utils/Toast";
 import cartStore from "../../stores/cartStore.js";
 import { mapActions, mapState } from "pinia";
 
@@ -161,7 +163,11 @@ export default {
           this.courseList = res.data.products;
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          Toast.fire({
+            icon: "success",
+            title: err.response.data.message,
+          });
+          // alert(err.response.data.message);
         });
     },
 
@@ -180,11 +186,18 @@ export default {
         .then((res) => {
           this.getAllCourse();
           this.loadItem = false;
-          alert(res.data.message);
+
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
         })
 
         .catch((err) => {
-          alert(err.response.data.message);
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
   },

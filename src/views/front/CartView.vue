@@ -101,6 +101,7 @@
 </template>
 
 <script>
+import Toast from "../../utils/Toast";
 import cartStore from "../../stores/cartStore.js";
 import { mapActions, mapState } from "pinia";
 
@@ -140,11 +141,22 @@ export default {
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart/${id}`)
         .then((res) => {
-          alert(res.data.message);
+          // alert(res.data.message);
+
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
+
           this.getCartList();
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          // alert(err.response.data.message);
+
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
     ...mapActions(cartStore, ["getCartList"]),

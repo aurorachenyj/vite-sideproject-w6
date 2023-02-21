@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import Toast from "../../utils/Toast";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -102,7 +103,12 @@ export default {
           this.orderProductList = Object.values(this.currentOrderData.products);
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          // alert(err.response.data.message);
+
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
   },

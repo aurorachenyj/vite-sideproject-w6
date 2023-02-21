@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import Toast from "../../utils/Toast";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -58,7 +59,13 @@ export default {
   methods: {
     adminLogin() {
       if (this.user.username === "" || this.user.password === "") {
-        alert("請填寫完整");
+        // alert("請填寫完整");
+
+        Toast.fire({
+          icon: "error",
+          title: "請填寫完整",
+        });
+
         return;
       }
 
@@ -69,12 +76,24 @@ export default {
           const { token, expired } = res.data;
 
           document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
-          alert(res.data.message);
+          // alert(res.data.message);
+
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
+
           this.goToAdminIndex();
         })
 
         .catch((err) => {
-          alert(err.response.data.message);
+          alert(err.response?.data?.message);
+
+          // Toast.fire({
+          //   icon: "error",
+          //   title: err.response.data.message,
+          // });
+
           this.user = {
             username: "",
             password: "",

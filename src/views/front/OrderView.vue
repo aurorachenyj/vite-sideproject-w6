@@ -163,6 +163,7 @@
 </template>
 
 <script>
+import Toast from "../../utils/Toast";
 import { mapActions, mapState } from "pinia";
 import cartStore from "../../stores/cartStore.js";
 
@@ -204,11 +205,22 @@ export default {
         .then((res) => {
           const { orderId } = res.data;
           this.clearCartList();
-          alert(res.data.message);
+          // alert(res.data.message);
+
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
+
           this.$router.push(`/orderCheck/${orderId}`);
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          // alert(err.response.data.message);
+
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
     ...mapActions(cartStore, ["getCartList", "clearCartList"]),

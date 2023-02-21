@@ -1,6 +1,6 @@
 <template>
-  <h3 class="text-center mt-5">後台訂單管理</h3>
-
+  <h3 class="text-center mt-5">訂單管理</h3>
+  <LoadingVue v-model:active="isLoading"> </LoadingVue>
   <div class="card mt-4">
     <div class="card-header bg-transparent">
       <div class="input-group">
@@ -54,12 +54,16 @@
               <td class="text-end">{{ order.total }}</td>
               <td class="text-end pe-3 text-danger">
                 <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-outline-primary btn-sm">
+                  <button
+                    @click="openOrderModal(order.id)"
+                    type="button"
+                    class="btn btn-outline-dark btn-sm"
+                  >
                     檢視
                   </button>
 
                   <button
-                    @click="openDelModal"
+                    @click="openDelModal(order.id)"
                     type="button"
                     class="btn btn-outline-primary btn-sm"
                   >
@@ -112,37 +116,60 @@
     </div>
   </div>
 
-  <DelModal ref="deleteModal"></DelModal>
-  <OrderDetailModal ref="OrderDetailModal"></OrderDetailModal>
+  <DelModal @delItem="delOrder" :del-id="delId" ref="deleteModal"></DelModal>
+  <OrderDetailModal
+    :check-order-data="checkOrderData"
+    ref="orderDetailModal"
+  ></OrderDetailModal>
 </template>
 
 <script>
+import Toast from "../../utils/Toast";
 import DelModal from "@/components/admin/DelModal.vue";
-// import OrderDetailModal from "@/components/admin/OrderDetailModal.vue";
+import OrderDetailModal from "@/components/admin/OrderDetailModal.vue";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {
     return {
+      delId: "",
+      checkOrderData: {},
       allOrderList: [],
+      isLoading: false,
       currentPage: 1,
     };
   },
-  components: { DelModal },
+  components: { DelModal, OrderDetailModal },
   mounted() {
+    this.isLoading = true;
     this.getOrderList();
   },
   methods: {
     getOrderList(page = 1) {
+      this.isLoading = true;
+
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/orders?page=${page}`)
         .then((res) => {
           console.log(res.data);
+
+          this.isLoading = false;
+
+          // Toast.fire({
+          //   icon: "success",
+          //   title: "成功取得資料",
+          // });
+
           this.allOrderList = res.data;
         })
         .catch((err) => {
           console.log(err);
-          alert(err.response.data.message);
+          // alert(err.response.data.message);
+          this.isLoading = false;
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
 
@@ -152,14 +179,53 @@ export default {
       this.getOrderList(this.currentPage);
     },
 
-    openDelModal() {
+    openDelModal(delOrderId) {
       console.log("open");
+      console.log(delOrderId);
+      this.delId = delOrderId;
       const delComponent = this.$refs.deleteModal;
       console.log(delComponent);
-      //   delComponent.showModal();
+      delComponent.showModal();
+    },
+    openOrderModal(orderId) {
+      this.isLoading = true;
+      console.log(orderId);
+
+      this.$http
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/order/${orderId}`)
+        .then((res) => {
+          console.log(res.data);
+          this.checkOrderData = res.data;
+          this.isLoading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.isLoading = false;
+        });
+
+      this.$refs.orderDetailModal.showModal();
     },
 
-    delOrder() {},
+    delOrder() {
+      console.log(this.delId);
+
+      const id = this.delId;
+      this.$http
+        .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/order/${id}`)
+        .then((res) => {
+          console.log(res.data);
+          this.getOrderList(this.currentPage);
+          this.$refs.deleteModal.hideModal();
+        })
+        .catch((err) => {
+          // alert(err.response.data.message);
+
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
+        });
+    },
   },
 };
 </script>
