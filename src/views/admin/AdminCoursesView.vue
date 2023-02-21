@@ -63,11 +63,19 @@
 
               <td class="text-end pe-3 text-danger">
                 <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-outline-dark btn-sm">
+                  <button
+                    @click="openModal(course, 'edit')"
+                    type="button"
+                    class="btn btn-outline-dark btn-sm"
+                  >
                     編輯
                   </button>
 
-                  <button type="button" class="btn btn-outline-primary btn-sm">
+                  <button
+                    @click="openDelModal(course.title, course.id)"
+                    type="button"
+                    class="btn btn-outline-primary btn-sm"
+                  >
                     刪除
                   </button>
                 </div>
@@ -117,11 +125,18 @@
     </div>
   </div>
 
-  <courseModal ref="courseModal"></courseModal>
+  <CourseModal ref="courseModal"></CourseModal>
+  <DelModal
+    ref="deleteModal"
+    :del-class-title="delClassTitle"
+    :del-class-id="delClassId"
+    @del-item="delCourse"
+  ></DelModal>
 </template>
 
 <script>
-import courseModal from "../../components/admin/courseModal.vue";
+import CourseModal from "@/components/admin/CourseModal.vue";
+import DelModal from "@/components/admin/DelModal.vue";
 
 import Toast from "../../utils/Toast";
 
@@ -133,12 +148,15 @@ export default {
       isLoading: false,
       allCourseList: {},
       currentPage: 1,
+      delClassTitle: "",
+      delClassId: "",
     };
   },
-  components: { courseModal },
+  components: { CourseModal, DelModal },
   mounted() {
     this.getCoursesList();
   },
+
   methods: {
     getCoursesList(page = 1) {
       this.isLoading = true;
@@ -167,7 +185,33 @@ export default {
     },
 
     openModal(item, status) {
+      console.log(item, status);
       this.$refs.courseModal.showModal();
+    },
+    openDelModal(classTitle, classId) {
+      console.log(classTitle, classId);
+
+      this.delClassTitle = classTitle;
+      this.delClassId = classId;
+
+      this.$refs.deleteModal.showModal();
+    },
+    delCourse() {
+      const id = this.delClassId;
+
+      this.$http
+        .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/product/${id}`)
+        .then((res) => {
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
+
+          this.getCoursesList(this.currentPage);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

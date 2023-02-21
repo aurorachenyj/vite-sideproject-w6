@@ -27,6 +27,10 @@
             優惠券名稱： <span class="text-danger"> {{ del }} </span>
           </p>
 
+          <p v-else-if="delClassTitle">
+            課程名稱： <span class="text-danger"> {{ delClassTitle }} </span>
+          </p>
+
           （注意，刪除後無法復原！）
         </div>
 
@@ -56,7 +60,7 @@ export default {
       modal: "",
     };
   },
-  props: ["delId", "del"],
+  props: ["delId", "del", "delClassTitle", "delClassId"],
 
   methods: {
     hideModal() {

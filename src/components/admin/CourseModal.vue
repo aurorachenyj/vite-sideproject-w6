@@ -18,6 +18,8 @@
         </div>
 
         <div class="modal-body">
+          {{ tempProduct }}
+
           <div class="row">
             <div class="col-sm-4">
               <div class="mb-2">
@@ -153,6 +155,8 @@
                   <div class="col-md-6">
                     <div class="form-check mb-2">
                       <input
+                        v-model="tempProduct.courseStatus"
+                        value="classOpen"
                         class="form-check-input"
                         type="radio"
                         name="courseStatus"
@@ -164,6 +168,8 @@
                     </div>
                     <div class="form-check mb-2">
                       <input
+                        v-model="tempProduct.courseStatus"
+                        value="classFunding"
                         class="form-check-input"
                         type="radio"
                         name="courseStatus"
@@ -178,7 +184,9 @@
 
                 <div class="row">
                   <div class="mb-3 col-md-6">
-                    <label for="funding_price" class="form-label">募資價</label>
+                    <label for="funding_price" class="form-label"
+                      >募資價(募資課程必填)</label
+                    >
                     <input
                       v-model.number="tempProduct.funding_price"
                       id="funding_price"
@@ -191,13 +199,12 @@
 
                   <div class="mb-3 col-md-6">
                     <label for="fundingEndDate" class="form-label"
-                      >募資結束日</label
+                      >募資結束日(募資課程必填)</label
                     >
                     <input
-                      v-model.number="tempProduct.fundingEndDate"
+                      v-model="tempProduct.fundingEndDate"
                       id="fundingEndDate"
                       type="date"
-                      min="0"
                       class="form-control"
                     />
                   </div>
