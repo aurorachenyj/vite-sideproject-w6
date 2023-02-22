@@ -8,7 +8,10 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">新增課程</h5>
+          <h5 class="modal-title">
+            <span v-if="checkedStatus === 'new'"> 新增 </span>
+            <span v-else-if="checkedStatus === 'edit'"> 編輯 </span> 課程
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -19,11 +22,12 @@
 
         <div class="modal-body">
           {{ tempProduct }}
-
+          <hr />
+          {{ checkedStatus }}
           <div class="row">
             <div class="col-sm-4">
-              <div class="mb-2">
-                <div class="mb-3">
+              <!-- <div class="mb-2">
+                <div class="mb-3" >
                   <label for="imageUrl" class="form-label">輸入圖片網址</label>
                   <input
                     v-model="tempProduct.imageUrl"
@@ -36,7 +40,7 @@
                 </div>
                 <img class="img-fluid" :src="tempProduct.imageUrl" alt="" />
               </div>
-              <h3>多圖新增</h3>
+              <h3>多圖新增</h3> -->
               <!-- <div>
                 <div v-if="Array.isArray(tempProduct.imagesUrl)">
                   <template
@@ -78,7 +82,7 @@
                 </div>
               </div> -->
 
-              <div v-if="tempProduct.imagesUrl === undefined">
+              <!-- <div v-if="tempProduct.imagesUrl === undefined">
                 <button
                   class="btn btn-warning btn-sm d-block w-100"
                   type="button"
@@ -86,7 +90,7 @@
                 >
                   新增圖片
                 </button>
-              </div>
+              </div> -->
             </div>
 
             <div class="col-sm-8">
@@ -188,6 +192,7 @@
                       >募資價(募資課程必填)</label
                     >
                     <input
+                      :disabled="tempProduct.courseStatus === 'classOpen'"
                       v-model.number="tempProduct.funding_price"
                       id="funding_price"
                       type="number"
@@ -202,6 +207,7 @@
                       >募資結束日(募資課程必填)</label
                     >
                     <input
+                      :disabled="tempProduct.courseStatus === 'classOpen'"
                       v-model="tempProduct.fundingEndDate"
                       id="fundingEndDate"
                       type="date"
@@ -286,7 +292,9 @@
           >
             取消
           </button>
-          <button type="button" class="btn btn-danger">送出</button>
+          <button @click="postCourse" type="button" class="btn btn-danger">
+            送出
+          </button>
         </div>
       </div>
     </div>
@@ -295,7 +303,7 @@
 
 <script>
 import Modal from "bootstrap/js/dist/modal";
-
+import Toast from "../../utils/Toast";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -305,10 +313,76 @@ export default {
       tempProduct: {},
     };
   },
+  props: { checkedCourse: {}, checkedStatus: {} },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
   },
+  watch: {
+    checkedCourse() {
+      this.tempProduct = this.checkedCourse;
+      console.log(this.tempProduct);
+    },
+  },
   methods: {
+    postCourse() {
+      if (!this.tempProduct.courseStatus) {
+        Toast.fire({
+          icon: "error",
+          title: "課程狀態必填",
+        });
+
+        return;
+      }
+
+      if (this.tempProduct.courseStatus === "classFunding") {
+        if (
+          !this.tempProduct.fundingEndDate ||
+          !this.tempProduct.funding_price
+        ) {
+          Toast.fire({
+            icon: "error",
+            title: "募資到期日和募資價格必填",
+          });
+
+          return;
+        }
+      }
+
+      let url = "";
+      let method = "";
+
+      if (this.checkedStatus === "new") {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/product`;
+        method = "post";
+      } else if (this.checkedStatus === "edit") {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/product/${this.tempProduct.id}`;
+        method = "put";
+      }
+
+      const data = this.tempProduct;
+
+      this.$http[method](url, { data })
+        .then((res) => {
+          console.log(res);
+
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
+
+          this.$emit("randerCourseList");
+          this.modal.hide();
+          this.tempProduct = {};
+        })
+
+        .catch((err) => {
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
+        });
+    },
+
     hideModal() {
       console.log("hideModal");
       this.modal.hide();

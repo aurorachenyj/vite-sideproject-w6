@@ -43,8 +43,18 @@
               :key="course.id"
             >
               <td class="py-3 ps-3">{{ course.category }}</td>
-              <td class="">{{ course.title }} 2</td>
-              <td>{{}}3 course. 待補</td>
+              <td class="">{{ course.title }}</td>
+
+              <td v-if="course.courseStatus === 'classFunding'">
+                募資中
+
+                <span class="text-success">
+                  結束日 {{ course.fundingEndDate }}
+                </span>
+              </td>
+
+              <td v-else-if="course.courseStatus === 'classOpen'">已開課</td>
+
               <td class="text-end">{{ course.origin_price }}4</td>
               <td class="text-end">{{ course.price }}5</td>
               <td class="text-end">
@@ -125,7 +135,12 @@
     </div>
   </div>
 
-  <CourseModal ref="courseModal"></CourseModal>
+  <CourseModal
+    ref="courseModal"
+    :checked-course="checkedCourse"
+    :checked-status="checkedStatus"
+    @rander-course-list="getCoursesList(currentPage)"
+  ></CourseModal>
   <DelModal
     ref="deleteModal"
     :del-class-title="delClassTitle"
@@ -150,6 +165,8 @@ export default {
       currentPage: 1,
       delClassTitle: "",
       delClassId: "",
+      checkedCourse: {},
+      checkedStatus: "",
     };
   },
   components: { CourseModal, DelModal },
@@ -185,7 +202,13 @@ export default {
     },
 
     openModal(item, status) {
-      console.log(item, status);
+      if (status === "edit") {
+        this.checkedCourse = item;
+      } else if (status === "new") {
+        this.checkedCourse = {};
+      }
+      this.checkedStatus = status;
+      console.log(this.checkedStatus);
       this.$refs.courseModal.showModal();
     },
     openDelModal(classTitle, classId) {
@@ -196,6 +219,7 @@ export default {
 
       this.$refs.deleteModal.showModal();
     },
+
     delCourse() {
       const id = this.delClassId;
 

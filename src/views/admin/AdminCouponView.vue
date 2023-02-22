@@ -27,7 +27,7 @@
         <table class="table table-hover">
           <thead class="border-bottom border-3 bg-light">
             <tr class="align-middle">
-              <th scope="col " class="ps-3 py-3">
+              <th scope="col " class="ps-3 py-3 text-center">
                 <button
                   @click="delMoreItem"
                   class="btn btn-outline-danger btn-sm"

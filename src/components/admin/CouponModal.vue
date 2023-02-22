@@ -135,10 +135,10 @@ export default {
   mounted() {
     this.modal = new Modal(this.$refs.modal);
 
-    this.$refs.modal.addEventListener(
-      "hide.bs.modal",
-      this.$emit("randerPage")
-    );
+    // this.$refs.modal.addEventListener(
+    //   "hide.bs.modal",
+    //   this.$emit("randerPage")
+    // );
   },
   watch: {
     editItem() {

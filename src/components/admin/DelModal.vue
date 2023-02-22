@@ -31,6 +31,8 @@
             課程名稱： <span class="text-danger"> {{ delClassTitle }} </span>
           </p>
 
+          {{ delArticleId }} {{ delArticleTitle }}
+
           （注意，刪除後無法復原！）
         </div>
 
@@ -60,7 +62,14 @@ export default {
       modal: "",
     };
   },
-  props: ["delId", "del", "delClassTitle", "delClassId"],
+  props: [
+    "delId",
+    "del",
+    "delClassTitle",
+    "delClassId",
+    "delArticleTitle",
+    "delArticleId",
+  ],
 
   methods: {
     hideModal() {
