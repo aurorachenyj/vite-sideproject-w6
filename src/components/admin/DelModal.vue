@@ -31,7 +31,9 @@
             課程名稱： <span class="text-danger"> {{ delClassTitle }} </span>
           </p>
 
-          {{ delArticleId }} {{ delArticleTitle }}
+          <p v-else-if="delArticleTitle">
+            文章標題： <span class="text-danger"> {{ delArticleTitle }} </span>
+          </p>
 
           （注意，刪除後無法復原！）
         </div>

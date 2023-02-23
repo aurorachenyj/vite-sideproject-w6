@@ -206,12 +206,14 @@
                     <label for="fundingEndDate" class="form-label"
                       >募資結束日(募資課程必填)</label
                     >
+                    <!-- v-model="tempProduct.fundingEndDate" -->
                     <input
                       :disabled="tempProduct.courseStatus === 'classOpen'"
                       v-model="tempProduct.fundingEndDate"
                       id="fundingEndDate"
-                      type="date"
+                      type="text"
                       class="form-control"
+                      placeholder="2023-01-01 23:59:59"
                     />
                   </div>
                 </div>
@@ -243,26 +245,37 @@
 
               <div class="mb-3">
                 <label for="teacherInfo" class="form-label">講師介紹</label>
-                <textarea
+
+                <ckeditor
+                  :editor="editor"
+                  v-model="tempProduct.teacherInfo"
+                ></ckeditor>
+
+                <!-- <textarea
                   v-model="tempProduct.teacherInfo"
                   id="teacherInfo"
                   type="text"
                   class="form-control"
                   placeholder="請輸入講師介紹"
                 >
-                </textarea>
+                </textarea> -->
               </div>
 
               <div class="mb-3">
                 <label for="skillTree" class="form-label">技能收穫</label>
-                <textarea
+                <ckeditor
+                  :editor="editor"
+                  v-model="tempProduct.skillTree"
+                ></ckeditor>
+
+                <!-- <textarea
                   v-model="tempProduct.skillTree"
                   id="teacherInfo"
                   type="text"
                   class="form-control"
                   placeholder="請輸入會獲得的技能"
                 >
-                </textarea>
+                </textarea> -->
               </div>
 
               <div class="mb-3">
@@ -304,6 +317,7 @@
 <script>
 import Modal from "bootstrap/js/dist/modal";
 import Toast from "../../utils/Toast";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -311,6 +325,9 @@ export default {
     return {
       modal: "",
       tempProduct: {},
+      editor: ClassicEditor,
+      editorTeacherData: "<p>請輸入講師內容</p>",
+      editorSkillData: "<p>請輸入技能內容</p>",
     };
   },
   props: { checkedCourse: {}, checkedStatus: {} },
@@ -320,11 +337,24 @@ export default {
   watch: {
     checkedCourse() {
       this.tempProduct = this.checkedCourse;
+
+      if (this.checkedStatus === "new") {
+        this.tempProduct.fundingEndDate = "2023-12-01 23:59:59";
+      }
+
       console.log(this.tempProduct);
     },
   },
   methods: {
     postCourse() {
+      console.log(this.tempProduct.fundingEndDate);
+
+      // console.log(Date.parse(this.tempProduct.fundingEndDate));
+
+      this.tempProduct.fundingEndDate = Date.parse(
+        this.tempProduct.fundingEndDate
+      );
+
       if (!this.tempProduct.courseStatus) {
         Toast.fire({
           icon: "error",

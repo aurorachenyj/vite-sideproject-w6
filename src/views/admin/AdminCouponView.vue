@@ -61,8 +61,11 @@
               </td>
               <td class="">{{ coupon.title }}</td>
               <td>{{ coupon.percent }}</td>
+
               <td v-if="typeof coupon.due_date === 'number'">
-                {{ new Date(coupon.due_date * 1000).toLocaleDateString() }}
+                {{
+                  new Date(coupon.due_date * 1000).toISOString().split("T")[0]
+                }}
               </td>
               <td v-else>
                 {{ coupon.due_date }}
@@ -121,6 +124,7 @@ export default {
     return {
       checkboxDel: [],
       isLoading: false,
+
       delCoupon: "",
       delCouponTitle: "",
       allCouponList: {},

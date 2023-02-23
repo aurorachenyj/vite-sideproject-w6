@@ -59,7 +59,7 @@
               />
             </div>
 
-            <div class="mb-3" v-if="status === 'edit'">
+            <div class="mb-3">
               {{ switchTimeStamp(tempCoupon.due_date) }}
               <label for="deadline" class="form-label"> 到期日期 </label>
               <input
@@ -70,7 +70,7 @@
               />
             </div>
 
-            <div class="mb-3" v-else-if="status === 'new'">
+            <!-- <div class="mb-3" v-else-if="status === 'new'">
               <label for="deadline" class="form-label"> 到期日期 </label>
               <input
                 v-model="tempCoupon.due_date"
@@ -78,7 +78,7 @@
                 class="form-control"
                 id="deadline"
               />
-            </div>
+            </div> -->
 
             <div class="mb-3 form-check">
               {{ tempCoupon.is_enabled }}
@@ -167,9 +167,6 @@ export default {
         .split("T")[0];
 
       return this.tempCoupon.due_date;
-
-      // const date = new Date(timeStamp * 1000).toLocaleDateString();
-      // return date.replace("/", "-");
     },
 
     addCoupon() {
@@ -178,15 +175,14 @@ export default {
       let method = "";
 
       if (this.status === "new") {
-        this.tempCoupon.due_date = Date.parse(this.tempCoupon.due_date) / 1000;
         url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/coupon`;
         method = "post";
       } else if (this.status === "edit") {
-        this.tempCoupon.due_date = Date.parse(this.tempCoupon.due_date) / 1000;
         url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/coupon/${this.tempCoupon.id}`;
         method = "put";
       }
 
+      this.tempCoupon.due_date = Date.parse(this.tempCoupon.due_date) / 1000;
       const data = this.tempCoupon;
 
       this.$http[method](url, { data })

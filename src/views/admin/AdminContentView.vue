@@ -48,7 +48,15 @@
               <!-- <td>
                 {{ article.description }}
               </td> -->
-              <td class="text-end">{{ switchTime(article.create_at) }}</td>
+
+              <td v-if="typeof article.create_at === 'number'" class="text-end">
+                {{
+                  new Date(article.create_at * 1000).toISOString().split("T")[0]
+                }}
+              </td>
+
+              <td v-else class="text-end">{{ article.create_at }}</td>
+
               <td class="text-end">
                 <div
                   class="badge rounded-pill"
@@ -131,6 +139,7 @@
     ref="deleteModal"
     :del-article-title="delArticleTitle"
     :del-article-id="delArticleId"
+    @del-item="deleteArticle"
   ></DelModal>
 
   <ArticleModal
@@ -163,14 +172,18 @@ export default {
   mounted() {
     this.getAllArticleList();
   },
+
+  watch: {},
+
   methods: {
     switchTime(timeStamp) {
-      return (timeStamp = new Date(timeStamp * 1000)
-        .toISOString()
-        .split("T")[0]);
+      const switchTime = JSON.parse(JSON.stringify(timeStamp));
+      console.log(switchTime);
+      return new Date(switchTime * 1000).toISOString().split("T")[0];
     },
 
     getAllArticleList(page = 1) {
+      this.isLoading = true;
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/articles?page=${page}`)
 
@@ -184,13 +197,36 @@ export default {
               title: "成功取得文章列表",
             });
           }
+
+          this.isLoading = false;
         })
         .catch((err) => {
+          this.isLoading = false;
           alert(err.response.data.message);
         });
     },
     changePage(page) {
       this.currentPage = page;
+      this.getAllArticleList(this.currentPage);
+    },
+    deleteArticle() {
+      const id = this.delArticleId;
+
+      this.$http
+        .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article/${id}`)
+
+        .then((res) => {
+          console.log(res.data);
+
+          Toast.fire({
+            icon: "success",
+            title: res.data.message,
+          });
+          this.getAllArticleList(this.currentPage);
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+        });
     },
 
     openDelModal(title, id) {

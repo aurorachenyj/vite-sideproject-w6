@@ -127,6 +127,8 @@ export default {
   created() {
     this.checkAdmin();
   },
+  mounted() {},
+
   methods: {
     checkAdmin() {
       const token = document.cookie.replace(

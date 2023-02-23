@@ -1,5 +1,6 @@
 <template>
   <h3 class="text-center mt-5">課程管理</h3>
+
   <div class="text-end">
     <button @click="openModal(0, 'new')" class="btn btn-outline-secondary">
       新增課程
@@ -50,6 +51,7 @@
 
                 <span class="text-success">
                   結束日 {{ course.fundingEndDate }}
+                  <!-- {{ countDay(course.fundingEndDate) }} -->
                 </span>
               </td>
 
@@ -167,14 +169,55 @@ export default {
       delClassId: "",
       checkedCourse: {},
       checkedStatus: "",
+      // todayDateStr:"", // 現在時間的時間戳
+      // leftDay:"", // 剩餘天數
     };
   },
   components: { CourseModal, DelModal },
   mounted() {
     this.getCoursesList();
+
+    // setInterval(() => {
+    //   this.todayDateStr = Date.parse(new Date());
+    // }, 60000);
   },
+  // watch: {
+  //   todayDateStr() {
+  //     this.countDay();
+  //   },
+  // },
 
   methods: {
+    // updateTodayDate() {
+    //   this.todayDateStr = Date.parse(new Date());
+
+    //   const stopCount = setInterval(() => {
+    //
+    //     this.todayDateStr = Date.parse(new Date());
+
+    //     if (this.endTimeStr <= this.todayDateStr) {
+    //       this.leftDay = "此募資已結束";
+    //       clearInterval(stopCount);
+    //     }
+    //   }, 60000);
+    // },
+
+    // countDay(endTimeStr) {
+    //   // this.todayDateStr = Date.parse(new Date());
+
+    //   const days = (endTimeStr - this.todayDateStr) / 1000 / 36000 / 24;
+    //   const day = Math.floor(days);
+    //   const hours = (days - day) * 24;
+    //   const hour = Math.floor(hours);
+    //   const minutes = (hours - hour) * 60;
+    //   const minute = Math.floor(minutes);
+    //   const seconds = (minutes - minute) * 60;
+    //   const second = Math.floor(seconds);
+    //   // const back = `剩餘天數：${day}天${hour}小時${minute}分鐘${second}秒`;
+    //   console.log("有跑");
+    //   return (this.leftDay = `剩餘天數：${day}天${hour}小時${minute}分鐘`);
+    // },
+
     getCoursesList(page = 1) {
       this.isLoading = true;
       this.$http

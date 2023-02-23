@@ -6,10 +6,16 @@
     ref="modal"
     aria-hidden="true"
   >
+    <LoadingVue v-model:active="isLoading"> </LoadingVue>
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">新增文章</h5>
+          <h5 class="modal-title">
+            <span v-if="status === 'new'"> 新增 </span>
+            <span v-else-if="status === 'edit'"> 編輯 </span>
+
+            文章
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -18,7 +24,7 @@
           ></button>
         </div>
 
-        {{ tempArticle }} {{ status }} {{ item }}
+        {{ tempArticle }} ||| {{ status }} ||| {{ item }}
 
         <div class="modal-body">
           <div class="row">
@@ -73,6 +79,7 @@
             <div class="col-md-4">
               <div class="mb-3">
                 <label for="createdTime" class="form-label">建立時間</label>
+                {{ switchTimeStamp(tempArticle.create_at) }}
                 <input
                   v-model="tempArticle.create_at"
                   id="createdTime"
@@ -110,22 +117,8 @@
               </div>
             </div>
 
-            <div class="col-md-12">文章套件(待研究)</div>
-
-            <hr />
             <div class="col-md-12">
-              <div class="mb-3">
-                <label for="content" class="form-label">
-                  文章內容簡易版(先擋一下)</label
-                >
-                <textarea
-                  v-model="tempArticle.content"
-                  id="content"
-                  class="form-control"
-                  style="height: 100px"
-                >
-                </textarea>
-              </div>
+              <ckeditor :editor="editor" v-model="editorData"></ckeditor>
             </div>
           </div>
         </div>
@@ -153,13 +146,20 @@
 <script>
 import Modal from "bootstrap/js/dist/modal";
 import Toast from "../../utils/Toast";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {
     return {
+      isLoading: false,
       modal: "",
       tempArticle: {},
+      editor: ClassicEditor,
+      editorData: "<p>請輸入文章內容</p>",
+      // editorConfig: {
+      //   toolbar: ["heading", "|", "bold", "italic", "link"],
+      // },
     };
   },
   props: { item: {}, status: {} },
@@ -169,26 +169,77 @@ export default {
   watch: {
     item() {
       this.tempArticle = this.item;
+      console.log(this.tempArticle);
+      console.log(this.tempArticle.id);
+      if (this.tempArticle.id) {
+        this.isLoading = true;
+        const id = this.tempArticle.id;
+        this.$http
+          .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article/${id}`)
+          .then((res) => {
+            console.log(res.data);
+            console.log(res.data.article.content);
+            this.editorData = res.data.article.content;
+            this.isLoading = false;
+          })
+          .catch((err) => {
+            console.log(err);
+            this.isLoading = false;
+          });
+      }
     },
   },
 
   methods: {
+    switchTimeStamp(timeStamp) {
+      console.log(typeof timeStamp);
+
+      if (typeof timeStamp !== "number") {
+        return;
+      }
+
+      console.log(timeStamp);
+
+      this.tempArticle.create_at = new Date(timeStamp * 1000)
+        .toISOString()
+        .split("T")[0];
+
+      return this.tempArticle.create_at;
+    },
+
     postArticle() {
+      if (!this.tempArticle.tag) {
+        Toast.fire({
+          icon: "error",
+          title: "標籤不可為空",
+        });
+
+        return;
+      }
+
+      let url = "";
+      let method = "";
+
       console.log(this.tempArticle);
+      this.tempArticle.content = this.editorData;
+      if (!Array.isArray(this.tempArticle.tag)) {
+        this.tempArticle.tag = this.tempArticle.tag.split(",");
+      }
 
-      //   console.log();
-
-      this.tempArticle.tag = this.tempArticle.tag.split(",");
+      if (this.status === "new") {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article`;
+        method = "post";
+      } else if (this.status === "edit") {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article/${this.tempArticle.id}`;
+        method = "put";
+      }
 
       this.tempArticle.create_at =
         Date.parse(this.tempArticle.create_at) / 1000;
-      console.log(Date.parse(this.tempArticle.create_at) / 1000);
-
       const data = this.tempArticle;
       console.log(data);
 
-      this.$http
-        .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article`, { data })
+      this.$http[method](url, { data })
 
         .then((res) => {
           Toast.fire({
