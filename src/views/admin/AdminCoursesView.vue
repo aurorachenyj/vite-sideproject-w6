@@ -8,19 +8,6 @@
   </div>
   <LoadingVue v-model:active="isLoading"> </LoadingVue>
   <div class="card mt-4">
-    <div class="card-header bg-transparent">
-      <div class="input-group">
-        <span class="input-group-text bg-transparent border-0 pe-0">
-          <i class="bi bi-search"></i>
-        </span>
-        <input
-          class="form-control border-0 shadow-none"
-          type="search"
-          placeholder="搜尋"
-        />
-      </div>
-    </div>
-
     <div class="card-body p-0">
       <div class="table-responsive text-nowrap">
         <table class="table table-hover">
@@ -51,7 +38,7 @@
 
                 <span class="text-success">
                   結束日 {{ course.fundingEndDate }}
-                  <!-- {{ countDay(course.fundingEndDate) }} -->
+                  {{ countDay(course.fundingEndDate) }}
                 </span>
               </td>
 
@@ -169,54 +156,53 @@ export default {
       delClassId: "",
       checkedCourse: {},
       checkedStatus: "",
-      // todayDateStr:"", // 現在時間的時間戳
-      // leftDay:"", // 剩餘天數
+      todayDateStr: "", // 現在時間的時間戳
+      leftDay: "", // 剩餘天數
     };
   },
   components: { CourseModal, DelModal },
   mounted() {
     this.getCoursesList();
 
-    // setInterval(() => {
-    //   this.todayDateStr = Date.parse(new Date());
-    // }, 60000);
+    setInterval(() => {
+      this.todayDateStr = Date.parse(new Date());
+    }, 60000);
   },
-  // watch: {
-  //   todayDateStr() {
-  //     this.countDay();
-  //   },
-  // },
+  watch: {
+    todayDateStr() {
+      this.countDay();
+    },
+  },
 
   methods: {
-    // updateTodayDate() {
-    //   this.todayDateStr = Date.parse(new Date());
+    updateTodayDate() {
+      this.todayDateStr = Date.parse(new Date());
 
-    //   const stopCount = setInterval(() => {
-    //
-    //     this.todayDateStr = Date.parse(new Date());
+      const stopCount = setInterval(() => {
+        this.todayDateStr = Date.parse(new Date());
 
-    //     if (this.endTimeStr <= this.todayDateStr) {
-    //       this.leftDay = "此募資已結束";
-    //       clearInterval(stopCount);
-    //     }
-    //   }, 60000);
-    // },
+        if (this.endTimeStr <= this.todayDateStr) {
+          this.leftDay = "此募資已結束";
+          clearInterval(stopCount);
+        }
+      }, 60000);
+    },
 
-    // countDay(endTimeStr) {
-    //   // this.todayDateStr = Date.parse(new Date());
+    countDay(endTimeStr) {
+      this.todayDateStr = Date.parse(new Date());
 
-    //   const days = (endTimeStr - this.todayDateStr) / 1000 / 36000 / 24;
-    //   const day = Math.floor(days);
-    //   const hours = (days - day) * 24;
-    //   const hour = Math.floor(hours);
-    //   const minutes = (hours - hour) * 60;
-    //   const minute = Math.floor(minutes);
-    //   const seconds = (minutes - minute) * 60;
-    //   const second = Math.floor(seconds);
-    //   // const back = `剩餘天數：${day}天${hour}小時${minute}分鐘${second}秒`;
-    //   console.log("有跑");
-    //   return (this.leftDay = `剩餘天數：${day}天${hour}小時${minute}分鐘`);
-    // },
+      const days = (endTimeStr - this.todayDateStr) / 1000 / 36000 / 24;
+      const day = Math.floor(days);
+      const hours = (days - day) * 24;
+      const hour = Math.floor(hours);
+      const minutes = (hours - hour) * 60;
+      const minute = Math.floor(minutes);
+      const seconds = (minutes - minute) * 60;
+      const second = Math.floor(seconds);
+
+      console.log("有跑");
+      return (this.leftDay = `剩餘天數：${day}天${hour}小時${minute}分鐘`);
+    },
 
     getCoursesList(page = 1) {
       this.isLoading = true;

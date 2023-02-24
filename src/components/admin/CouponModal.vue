@@ -24,9 +24,6 @@
           ></button>
         </div>
         <div class="modal-body">
-          {{ editItem }}
-          <hr />
-          {{ status }}
           <form>
             <div class="mb-3">
               <label for="couponTitle" class="form-label">優惠券標題</label>
@@ -53,6 +50,8 @@
               <input
                 v-model="tempCoupon.percent"
                 type="number"
+                max="99"
+                min="1"
                 class="form-control"
                 id="discount"
                 placeholder="請輸入折扣百分比數字"
@@ -61,6 +60,7 @@
 
             <div class="mb-3">
               {{ switchTimeStamp(tempCoupon.due_date) }}
+
               <label for="deadline" class="form-label"> 到期日期 </label>
               <input
                 v-model="tempCoupon.due_date"
@@ -81,7 +81,6 @@
             </div> -->
 
             <div class="mb-3 form-check">
-              {{ tempCoupon.is_enabled }}
               <input
                 v-model="tempCoupon.is_enabled"
                 :true-value="1"

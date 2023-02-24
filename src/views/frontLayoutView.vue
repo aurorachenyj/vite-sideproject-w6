@@ -4,12 +4,18 @@
     
   </div> -->
 
-  <header>
+  <header class="bg-light">
     <div class="container">
-      <nav
-        class="navbar navbar-expand-lg navbar-light bg-light justify-content-evenly"
-      >
-        <RouterLink to="/" class="nav-link">Home</RouterLink>
+      <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+        <RouterLink to="/" class="nav-link">
+          <img
+            src="../assets/LFlogo.svg"
+            alt=""
+            width="90"
+            height="72"
+            class="d-inline-block align-text-top"
+          />
+        </RouterLink>
         <RouterLink to="/courses" class="nav-link">課程</RouterLink>
         <RouterLink to="/cart"
           >購物車
@@ -43,6 +49,54 @@
   </header>
 
   <RouterView />
+  <div class="bg-light">
+    <footer class="footer container py-3">
+      <div
+        class="flex-column d-flex flex-md-row align-items-center justify-content-md-between"
+      >
+        <a class="navbar-brand" href="#">
+          <img
+            src="../assets/LFlogo.svg"
+            alt=""
+            width="90"
+            height="72"
+            class="d-inline-block align-text-top"
+          />
+        </a>
+
+        <div class="div">
+          <a href="" class="text-decoration-none text-dark"> 常見問題 </a>
+          <a href="" class="text-decoration-none text-dark"> 使用條款 </a>
+          <a href="" class="text-decoration-none text-dark"> 隱私權政策 </a>
+        </div>
+        <div class="text-end">
+          <RouterLink
+            class="link-dark me-2 text-decoration-none"
+            to="/adminLogin"
+            >登入後台</RouterLink
+          >
+          <RouterLink class="link-dark text-decoration-none" to="/admin/index"
+            >後台首頁</RouterLink
+          >
+        </div>
+        <div class="div">
+          <a href="" style="font-size: 2rem; color: gray" class="me-2">
+            <i class="bi bi-instagram"></i
+          ></a>
+          <a href="" style="font-size: 2rem; color: gray" class="me-2"
+            ><i class="bi bi-facebook"></i
+          ></a>
+          <a href="" style="font-size: 2rem; color: gray"
+            ><i class="bi bi-youtube"></i
+          ></a>
+        </div>
+      </div>
+
+      <p class="text-center mt-3 mb-0 text-muted">
+        © 2023 Aurora Chen. All Rights Reserved.
+      </p>
+    </footer>
+  </div>
 </template>
 
 <script>

@@ -2,7 +2,7 @@
   <h3 class="text-center mt-5">訂單管理</h3>
   <LoadingVue v-model:active="isLoading"> </LoadingVue>
   <div class="card mt-4">
-    <div class="card-header bg-transparent">
+    <!-- <div class="card-header bg-transparent">
       <div class="input-group">
         <span class="input-group-text bg-transparent border-0 pe-0">
           <i class="bi bi-search"></i>
@@ -13,7 +13,7 @@
           placeholder="搜尋"
         />
       </div>
-    </div>
+    </div> -->
 
     <div class="card-body p-0">
       <div class="table-responsive text-nowrap">

@@ -28,6 +28,32 @@
 
         <div class="modal-body">
           <div class="row">
+            <div class="col-md-4">
+              <div class="mb-3">
+                <input
+                  style="display: none"
+                  type="file"
+                  ref="articlePic"
+                  id="articlePicFile"
+                  @change="uploadArticlePic"
+                />
+
+                <button
+                  @click="this.$refs.articlePic.click()"
+                  class="btn btn-primary text-white"
+                  type="button"
+                >
+                  上傳主圖
+                </button>
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <div class="mb-3">
+                <img class="img-fluid" :src="tempArticle.image" alt="" />
+              </div>
+            </div>
+            <hr />
             <div class="col-md-8">
               <div class="mb-3">
                 <label for="title" class="form-label">標題</label>
@@ -52,19 +78,8 @@
                 />
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="mainPic" class="form-label">主圖連結</label>
-                <input
-                  v-model="tempArticle.image"
-                  id="mainPic"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入圖片網址"
-                />
-              </div>
-            </div>
-            <div class="col-md-4">
+
+            <div class="col-md-6">
               <div class="mb-3">
                 <label for="tag" class="form-label">標籤(請用,間隔)</label>
                 <input
@@ -76,7 +91,7 @@
                 />
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="mb-3">
                 <label for="createdTime" class="form-label">建立時間</label>
                 {{ switchTimeStamp(tempArticle.create_at) }}
@@ -154,6 +169,7 @@ export default {
     return {
       isLoading: false,
       modal: "",
+      articlePicData: {},
       tempArticle: {},
       editor: ClassicEditor,
       editorData: "<p>請輸入文章內容</p>",
@@ -165,6 +181,7 @@ export default {
   props: { item: {}, status: {} },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
+    this.articlePicData = this.$refs.articlePic;
   },
   watch: {
     item() {
@@ -191,6 +208,38 @@ export default {
   },
 
   methods: {
+    uploadArticlePic() {
+      const file = this.articlePicData.files[0];
+
+      const formData = new FormData();
+      formData.append("file-to-upload", file);
+
+      this.$http
+        .post(` ${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/upload`, formData)
+        .then((res) => {
+          console.log(res.data.imageUrl);
+          console.log(res.data);
+
+          this.tempArticle.image = res.data.imageUrl;
+          this.isLoadong = false;
+
+          if (res.data.success === true) {
+            Toast.fire({
+              icon: "success",
+              title: "成功上傳圖片",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          this.isLoadong = false;
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
+        });
+    },
+
     switchTimeStamp(timeStamp) {
       console.log(typeof timeStamp);
 
