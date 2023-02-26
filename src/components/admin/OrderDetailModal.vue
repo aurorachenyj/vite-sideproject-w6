@@ -110,7 +110,7 @@
 <script>
 import Modal from "bootstrap/js/dist/modal";
 
-const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
+// const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {
@@ -121,16 +121,13 @@ export default {
   props: ["checkOrderData"],
   mounted() {
     this.modal = new Modal(this.$refs.orderModal);
-    console.log(this.checkOrderData);
   },
   watch: {},
   methods: {
     hideModal() {
-      console.log("hideModal");
       this.modal.hide();
     },
     showModal() {
-      console.log("showModal");
       this.modal.show();
     },
   },

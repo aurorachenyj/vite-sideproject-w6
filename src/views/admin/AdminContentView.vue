@@ -1,7 +1,6 @@
 <template>
   <h3 class="text-center mt-5">文章管理</h3>
 
-  <!-- @click="openModal(0, 'new')" -->
   <div class="text-end mb-4">
     <button @click="openModal(0, 'new')" class="btn btn-outline-secondary">
       新增文章
@@ -19,7 +18,6 @@
               <th scope="col" class="py-3">作者</th>
               <th scope="col">標籤</th>
 
-              <!-- <th scope="col">描述</th> -->
               <th scope="col" class="text-end">建立時間</th>
               <th scope="col" class="text-end">是否公開</th>
               <th scope="col" class="text-end pe-3">編輯</th>
@@ -45,10 +43,6 @@
                 </span>
               </td>
 
-              <!-- <td>
-                {{ article.description }}
-              </td> -->
-
               <td v-if="typeof article.create_at === 'number'" class="text-end">
                 {{
                   new Date(article.create_at * 1000).toISOString().split("T")[0]
@@ -71,7 +65,6 @@
 
               <td class="text-end pe-3 text-danger">
                 <div class="btn-group" role="group">
-                  <!-- @click="openModal(course, 'edit')" -->
                   <button
                     @click="openModal(article, 'edit')"
                     type="button"
@@ -80,7 +73,6 @@
                     編輯
                   </button>
 
-                  <!-- @click="openDelModal(course.title, course.id)" -->
                   <button
                     @click="openDelModal(article.title, article.id)"
                     type="button"
@@ -178,7 +170,7 @@ export default {
   methods: {
     switchTime(timeStamp) {
       const switchTime = JSON.parse(JSON.stringify(timeStamp));
-      console.log(switchTime);
+      // console.log(switchTime);
       return new Date(switchTime * 1000).toISOString().split("T")[0];
     },
 
@@ -188,7 +180,6 @@ export default {
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/articles?page=${page}`)
 
         .then((res) => {
-          console.log(res.data);
           this.allArticleList = res.data;
 
           if (res.data.success === true) {
@@ -216,8 +207,6 @@ export default {
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article/${id}`)
 
         .then((res) => {
-          console.log(res.data);
-
           Toast.fire({
             icon: "success",
             title: res.data.message,
@@ -225,20 +214,22 @@ export default {
           this.getAllArticleList(this.currentPage);
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          // alert(err.response.data.message);
+
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
 
     openDelModal(title, id) {
-      console.log(title, id);
       this.delArticleTitle = title;
       this.delArticleId = id;
 
       this.$refs.deleteModal.showModal();
     },
     openModal(item, status) {
-      console.log(item, status);
-
       if (status === "new") {
         this.checkedItem = { isPublic: true };
       } else if (status === "edit") {

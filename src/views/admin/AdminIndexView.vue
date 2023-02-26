@@ -28,13 +28,12 @@
           >
         </div> -->
       </div>
-      <div class="col-9">後台內容</div>
     </div>
   </div>
 </template>
 
 <script>
-const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
+// const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {

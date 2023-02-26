@@ -151,8 +151,6 @@ export default {
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/orders?page=${page}`)
         .then((res) => {
-          console.log(res.data);
-
           this.isLoading = false;
 
           // Toast.fire({
@@ -163,8 +161,6 @@ export default {
           this.allOrderList = res.data;
         })
         .catch((err) => {
-          console.log(err);
-          // alert(err.response.data.message);
           this.isLoading = false;
           Toast.fire({
             icon: "error",
@@ -174,32 +170,26 @@ export default {
     },
 
     changePage(clickPage) {
-      console.log(clickPage);
       this.currentPage = clickPage;
       this.getOrderList(this.currentPage);
     },
 
     openDelModal(delOrderId) {
-      console.log("open");
-      console.log(delOrderId);
       this.delId = delOrderId;
       const delComponent = this.$refs.deleteModal;
-      console.log(delComponent);
+
       delComponent.showModal();
     },
     openOrderModal(orderId) {
       this.isLoading = true;
-      console.log(orderId);
 
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/order/${orderId}`)
         .then((res) => {
-          console.log(res.data);
           this.checkOrderData = res.data;
           this.isLoading = false;
         })
         .catch((err) => {
-          console.log(err);
           this.isLoading = false;
         });
 
@@ -207,19 +197,14 @@ export default {
     },
 
     delOrder() {
-      console.log(this.delId);
-
       const id = this.delId;
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/order/${id}`)
         .then((res) => {
-          console.log(res.data);
           this.getOrderList(this.currentPage);
           this.$refs.deleteModal.hideModal();
         })
         .catch((err) => {
-          // alert(err.response.data.message);
-
           Toast.fire({
             icon: "error",
             title: err.response.data.message,

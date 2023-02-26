@@ -24,8 +24,6 @@
           ></button>
         </div>
 
-        {{ tempArticle }} ||| {{ status }} ||| {{ item }}
-
         <div class="modal-body">
           <div class="row">
             <div class="col-md-4">
@@ -186,21 +184,17 @@ export default {
   watch: {
     item() {
       this.tempArticle = this.item;
-      console.log(this.tempArticle);
-      console.log(this.tempArticle.id);
+
       if (this.tempArticle.id) {
         this.isLoading = true;
         const id = this.tempArticle.id;
         this.$http
           .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/article/${id}`)
           .then((res) => {
-            console.log(res.data);
-            console.log(res.data.article.content);
             this.editorData = res.data.article.content;
             this.isLoading = false;
           })
           .catch((err) => {
-            console.log(err);
             this.isLoading = false;
           });
       }
@@ -217,8 +211,7 @@ export default {
       this.$http
         .post(` ${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/upload`, formData)
         .then((res) => {
-          console.log(res.data.imageUrl);
-          console.log(res.data);
+          //console.log(res.data.imageUrl);
 
           this.tempArticle.image = res.data.imageUrl;
           this.isLoadong = false;
@@ -231,7 +224,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.isLoadong = false;
           Toast.fire({
             icon: "error",
@@ -241,13 +233,11 @@ export default {
     },
 
     switchTimeStamp(timeStamp) {
-      console.log(typeof timeStamp);
+      // console.log(typeof timeStamp);
 
       if (typeof timeStamp !== "number") {
         return;
       }
-
-      console.log(timeStamp);
 
       this.tempArticle.create_at = new Date(timeStamp * 1000)
         .toISOString()
@@ -269,7 +259,6 @@ export default {
       let url = "";
       let method = "";
 
-      console.log(this.tempArticle);
       this.tempArticle.content = this.editorData;
       if (!Array.isArray(this.tempArticle.tag)) {
         this.tempArticle.tag = this.tempArticle.tag.split(",");
@@ -286,7 +275,6 @@ export default {
       this.tempArticle.create_at =
         Date.parse(this.tempArticle.create_at) / 1000;
       const data = this.tempArticle;
-      console.log(data);
 
       this.$http[method](url, { data })
 
@@ -305,11 +293,9 @@ export default {
     },
 
     hideModal() {
-      console.log("hideModal");
       this.modal.hide();
     },
     showModal() {
-      console.log("showModal");
       this.modal.show();
     },
   },

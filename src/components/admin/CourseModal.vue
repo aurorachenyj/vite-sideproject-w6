@@ -22,9 +22,6 @@
         </div>
 
         <div class="modal-body">
-          {{ tempProduct }}
-          <hr />
-          {{ checkedStatus }}
           <div class="row">
             <div class="col-sm-4">
               <div class="mb-2">
@@ -81,13 +78,6 @@
                     v-for="(item, key) in tempProduct.imagesUrl"
                     :key="key + key"
                   >
-                    <!-- <input
-                      v-model="tempProduct.imagesUrl[key]"
-                      type="text"
-                      class="form-control "
-                      placeholder="請輸入圖片連結"
-                    /> -->
-
                     <img
                       class="img-fluid"
                       :src="tempProduct.imagesUrl[key]"
@@ -241,14 +231,14 @@
                     <label for="fundingEndDate" class="form-label"
                       >募資結束日(募資課程必填)</label
                     >
-                    <!-- v-model="tempProduct.fundingEndDate" -->
+
+                    {{ switchTimeStamp(tempProduct.fundingEndDate) }}
                     <input
                       :disabled="tempProduct.courseStatus === 'classOpen'"
                       v-model="tempProduct.fundingEndDate"
                       id="fundingEndDate"
-                      type="text"
+                      type="datetime-local"
                       class="form-control"
-                      placeholder="2023-01-01 23:59:59"
                     />
                   </div>
                 </div>
@@ -285,15 +275,6 @@
                   :editor="editor"
                   v-model="tempProduct.teacherInfo"
                 ></ckeditor>
-
-                <!-- <textarea
-                  v-model="tempProduct.teacherInfo"
-                  id="teacherInfo"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入講師介紹"
-                >
-                </textarea> -->
               </div>
 
               <div class="mb-3">
@@ -302,15 +283,6 @@
                   :editor="editor"
                   v-model="tempProduct.skillTree"
                 ></ckeditor>
-
-                <!-- <textarea
-                  v-model="tempProduct.skillTree"
-                  id="teacherInfo"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入會獲得的技能"
-                >
-                </textarea> -->
               </div>
 
               <div class="mb-3">
@@ -376,21 +348,27 @@ export default {
 
     this.uploadPicData = document.querySelector("#picFile");
     this.uploadImgs = document.querySelector("#picsFile");
-
-    console.log(this.uploadImgs);
   },
   watch: {
     checkedCourse() {
       this.tempProduct = this.checkedCourse;
-
-      if (this.checkedStatus === "new") {
-        this.tempProduct.fundingEndDate = "2023-12-01 23:59:59";
-      }
-
-      console.log(this.tempProduct);
     },
   },
   methods: {
+    switchTimeStamp(timeStamp) {
+      // console.log(typeof timeStamp);
+
+      if (typeof timeStamp !== "number") {
+        return;
+      }
+
+      this.tempProduct.fundingEndDate = new Date(timeStamp).toISOString();
+
+      const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
+      const match = regex.exec(this.tempProduct.fundingEndDate);
+      return (this.tempProduct.fundingEndDate = `${match[1]}-${match[2]}-${match[3]}T${match[4]}:${match[5]}`);
+    },
+
     createPic() {
       this.tempProduct.imagesUrl = [];
       this.tempProduct.imagesUrl.push("");
@@ -406,9 +384,6 @@ export default {
       this.$http
         .post(` ${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/upload`, formData)
         .then((res) => {
-          console.log(res.data.imageUrl);
-          console.log(res.data);
-
           this.tempProduct.imageUrl = res.data.imageUrl;
           this.isLoadong = false;
 
@@ -420,7 +395,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.isLoadong = false;
           Toast.fire({
             icon: "error",
@@ -430,8 +404,6 @@ export default {
     },
 
     uploadSubPic() {
-      console.log(this.uploadImgs.files[0]);
-
       this.isLoadong = true;
 
       const file = this.uploadImgs.files[0];
@@ -442,9 +414,6 @@ export default {
       this.$http
         .post(` ${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/upload`, formData)
         .then((res) => {
-          console.log(res.data.imageUrl);
-          console.log(res.data);
-
           this.tempProduct.imagesUrl.push(res.data.imageUrl);
           this.isLoadong = false;
 
@@ -456,7 +425,6 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
           this.isLoadong = false;
           Toast.fire({
             icon: "error",
@@ -466,10 +434,6 @@ export default {
     },
 
     postCourse() {
-      console.log(this.tempProduct.fundingEndDate);
-
-      // console.log(Date.parse(this.tempProduct.fundingEndDate));
-
       this.tempProduct.fundingEndDate = Date.parse(
         this.tempProduct.fundingEndDate
       );
@@ -512,8 +476,6 @@ export default {
 
       this.$http[method](url, { data })
         .then((res) => {
-          console.log(res);
-
           Toast.fire({
             icon: "success",
             title: res.data.message,
@@ -533,11 +495,9 @@ export default {
     },
 
     hideModal() {
-      console.log("hideModal");
       this.modal.hide();
     },
     showModal() {
-      console.log("showModal");
       this.modal.show();
     },
   },

@@ -75,11 +75,9 @@ export default {
 
   methods: {
     hideModal() {
-      console.log("hideModal");
       this.modal.hide();
     },
     showModal() {
-      console.log("showModal");
       this.modal.show();
     },
 
@@ -90,7 +88,6 @@ export default {
   },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
-    console.log(this.modal);
   },
 };
 </script>

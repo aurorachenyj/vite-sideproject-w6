@@ -133,11 +133,6 @@ export default {
   props: { editItem: {}, status: {} },
   mounted() {
     this.modal = new Modal(this.$refs.modal);
-
-    // this.$refs.modal.addEventListener(
-    //   "hide.bs.modal",
-    //   this.$emit("randerPage")
-    // );
   },
   watch: {
     editItem() {
@@ -153,13 +148,11 @@ export default {
     },
 
     switchTimeStamp(timeStamp) {
-      console.log(typeof timeStamp);
+      // console.log(typeof timeStamp);
 
       if (typeof timeStamp !== "number") {
         return;
       }
-
-      console.log(timeStamp);
 
       this.tempCoupon.due_date = new Date(timeStamp * 1000)
         .toISOString()

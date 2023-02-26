@@ -15,7 +15,7 @@
             <tr class="align-middle">
               <th scope="col " class="ps-3">分類</th>
               <th scope="col" class="py-3">課程名稱</th>
-              <th scope="col">課程狀態 ( 若募資:剩XX天 )</th>
+              <th scope="col">課程狀態</th>
 
               <th scope="col" class="text-end">原價</th>
               <th scope="col" class="text-end">售價</th>
@@ -37,8 +37,21 @@
                 募資中
 
                 <span class="text-success">
-                  結束日 {{ course.fundingEndDate }}
+                  <p
+                    class="mb-0"
+                    v-if="typeof course.fundingEndDate !== 'number'"
+                  >
+                    結束日 {{ course.fundingEndDate }}
+                  </p>
+                  <br />
+
                   {{ countDay(course.fundingEndDate) }}
+                  <p
+                    class="mb-0"
+                    v-if="typeof course.fundingEndDate === 'number'"
+                  >
+                    {{ leftDay }}
+                  </p>
                 </span>
               </td>
 
@@ -168,40 +181,39 @@ export default {
       this.todayDateStr = Date.parse(new Date());
     }, 60000);
   },
-  watch: {
-    todayDateStr() {
-      this.countDay();
-    },
+
+  created() {
+    this.startTimer();
+  },
+  beforeUnmount() {
+    clearInterval(this.timer);
   },
 
   methods: {
-    updateTodayDate() {
-      this.todayDateStr = Date.parse(new Date());
-
-      const stopCount = setInterval(() => {
-        this.todayDateStr = Date.parse(new Date());
-
-        if (this.endTimeStr <= this.todayDateStr) {
-          this.leftDay = "此募資已結束";
-          clearInterval(stopCount);
-        }
-      }, 60000);
+    startTimer() {
+      this.countDay();
+      this.timer = setInterval(this.countDay, 60000);
     },
 
     countDay(endTimeStr) {
+      //console.log(endTimeStr);
       this.todayDateStr = Date.parse(new Date());
 
-      const days = (endTimeStr - this.todayDateStr) / 1000 / 36000 / 24;
-      const day = Math.floor(days);
-      const hours = (days - day) * 24;
-      const hour = Math.floor(hours);
-      const minutes = (hours - hour) * 60;
-      const minute = Math.floor(minutes);
-      const seconds = (minutes - minute) * 60;
-      const second = Math.floor(seconds);
+      const distance = endTimeStr - this.todayDateStr;
 
-      console.log("有跑");
-      return (this.leftDay = `剩餘天數：${day}天${hour}小時${minute}分鐘`);
+      if (distance < 0) {
+        clearInterval(this.timer);
+        this.leftDay = "已結束";
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        this.leftDay = `剩餘天數：${days}天${hours}小時${minutes}分鐘`;
+      }
     },
 
     getCoursesList(page = 1) {
@@ -209,7 +221,6 @@ export default {
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/products?page=${page}`)
         .then((res) => {
-          console.log(res.data);
           this.isLoading = false;
           this.allCourseList = res.data;
           if (res.data.success === true) {
@@ -222,7 +233,10 @@ export default {
 
         .catch((err) => {
           this.isLoading = false;
-          console.log(err);
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
     changePage(page) {
@@ -237,12 +251,10 @@ export default {
         this.checkedCourse = {};
       }
       this.checkedStatus = status;
-      console.log(this.checkedStatus);
+
       this.$refs.courseModal.showModal();
     },
     openDelModal(classTitle, classId) {
-      console.log(classTitle, classId);
-
       this.delClassTitle = classTitle;
       this.delClassId = classId;
 
@@ -263,7 +275,10 @@ export default {
           this.getCoursesList(this.currentPage);
         })
         .catch((err) => {
-          console.log(err);
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
     },
   },
