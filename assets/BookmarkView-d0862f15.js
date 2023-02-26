@@ -1,1 +1,0 @@
-import{_ as e,o,c as t}from"./index-c26ca672.js";const r={data(){return{}},mounted(){},methods:{}};function n(a,c,s,_,d,p){return o(),t("div",null,"收藏頁面")}const u=e(r,[["render",n]]);export{u as default};

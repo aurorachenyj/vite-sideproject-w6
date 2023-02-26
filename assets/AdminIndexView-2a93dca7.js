@@ -1,0 +1,1 @@
+import{_ as s,o as t,c as o,b as e}from"./index-2452b9d6.js";const c={data(){return{}},mounted(){},methods:{}},n={class:"container"},a=e("h3",{class:"text-center my-3"},"後台首頁",-1),d=e("div",{class:"text-end"},null,-1),_=e("div",{class:"row"},[e("div",{class:"col-3"})],-1),r=[a,d,_];function i(l,h,m,p,u,f){return t(),o("div",n,r)}const v=s(c,[["render",i]]);export{v as default};
