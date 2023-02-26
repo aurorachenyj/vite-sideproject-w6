@@ -4,21 +4,25 @@
     
   </div> -->
 
-  <header class="bg-light">
+  <header class="bg-white shadow-sm sticky-top">
     <div class="container">
       <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
-        <RouterLink to="/" class="nav-link">
+        <!-- <RouterLink to="/" class="nav-link"> -->
+        <a href="#">
           <img
             src="../assets/LFlogo.svg"
             alt=""
             width="90"
             height="72"
             class="d-inline-block align-text-top"
-          />
-        </RouterLink>
+        /></a>
+        <!-- </RouterLink> -->
         <RouterLink to="/courses" class="nav-link">課程</RouterLink>
-        <RouterLink to="/cart"
-          >購物車
+
+        <RouterLink to="/contents" class="nav-link">文章</RouterLink>
+        <RouterLink to="/bookmark" class="nav-link">收藏</RouterLink>
+
+        <RouterLink to="/cart">
           <div class="d-inline-block position-relative nav-link">
             <i class="bi bi-cart3 fs-3 text-dark"></i>
 
@@ -28,22 +32,15 @@
             >
               {{ cartList.carts.length }}
             </span>
-
-            <!-- <span
-              class="position-absolute top-20 start-80 translate-middle badge rounded-pill bg-danger"
-              >0
-            </span> -->
           </div>
         </RouterLink>
-        <RouterLink to="/contents" class="nav-link">文章</RouterLink>
-        <RouterLink to="/bookmark" class="nav-link">收藏</RouterLink>
 
-        <RouterLink class="link-dark nav-link" to="/adminLogin"
+        <!-- <RouterLink class="link-dark nav-link" to="/adminLogin"
           >登入後台</RouterLink
         >
         <RouterLink class="link-dark nav-link" to="/admin/index"
           >後台首頁</RouterLink
-        >
+        > -->
       </nav>
     </div>
   </header>

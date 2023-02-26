@@ -1,6 +1,17 @@
 .img-cover {
   object-fit: cover;
 }
+
+.bg-cover {
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bg-attachment-fixed {
+  background-attachment: fixed;
+}
+
 .start-rem-1 {
   left: 0.5rem;
 }
@@ -17,4 +28,19 @@
 
 .btn-hover-light:hover {
   color: white;
+}
+
+.navbar-hover:hover {
+  border-bottom: 2px solid pink;
+  /* background-color: pink; */
+}
+
+.router-link-exact-active {
+  border-bottom: 2px solid pink;
+  transition: all 0.3;
+}
+
+.navbar-active {
+  border-bottom: 2px solid pink;
+  /* background-color: pink; */
 }

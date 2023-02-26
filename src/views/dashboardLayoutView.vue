@@ -1,4 +1,4 @@
-<style>
+<!-- <style>
 .navbar-hover:hover {
   border-bottom: 2px solid pink;
   /* background-color: pink; */
@@ -13,7 +13,7 @@
   border-bottom: 2px solid pink;
   /* background-color: pink; */
 }
-</style>
+</style> -->
 
 <template>
   <div class="overflow-auto">
