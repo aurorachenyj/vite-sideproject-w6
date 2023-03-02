@@ -212,7 +212,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-md-4">
                     <label for="funding_price" class="form-label"
                       >募資價(募資課程必填)</label
                     >
@@ -227,7 +227,22 @@
                     />
                   </div>
 
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-md-4">
+                    <label for="funding_target" class="form-label"
+                      >達標金額(募資課程必填)</label
+                    >
+                    <input
+                      :disabled="tempProduct.courseStatus === 'classOpen'"
+                      v-model.number="tempProduct.funding_target"
+                      id="funding_target"
+                      type="number"
+                      min="0"
+                      class="form-control"
+                      placeholder="請輸入募資達標金額"
+                    />
+                  </div>
+
+                  <div class="mb-3 col-md-4">
                     <label for="fundingEndDate" class="form-label"
                       >募資結束日(募資課程必填)</label
                     >
@@ -450,11 +465,12 @@ export default {
       if (this.tempProduct.courseStatus === "classFunding") {
         if (
           !this.tempProduct.fundingEndDate ||
-          !this.tempProduct.funding_price
+          !this.tempProduct.funding_price ||
+          !this.tempProduct.funding_target
         ) {
           Toast.fire({
             icon: "error",
-            title: "募資到期日和募資價格必填",
+            title: "募資到期日、達標目標和募資價格必填",
           });
 
           return;

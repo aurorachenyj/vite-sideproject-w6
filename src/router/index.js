@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: "/",
       name: "index",
-      component: () => import("../views/frontLayoutView.vue"),
+      component: () => import("../views/FrontLayoutView.vue"),
       children: [
         {
           path: "/",
@@ -67,7 +67,7 @@ const router = createRouter({
     {
       path: "/admin",
       name: "admin",
-      component: () => import("../views/dashboardLayoutView.vue"),
+      component: () => import("../views/DashboardLayoutView.vue"),
       children: [
         {
           path: "index",

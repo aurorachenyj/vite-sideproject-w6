@@ -24,61 +24,102 @@
 <template>
   <div class="container">
     <LoadingVue v-model:active="isLoading"> </LoadingVue>
-    <h3 class="my-3">全部課程總覽</h3>
+    <nav
+      class="mt-5"
+      style="--bs-breadcrumb-divider: '>'"
+      aria-label="breadcrumb"
+    >
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#" class="text-decoration-none text-muted">首頁</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <a href="#" class="text-decoration-none text-dark">所有課程</a>
+        </li>
+      </ol>
+    </nav>
+    <h3 class="mb-5">全部課程總覽</h3>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <div class="col" v-for="course in courseList" :key="course.id">
-        <div class="card">
-          <a class="overflow-hidden" @click="goToClassPage(course.id)">
-            <img
-              :src="course.imageUrl"
-              height="250"
-              class="card-img-top img-cover img-hover-enlarge"
-              alt="..."
-            />
-          </a>
-          <span class="badge bg-dark position-absolute top-rem-1 start-rem-1">
-            {{ course.category }}</span
+    <div class="row gy-3">
+      <div class="col-md-2">
+        <!-- 側欄選單 -->
+        <div class="list-group list-group-flush">
+          <a href="#" class="list-group-item list-group-item-action">
+            所有課程</a
           >
+          <a href=".#/courses" class="list-group-item list-group-item-action"
+            >語言</a
+          >
+          <a href=".#/courses" class="list-group-item list-group-item-action"
+            >藝術</a
+          >
+          <a href="#" class="list-group-item list-group-item-action">攝影</a>
 
-          <div class="card-body">
-            <h5 class="card-title">{{ course.title }}</h5>
-            <p class="card-text">
-              {{ course.content }}
-            </p>
-            <h4 class="text-end">
-              <span class="fs-6">
-                <del> NT$ {{ course.origin_price }} </del>
-              </span>
-              <span class="fw-bold"> NT$ {{ course.price }}</span>
-            </h4>
-            <div
-              class="btn-group w-100"
-              role="group"
-              aria-label="Basic outlined example"
-            >
-              <a
-                @click="goToClassPage(course.id)"
-                class="btn btn-outline-secondary btn-hover-light"
-                >課程詳情</a
-              >
-              <a
-                v-if="check.includes(course.id)"
-                href="#/cart"
-                type="button"
-                class="btn btn-primary link-light"
-              >
-                已選購，結帳去
+          <a href="#" class="list-group-item list-group-item-action">商業</a>
+          <a href="#" class="list-group-item list-group-item-action"
+            >投資理財</a
+          >
+        </div>
+      </div>
+
+      <div class="col-md-10">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+          <div class="col" v-for="course in courseList" :key="course.id">
+            <div class="card">
+              <a class="overflow-hidden" @click="goToClassPage(course.id)">
+                <img
+                  :src="course.imageUrl"
+                  height="250"
+                  class="card-img-top img-cover img-hover-enlarge"
+                  alt="..."
+                />
               </a>
-              <button
-                v-else
-                @click="addToCart(course.id)"
-                :disabled="loadItem"
-                type="button"
-                class="btn btn-outline-primary"
+              <span
+                class="badge bg-dark position-absolute top-rem-1 start-rem-1"
               >
-                加入購物車
-              </button>
+                {{ course.category }}</span
+              >
+
+              <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">
+                  {{ course.content }}
+                </p>
+                <h4 class="text-end">
+                  <span class="fs-6">
+                    <del> NT$ {{ course.origin_price }} </del>
+                  </span>
+                  <span class="fw-bold"> NT$ {{ course.price }}</span>
+                </h4>
+                <div
+                  class="btn-group w-100"
+                  role="group"
+                  aria-label="Basic outlined example"
+                >
+                  <!-- <a
+                    @click="goToClassPage(course.id)"
+                    class="btn btn-outline-secondary btn-hover-light"
+                    >課程詳情</a
+                  > -->
+                  <a
+                    v-if="check.includes(course.id)"
+                    href="#/cart"
+                    type="button"
+                    class="btn btn-primary link-light"
+                  >
+                    已選購，結帳去
+                  </a>
+                  <button
+                    v-else
+                    @click="addToCart(course.id)"
+                    :disabled="loadItem"
+                    type="button"
+                    class="btn btn-outline-primary"
+                  >
+                    加入購物車
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

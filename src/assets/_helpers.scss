@@ -3,13 +3,39 @@
 }
 
 .bg-cover {
-  background-position: center center;
+  background-position: right;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 .bg-attachment-fixed {
   background-attachment: fixed;
+}
+
+.text-hover {
+  transition: all 0.5 ease;
+  color: white;
+  &:hover {
+    color: darken($color: $primary, $amount: 10%);
+    cursor: pointer;
+  }
+}
+
+.icon-hover {
+  transition: all 0.5 ease;
+  color: gray;
+  &:hover {
+    color: darken($color: $primary, $amount: 10%);
+    cursor: pointer;
+  }
+}
+
+.xy-flip {
+  transform: scale(-1, -1);
+}
+
+.round-10 {
+  border-radius: 10%;
 }
 
 .start-rem-1 {
@@ -21,7 +47,7 @@
 .img-hover-enlarge {
   transition: all 0.5 ease;
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
     cursor: pointer;
   }
 }
@@ -43,4 +69,14 @@
 .navbar-active {
   border-bottom: 2px solid pink;
   /* background-color: pink; */
+}
+
+.banner-text-position {
+  position: absolute;
+  top: 30%;
+  left: 2%;
+
+  @include media-breakpoint-up(md) {
+    left: 10%;
+  }
 }
