@@ -1,5 +1,7 @@
 <template>
-  <div>文章頁面</div>
+  <div class="container full-height">
+    <div>文章頁面</div>
+  </div>
 </template>
 
 <script>

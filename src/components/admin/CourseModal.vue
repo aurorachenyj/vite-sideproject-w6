@@ -181,7 +181,7 @@
               <hr />
               <div class="bg-light p-3">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-8">
                     <div class="form-check mb-2">
                       <input
                         v-model="tempProduct.courseStatus"
@@ -205,16 +205,16 @@
                         id="classFunding"
                       />
                       <label class="form-check-label" for="classFunding">
-                        募資中
+                        募資中 (以下三欄位募資課程必填 )
                       </label>
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="mb-3 col-md-4">
+                  <div class="mb-3 col-md-3">
                     <label for="funding_price" class="form-label"
-                      >募資價(募資課程必填)</label
+                      >募資價*</label
                     >
                     <input
                       :disabled="tempProduct.courseStatus === 'classOpen'"
@@ -227,9 +227,9 @@
                     />
                   </div>
 
-                  <div class="mb-3 col-md-4">
+                  <div class="mb-3 col-md-3">
                     <label for="funding_target" class="form-label"
-                      >達標金額(募資課程必填)</label
+                      >達標金額*</label
                     >
                     <input
                       :disabled="tempProduct.courseStatus === 'classOpen'"
@@ -242,9 +242,9 @@
                     />
                   </div>
 
-                  <div class="mb-3 col-md-4">
+                  <div class="mb-3 col-md-6">
                     <label for="fundingEndDate" class="form-label"
-                      >募資結束日(募資課程必填)</label
+                      >募資結束日*</label
                     >
 
                     {{ switchTimeStamp(tempProduct.fundingEndDate) }}
@@ -377,11 +377,19 @@ export default {
         return;
       }
 
-      this.tempProduct.fundingEndDate = new Date(timeStamp).toISOString();
+      console.log(timeStamp);
 
-      const regex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/;
-      const match = regex.exec(this.tempProduct.fundingEndDate);
-      return (this.tempProduct.fundingEndDate = `${match[1]}-${match[2]}-${match[3]}T${match[4]}:${match[5]}`);
+      const date = new Date(timeStamp);
+
+      const year = date.getFullYear();
+      const month = ("0" + (date.getMonth() + 1)).slice(-2);
+      const day = ("0" + date.getDate()).slice(-2);
+      const hour = ("0" + date.getHours()).slice(-2);
+      const minute = ("0" + date.getMinutes()).slice(-2);
+
+      const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`;
+
+      return (this.tempProduct.fundingEndDate = formattedDate);
     },
 
     createPic() {

@@ -35,7 +35,7 @@
 
               <td v-if="course.courseStatus === 'classFunding'">
                 募資中
-
+                {{ course.fundingEndDate }}
                 <span class="text-success">
                   <p
                     class="mb-0"
@@ -45,12 +45,11 @@
                   </p>
                   <br />
 
-                  {{ countDay(course.fundingEndDate) }}
                   <p
                     class="mb-0"
                     v-if="typeof course.fundingEndDate === 'number'"
                   >
-                    {{ leftDay }}
+                    {{ countLeftDay(course.fundingEndDate) }}
                   </p>
                 </span>
               </td>
@@ -154,7 +153,8 @@
 <script>
 import CourseModal from "@/components/admin/CourseModal.vue";
 import DelModal from "@/components/admin/DelModal.vue";
-
+import moment from "moment";
+import "moment/dist/locale/zh-tw";
 import Toast from "../../utils/Toast";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
@@ -169,52 +169,70 @@ export default {
       delClassId: "",
       checkedCourse: {},
       checkedStatus: "",
-      todayDateStr: "", // 現在時間的時間戳
-      leftDay: "", // 剩餘天數
+
+      // todayDateStr: "", // 現在時間的時間戳
+      // leftDay: "", // 剩餘天數
     };
   },
   components: { CourseModal, DelModal },
   mounted() {
     this.getCoursesList();
 
-    setInterval(() => {
-      this.todayDateStr = Date.parse(new Date());
-    }, 60000);
+    // moment.locale("zh-tw");
+    // setInterval(() => {
+    //   this.todayDateStr = Date.parse(new Date());
+    // }, 60000);
   },
 
   created() {
-    this.startTimer();
+    moment.locale("zh-tw");
+
+    // this.startTimer();
   },
   beforeUnmount() {
-    clearInterval(this.timer);
+    // clearInterval(this.timer);
   },
 
   methods: {
-    startTimer() {
-      this.countDay();
-      this.timer = setInterval(this.countDay, 60000);
-    },
+    countLeftDay(endTimeStr) {
+      const todayDateStr = Date.parse(new Date());
 
-    countDay(endTimeStr) {
-      //console.log(endTimeStr);
-      this.todayDateStr = Date.parse(new Date());
-
-      const distance = endTimeStr - this.todayDateStr;
-
-      if (distance < 0) {
-        clearInterval(this.timer);
-        this.leftDay = "已結束";
-      } else {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        this.leftDay = `剩餘天數：${days}天${hours}小時${minutes}分鐘`;
+      if (todayDateStr > endTimeStr) {
+        return "已結束募資";
       }
+
+      // 換回時間格式
+      endTimeStr = new Date(endTimeStr).toISOString();
+
+      return moment(endTimeStr).fromNow();
     },
+
+    // startTimer() {
+    //   this.countDay();
+    //   ``;
+    //   this.timer = setInterval(this.countDay, 60000);
+    // },
+
+    // countDay(endTimeStr) {
+    //   console.log(endTimeStr);
+    //   this.todayDateStr = Date.parse(new Date());
+
+    //   const distance = endTimeStr - this.todayDateStr;
+
+    //   if (distance < 0) {
+    //     clearInterval(this.timer);
+    //     this.leftDay = "已結束";
+    //   } else {
+    //     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    //     const hours = Math.floor(
+    //       (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    //     );
+    //     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    //     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    //     this.leftDay = `剩餘天數：${days}天${hours}小時${minutes}分鐘`;
+    //   }
+    // },
 
     getCoursesList(page = 1) {
       this.isLoading = true;

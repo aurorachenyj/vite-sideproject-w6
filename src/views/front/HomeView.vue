@@ -116,24 +116,34 @@
         </a>
       </div>
 
-      <div class="row">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        <!-- 募資卡片開始 -->
+
         <div
+          v-for="fundClass in fundingClass"
+          :key="fundClass.id"
           class="col position-relative"
-          @mouseenter="setHover('0', true)"
-          @mouseleave="setHover('0', false)"
+          @mouseenter="setHover(fundClass.id, true)"
+          @mouseleave="setHover(fundClass.id, false)"
         >
           <div class="card h-100">
-            <a href="">
-              <img
-                src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-                class="card-img-top"
-                alt="..."
-            /></a>
+            <RouterLink
+              :to="`/course/${fundClass.id}`"
+              class="text-decoration-none"
+            >
+              <div class="ratio ratio-16x9">
+                <img
+                  :src="fundClass.imageUrl"
+                  class="card-img-top img-cover"
+                  alt="..."
+                />
+              </div>
+            </RouterLink>
 
             <div class="card-body">
               <div class="h-100 d-flex flex-column">
                 <div class="d-flex justify-content-between">
-                  <h5>課程名稱 課程名稱課程名稱 課程名稱1</h5>
+                  <h5>{{ fundClass.title }}</h5>
                   <!-- <i class="bi bi-bookmark img-hover-enlarge-fill"></i> -->
                   <i
                     class="bi bi-bookmark img-hover-enlarge"
@@ -149,7 +159,9 @@
                 <div class="mt-auto">
                   <p>
                     募資價
-                    <span class="text-primary fw-bold h3"> NT$ 1111 </span>
+                    <span class="text-primary fw-bold h3">
+                      NT$ {{ fundClass.funding_price }}
+                    </span>
                   </p>
                   <div class="progress" style="height: 20px">
                     <div
@@ -160,14 +172,14 @@
                       aria-valuemax="100"
                       style="width: 75%"
                     >
-                      達標率 75%
+                      達標率 ?? %
                     </div>
                   </div>
 
                   <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">同學 15 人</p>
+                    <p class="text-muted mb-0">同學 ?? 人</p>
 
-                    <p class="text-muted mb-0">剩餘 6 天</p>
+                    <p class="text-muted mb-0">剩餘 fundingEndDate 天</p>
                   </div>
                 </div>
               </div>
@@ -175,8 +187,8 @@
           </div>
           <!-- 隱藏的區塊 -->
           <div
-            class="card text-white"
-            v-if="isHover"
+            class="card text-white w-50"
+            v-if="isHover === fundClass.id"
             style="
               position: absolute;
               top: 10px;
@@ -189,201 +201,25 @@
             <div class="card-body">
               <h4>課程描述</h4>
               <p>
-                原本隱藏的內容原本隱藏的，內容原本隱藏的內容原本
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-                原本隱藏的內容原本隱藏的，內容原本隱藏的內容原本
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
+                {{ fundClass.description }}
               </p>
 
               <div class="d-flex flex-column">
-                <button class="btn btn-primary btn-sm mb-3">加入購物車</button>
-
-                <button class="btn btn-outline-primary btn-sm">收藏</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="col position-relative"
-          @mouseenter="setHover('1', true)"
-          @mouseleave="setHover('1', false)"
-        >
-          <div class="card h-100">
-            <a href="">
-              <img
-                src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-                class="card-img-top"
-                alt="..."
-            /></a>
-            <div class="card-body">
-              <div class="h-100 d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                  <h5>課程名稱 課程名稱課</h5>
-                  <i
-                    class="bi bi-bookmark img-hover-enlarge"
-                    style="
-                      font-size: 1.5rem;
-                      color: orange;
-                      font-weight: 500;
-                      cursor: pointer;
-                    "
-                  ></i>
-                </div>
-
-                <div class="mt-auto">
-                  <p>
-                    募資價
-                    <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                  </p>
-                  <div class="progress" style="height: 20px">
-                    <div
-                      class="progress-bar progress-bar-striped progress-bar-animated"
-                      role="progressbar"
-                      aria-valuenow="75"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 75%"
-                    >
-                      達標率 75%
-                    </div>
-                  </div>
-
-                  <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">同學 15 人</p>
-
-                    <p class="text-muted mb-0">剩餘 6 天</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 隱藏的區塊 -->
-          <div
-            class="card text-white"
-            v-if="isHover"
-            style="
-              position: absolute;
-              top: 10px;
-              right: -100px;
-              width: 100%;
-              background-color: rgba(48, 45, 42, 0.8);
-              z-index: 100;
-            "
-          >
-            <div class="card-body">
-              <h4>課程描述</h4>
-              <p>
-                原本隱藏的內容原本隱藏的，內容原本隱藏的內容原本
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-                原本隱藏的內容原本隱藏的，內容原本隱藏的內容原本
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-              </p>
-
-              <div class="d-flex justify-content-between">
+                <button class="btn btn-outline-primary btn-sm mb-2">
+                  <RouterLink
+                    :to="`/course/${fundClass.id}`"
+                    class="text-white text-decoration-none"
+                  >
+                    查看詳情
+                  </RouterLink>
+                </button>
                 <button class="btn btn-primary btn-sm">加入購物車</button>
-
-                <button class="btn btn-outline-primary btn-sm">收藏</button>
               </div>
             </div>
           </div>
         </div>
 
-        <div
-          class="col position-relative"
-          @mouseenter="setHover('2', true)"
-          @mouseleave="setHover('2', false)"
-        >
-          <div class="card h-100">
-            <a href="">
-              <img
-                src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-                class="card-img-top"
-                alt="..."
-            /></a>
-            <div class="card-body">
-              <div class="h-100 d-flex flex-column">
-                <div class="d-flex justify-content-between">
-                  <h5>
-                    課程名稱 課程名稱課程名稱 課程名稱課程名稱 課程名稱課程名稱
-                    課程名稱 課程名稱 課程名稱
-                  </h5>
-                  <i
-                    class="bi bi-bookmark img-hover-enlarge"
-                    style="
-                      font-size: 1.5rem;
-                      color: orange;
-                      font-weight: 500;
-                      cursor: pointer;
-                    "
-                  ></i>
-                </div>
-
-                <div class="mt-auto">
-                  <p>
-                    募資價
-                    <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                  </p>
-                  <div class="progress" style="height: 20px">
-                    <div
-                      class="progress-bar progress-bar-striped progress-bar-animated"
-                      role="progressbar"
-                      aria-valuenow="75"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      style="width: 75%"
-                    >
-                      達標率 75%
-                    </div>
-                  </div>
-
-                  <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">同學 15 人</p>
-
-                    <p class="text-muted mb-0">剩餘 6 天</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- 隱藏的區塊 -->
-          <div
-            class="card text-white"
-            v-if="isHover"
-            style="
-              position: absolute;
-              top: 10px;
-              right: -100px;
-              width: 100%;
-              background-color: rgba(48, 45, 42, 0.8);
-              z-index: 100;
-            "
-          >
-            <div class="card-body">
-              <h4>課程描述</h4>
-              <p>
-                原本隱藏的內容原本隱藏的，內容原本隱藏的內容原本
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-                原本隱藏的內容原本隱藏的，內容原本隱藏的內容原本
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-                隱藏的內容原本隱藏的內容 原本隱藏的內容原本隱藏的內容
-              </p>
-
-              <div class="d-flex justify-content-between">
-                <button class="btn btn-primary btn-sm">加入購物車</button>
-
-                <button class="btn btn-outline-primary btn-sm">收藏</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- <div class="col"><div class="card"></div></div>
-        <div class="col"><div class="card"></div></div>
-        <div class="col"><div class="card"></div></div>
-        <div class="col"><div class="card"></div></div> -->
+        <!-- 募資卡片結束 -->
       </div>
     </div>
   </div>
@@ -1044,18 +880,49 @@
 </template>
 
 <script>
+const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
+
 export default {
   data() {
     return {
       isHover: "",
+      fundingClass: [],
     };
   },
 
-  mounted() {},
+  mounted() {
+    this.getFundingClassList();
+  },
 
   methods: {
-    setHover(index, status) {
-      console.log(index, status);
+    setHover(hoverClassId, status) {
+      console.log(hoverClassId, status);
+
+      if (status === true) {
+        this.isHover = hoverClassId;
+      } else {
+        this.isHover = "";
+      }
+      console.log(this.isHover);
+    },
+
+    getFundingClassList() {
+      this.$http
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
+        .then((res) => {
+          console.log(res);
+          console.log(res.data.products);
+
+          const funding = res.data.products.filter((course) => {
+            // console.log();
+            return course.courseStatus === "classFunding";
+          });
+          console.log(funding);
+          this.fundingClass = funding;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

@@ -12,6 +12,10 @@
   background-attachment: fixed;
 }
 
+.full-height {
+  min-height: 100vh;
+}
+
 .text-hover {
   transition: all 0.5 ease;
   color: white;

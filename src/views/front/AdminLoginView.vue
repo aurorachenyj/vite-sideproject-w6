@@ -1,5 +1,5 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mt-5 full-height">
     <div class="w-50 mx-auto">
       <h3 class="text-center mb-5">後台登入</h3>
 

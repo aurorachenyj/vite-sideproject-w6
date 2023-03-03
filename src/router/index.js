@@ -15,6 +15,11 @@ const router = createRouter({
           component: () => import("../views/front/HomeView.vue"),
         },
         {
+          path: "group",
+          name: "group",
+          component: () => import("../views/front/GroupView.vue"),
+        },
+        {
           path: "courses",
           name: "courses",
           component: () => import("../views/front/CoursesView.vue"),

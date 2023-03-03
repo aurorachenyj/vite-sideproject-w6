@@ -22,7 +22,7 @@
 </style> -->
 
 <template>
-  <div class="container">
+  <div class="container mb-5 full-height">
     <LoadingVue v-model:active="isLoading"> </LoadingVue>
     <nav
       class="mt-5"
@@ -40,25 +40,32 @@
     </nav>
     <h3 class="mb-5">全部課程總覽</h3>
 
-    <div class="row gy-3">
+    <div class="row g-3">
       <div class="col-md-2">
         <!-- 側欄選單 -->
-        <div class="list-group list-group-flush">
-          <a href="#" class="list-group-item list-group-item-action">
-            所有課程</a
+        <div class="overflow-auto sticky-top" style="top: 120px">
+          <div
+            class="list-group list-group-flush d-flex flex-row flex-md-column"
           >
-          <a href=".#/courses" class="list-group-item list-group-item-action"
-            >語言</a
-          >
-          <a href=".#/courses" class="list-group-item list-group-item-action"
-            >藝術</a
-          >
-          <a href="#" class="list-group-item list-group-item-action">攝影</a>
+            <a href="#" class="list-group-item list-group-item-action">
+              所有<br />
+              課程</a
+            >
+            <a href=".#/courses" class="list-group-item list-group-item-action"
+              >語言</a
+            >
+            <a href=".#/courses" class="list-group-item list-group-item-action"
+              >藝術</a
+            >
+            <a href="#" class="list-group-item list-group-item-action">攝影</a>
 
-          <a href="#" class="list-group-item list-group-item-action">商業</a>
-          <a href="#" class="list-group-item list-group-item-action"
-            >投資理財</a
-          >
+            <a href="#" class="list-group-item list-group-item-action">商業</a>
+            <a
+              href="#"
+              class="list-group-item list-group-item-action border-bottom"
+              >投資<br />理財</a
+            >
+          </div>
         </div>
       </div>
 
@@ -105,7 +112,7 @@
                     v-if="check.includes(course.id)"
                     href="#/cart"
                     type="button"
-                    class="btn btn-primary link-light"
+                    class="btn btn-secondary link-light"
                   >
                     已選購，結帳去
                   </a>
@@ -126,12 +133,6 @@
       </div>
     </div>
   </div>
-
-  <br />
-  <br />
-  <br />
-  <br />
-  <br />
 </template>
 
 <script>
