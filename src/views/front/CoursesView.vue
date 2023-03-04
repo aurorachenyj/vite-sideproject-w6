@@ -90,7 +90,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{ course.title }}</h5>
                 <p class="card-text">
-                  {{ course.content }}
+                  <!-- {{ course.content }} -->
                 </p>
                 <h4 class="text-end">
                   <span class="fs-6">
@@ -118,7 +118,7 @@
                   </a>
                   <button
                     v-else
-                    @click="addToCart(course.id)"
+                    @click="addToCartAndRender(course.id)"
                     :disabled="loadItem"
                     type="button"
                     class="btn btn-outline-primary"
@@ -169,7 +169,23 @@ export default {
   },
 
   methods: {
-    ...mapActions(cartStore, ["getCartList"]),
+    ...mapActions(cartStore, ["getCartList", "addToCart"]),
+
+    async addToCartAndRender(product_id) {
+      // console.log(this.addToCart);
+
+      await this.addToCart(product_id);
+      // await this.getAllCourse();
+      await this.getCartList();
+      // this.addToCart(product_id)
+      //   .then(() => {
+      //     // 在 addToCart 函式回傳成功後執行 getAllCourse 函式
+      //     this.getAllCourse();
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //   });
+    },
 
     checkedClass() {
       this.courseList.forEach((item) => {
@@ -216,32 +232,33 @@ export default {
     goToClassPage(id) {
       this.$router.push(`/course/${id}`);
     },
-    addToCart(product_id) {
-      this.loadItem = true;
-      const data = {
-        product_id,
-        qty: 1,
-      };
 
-      this.$http
-        .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`, { data })
-        .then((res) => {
-          this.getAllCourse();
-          this.loadItem = false;
+    // addToCart(product_id) {
+    //   this.loadItem = true;
+    //   const data = {
+    //     product_id,
+    //     qty: 1,
+    //   };
 
-          Toast.fire({
-            icon: "success",
-            title: res.data.message,
-          });
-        })
+    //   this.$http
+    //     .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`, { data })
+    //     .then((res) => {
+    //       this.getAllCourse();
+    //       this.loadItem = false;
 
-        .catch((err) => {
-          Toast.fire({
-            icon: "error",
-            title: err.response.data.message,
-          });
-        });
-    },
+    //       Toast.fire({
+    //         icon: "success",
+    //         title: res.data.message,
+    //       });
+    //     })
+
+    //     .catch((err) => {
+    //       Toast.fire({
+    //         icon: "error",
+    //         title: err.response.data.message,
+    //       });
+    //     });
+    // },
   },
 };
 </script>

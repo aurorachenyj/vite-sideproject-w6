@@ -56,8 +56,8 @@
 
               <td v-else-if="course.courseStatus === 'classOpen'">已開課</td>
 
-              <td class="text-end">{{ course.origin_price }}4</td>
-              <td class="text-end">{{ course.price }}5</td>
+              <td class="text-end">{{ course.origin_price }}</td>
+              <td class="text-end">{{ course.price }}</td>
               <td class="text-end">
                 <div
                   class="badge rounded-pill"

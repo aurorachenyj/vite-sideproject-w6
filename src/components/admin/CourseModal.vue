@@ -141,14 +141,39 @@
                     placeholder="請輸入分類"
                   />
                 </div>
+
                 <div class="mb-3 col-md-6">
-                  <label for="price" class="form-label">單位</label>
+                  <label for="unit" class="form-label">課程總時長</label>
                   <input
                     v-model="tempProduct.unit"
                     id="unit"
                     type="text"
                     class="form-control"
-                    placeholder="請輸入單位"
+                    placeholder="請輸入小時數"
+                  />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="mb-3 col-md-6">
+                  <label for="classSection" class="form-label">章節數 </label>
+                  <input
+                    v-model="tempProduct.classSectionNum"
+                    id="classSection"
+                    type="number"
+                    class="form-control"
+                    placeholder="請輸入章節數量"
+                  />
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="classUnit" class="form-label">單元數</label>
+                  <input
+                    v-model="tempProduct.classUnitNum"
+                    id="classUnit"
+                    type="number"
+                    class="form-control"
+                    placeholder="請輸入單元數量"
                   />
                 </div>
               </div>
@@ -178,6 +203,7 @@
                   />
                 </div>
               </div>
+
               <hr />
               <div class="bg-light p-3">
                 <div class="row">

@@ -5,7 +5,7 @@
   </div> -->
   <!-- header -->
 
-  <header class="bg-white shadow-sm sticky-top" style="z-index: 2000">
+  <header class="bg-white shadow-sm sticky-top" style="z-index: 1200">
     <div class="container">
       <nav
         class="navbar navbar-expand-lg navbar-light justify-content-between align-items-center"
@@ -125,6 +125,7 @@
   </header>
 
   <RouterView />
+
   <!-- footer -->
 
   <div class="bg-darkblue">
