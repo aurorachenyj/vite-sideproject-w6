@@ -272,15 +272,21 @@
                 </textarea>
               </div>
               <div class="mb-3">
-                <label for="content" class="form-label">課程說明(長)</label>
-                <textarea
+                <label for="content" class="form-label">課程章節介紹(長)</label>
+
+                <!-- <textarea
                   v-model="tempProduct.content"
                   id="description"
                   type="text"
                   class="form-control"
                   placeholder="請輸入課程說明內容"
                 >
-                </textarea>
+                </textarea> -->
+
+                <ckeditor
+                  :editor="editor"
+                  v-model="tempProduct.content"
+                ></ckeditor>
               </div>
 
               <div class="mb-3">
@@ -351,8 +357,8 @@ export default {
         imagesUrl: [],
       },
       editor: ClassicEditor,
-      editorTeacherData: "<p>請輸入講師內容</p>",
-      editorSkillData: "<p>請輸入技能內容</p>",
+      // editorTeacherData: "<p>請輸入講師內容</p>",
+      // editorSkillData: "<p>請輸入技能內容</p>",
       uploadPicData: {},
       uploadImgs: {},
     };

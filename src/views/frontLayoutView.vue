@@ -5,7 +5,7 @@
   </div> -->
   <!-- header -->
 
-  <header class="bg-white shadow-sm sticky-top">
+  <header class="bg-white shadow-sm sticky-top" style="z-index: 2000">
     <div class="container">
       <nav
         class="navbar navbar-expand-lg navbar-light justify-content-between align-items-center"
@@ -124,8 +124,9 @@
     </div>
   </header>
 
-  <!-- footer -->
   <RouterView />
+  <!-- footer -->
+
   <div class="bg-darkblue">
     <footer class="footer container py-3">
       <div
