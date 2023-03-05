@@ -4,7 +4,7 @@
 
     <!-- 沒有收藏時 -->
     <div class="d-flex justify-content-center mb-5">
-      <div class="col-md-8 border border-3 rounded-3 py-3">
+      <div class="col-12 col-md-8 border border-3 rounded-3 py-3">
         <p class="text-center">
           尚未收藏任何課程 <br />
 

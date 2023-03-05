@@ -127,6 +127,7 @@
 import Toast from "../../utils/Toast";
 import DelModal from "@/components/admin/DelModal.vue";
 import OrderDetailModal from "@/components/admin/OrderDetailModal.vue";
+import { toRaw } from "vue";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -137,14 +138,90 @@ export default {
       allOrderList: [],
       isLoading: false,
       currentPage: 1,
+      totalOrderList: [],
+      totalPage: 1,
+      courseStudentNumData: {},
     };
   },
   components: { DelModal, OrderDetailModal },
   mounted() {
     this.isLoading = true;
     this.getOrderList();
+
+    // this.calcClassmate();
+  },
+  watch: {
+    totalPage() {
+      this.getTotalOrderList();
+    },
+
+    // totalOrderList() {
+    //   console.log(this.totalOrderList);
+    //   this.calcClassmate();
+    // },
   },
   methods: {
+    calcClassmate() {
+      const arr = toRaw(this.totalOrderList);
+      const OrderArr = [...arr];
+
+      // console.log(AllOrderList);
+
+      const OrderListArr = [];
+
+      OrderArr.forEach((item) => {
+        const temp = Object.values(item.products);
+        OrderListArr.push(...temp);
+      });
+
+      const isArr = OrderListArr.map((i) => {
+        return i.product_id;
+      });
+
+      const totalClassmate = isArr.reduce((obj, id) => {
+        if (obj[id]) {
+          obj[id]++;
+        } else {
+          obj[id] = 1;
+        }
+        return obj;
+      }, {});
+
+      console.log(totalClassmate);
+
+      this.courseStudentNumData = totalClassmate;
+      console.log(this.courseStudentNumData);
+    },
+
+    getTotalOrderList() {
+      const pageArr = [];
+      for (let i = 1; i <= this.totalPage; i++) {
+        pageArr.push(i);
+      }
+
+      const apiArr = pageArr.map((item) => {
+        return this.$http.get(
+          `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/orders?page=${item}`
+        );
+      });
+
+      Promise.all(apiArr)
+        .then((res) => {
+          console.log(res);
+          res.forEach((item) => {
+            this.totalOrderList.push(...item.data.orders);
+          });
+
+          console.log(this.totalOrderList);
+          this.calcClassmate();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      console.log(this.totalOrderList); // 拿到不分頁的全部訂單資料
+    },
+
     getOrderList(page = 1) {
       this.isLoading = true;
 
@@ -159,6 +236,11 @@ export default {
           // });
 
           this.allOrderList = res.data;
+          this.totalPage = res.data.pagination.total_pages;
+
+          console.log(this.totalPage);
+
+          console.log(this.allOrderList);
         })
         .catch((err) => {
           this.isLoading = false;

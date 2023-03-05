@@ -7,7 +7,7 @@
       </button>
       <!-- <button class="btn btn-outline-primary w-75">立即購買</button> -->
 
-      <a v-if="checkBuyStatus" class="btn btn-secondary w-75" href="#/cart">
+      <a v-if="checkBuyStatus" class="btn btn-primary w-75" href="#/cart">
         已購買，結帳去
       </a>
 
@@ -78,7 +78,9 @@
               <div class="d-flex justify-content-between mt-2">
                 <p class="mb-0">
                   募資倒數
-                  <span class="text-secondary fw-bold fs-5"> ??天後 </span>
+                  <span class="text-secondary fw-bold fs-5">
+                    {{ countLeftDay(classData.fundingEndDate) }}
+                  </span>
                 </p>
                 <p class="mb-0">同學 ?? 人</p>
               </div>
@@ -177,7 +179,7 @@
 
                 <a
                   v-if="checkBuyStatus"
-                  class="btn btn-secondary w-75"
+                  class="btn btn-primary text-white w-75"
                   href="#/cart"
                 >
                   已購買，結帳去
@@ -248,7 +250,7 @@
       </div>
     </div>
     <!-- 類似課程推薦 -->
-    <div class="row g-3 mb-5">
+    <div class="row g-3 my-5">
       <h4 class="text-secondary fw-bold">類似課程推薦...</h4>
 
       <div
@@ -256,20 +258,36 @@
         v-for="similarClass in similarClasses"
         :key="similarClass.id"
       >
-        <div class="card" @click="refreshPage(similarClass.id)">
-          <!-- <a class="text-decoration-none"> -->
-          <div class="ratio ratio-16x9">
-            <img
-              :src="similarClass.imageUrl"
-              class="card-img-top img-cover"
-              alt="..."
-            />
+        <div class="card hover-pointer" @click="refreshPage(similarClass.id)">
+          <!-- <div class="d-flex flex-row flex-md-column"> -->
+          <div class="row align-items-center g-0">
+            <div class="col-4 col-md-12">
+              <div class="ratio ratio-4x3 overflow-hidden">
+                <img
+                  :src="similarClass.imageUrl"
+                  class="card-img-top img-cover p-2 p-md-0 img-hover-enlarge"
+                  alt="..."
+                />
+              </div>
+            </div>
+            <div class="col-8 col-md-12">
+              <div class="card-body">
+                <h5>{{ similarClass.title }}</h5>
+                <div
+                  class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center"
+                >
+                  <p class="mb-0 text-muted">
+                    <i class="bi bi-book"></i> 課程時數
+                    {{ similarClass.unit }} 小時
+                  </p>
+                  <p class="text-primary fw-bold fs-3 mb-0">
+                    NT$ {{ similarClass.price }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div class="card-body">
-            <h5>{{ similarClass.title }}</h5>
-          </div>
-          <!-- </a> -->
+          <!-- </div> -->
         </div>
       </div>
 
@@ -292,6 +310,10 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import cartStore from "../../stores/cartStore.js";
+
+import moment from "moment";
+import "moment/dist/locale/zh-tw";
+
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -329,6 +351,19 @@ export default {
   },
   methods: {
     ...mapActions(cartStore, ["getCartList", "addToCart"]),
+
+    countLeftDay(endTimeStr) {
+      const todayDateStr = Date.parse(new Date());
+
+      if (todayDateStr > endTimeStr) {
+        return "已結束";
+      }
+
+      // 換回時間格式
+      endTimeStr = new Date(endTimeStr).toISOString();
+
+      return moment(endTimeStr).fromNow();
+    },
 
     // 點擊相關推薦重新渲染畫面
     refreshPage(id) {

@@ -38,7 +38,14 @@
                   </a>
                 </td>
                 <td>{{ item.product.title }}</td>
-                <td>後台待新增</td>
+
+                <td v-if="item.product.courseStatus === 'classFunding'">
+                  募資中
+                </td>
+                <td v-else-if="item.product.courseStatus === 'classOpen'">
+                  已開課
+                </td>
+
                 <td>{{ item.product.origin_price }}</td>
                 <td class="text-end">{{ item.product.price }}</td>
               </tr>

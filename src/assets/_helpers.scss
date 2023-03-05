@@ -84,3 +84,16 @@
     left: 10%;
   }
 }
+
+.hover-pointer {
+  &:hover {
+    cursor: pointer;
+    box-shadow: 2px 3px 3px rgba(226, 222, 222, 0.5);
+  }
+}
+
+.ratio-4x3 {
+  @include media-breakpoint-up(md) {
+    --bs-aspect-ratio: calc(9 / 16 * 100%); // 16x9
+  }
+}

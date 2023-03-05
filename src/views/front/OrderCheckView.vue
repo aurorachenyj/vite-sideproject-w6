@@ -19,7 +19,19 @@
           <tbody>
             <tr v-for="item in orderProductList" :key="item.product.id">
               <td>{{ item.product.title }}</td>
-              <td class="text-end">後台待補</td>
+
+              <td
+                class="text-end"
+                v-if="item.product.courseStatus === 'classFunding'"
+              >
+                募資中
+              </td>
+              <td
+                class="text-end"
+                v-else-if="item.product.courseStatus === 'classOpen'"
+              >
+                已開課
+              </td>
             </tr>
           </tbody>
         </table>
@@ -100,15 +112,17 @@ export default {
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/order/${id}`)
         .then((res) => {
           this.currentOrderData = res.data.order;
+          console.log(this.currentOrderData);
+
           this.orderProductList = Object.values(this.currentOrderData.products);
         })
         .catch((err) => {
-          // alert(err.response.data.message);
+          console.log(err);
 
-          Toast.fire({
-            icon: "error",
-            title: err.response.data.message,
-          });
+          // Toast.fire({
+          //   icon: "error",
+          //   title: err.response.data.message,
+          // });
         });
     },
   },

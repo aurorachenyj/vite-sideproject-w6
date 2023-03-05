@@ -188,7 +188,7 @@ export default {
     this.getCouponList();
   },
   methods: {
-    // 刪除多個優惠券，待思考
+    // 刪除多個優惠券
     delMoreItem() {
       console.log(this.mulitDelCoupon);
 

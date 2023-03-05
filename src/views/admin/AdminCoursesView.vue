@@ -35,7 +35,7 @@
 
               <td v-if="course.courseStatus === 'classFunding'">
                 募資中
-                {{ course.fundingEndDate }}
+                <!-- {{ course.fundingEndDate }} -->
                 <span class="text-success">
                   <p
                     class="mb-0"

@@ -1,5 +1,8 @@
 <template>
   <!-- min-vh-100 -->
+
+  <LoadingVue v-model:active="isLoading"> </LoadingVue>
+
   <header class="position-relative mb-5" style="min-height: 60vh">
     <div
       class="bg-dark position-absolute bg-cover bg-attachment-fixed"
@@ -144,9 +147,24 @@
               <div class="h-100 d-flex flex-column">
                 <div class="d-flex justify-content-between">
                   <h5>{{ fundClass.title }}</h5>
-                  <!-- <i class="bi bi-bookmark img-hover-enlarge-fill"></i> -->
+                  <!-- <i class="bi bi-bookmark-fill img-hover-enlarge"></i> -->
+
                   <i
+                    v-if="bookmarkData.includes(fundClass.id)"
+                    class="bi bi-bookmark-fill img-hover-enlarge"
+                    @click="BookmarkAction(fundClass.id)"
+                    style="
+                      font-size: 1.5rem;
+                      color: orange;
+                      font-weight: 500;
+                      cursor: pointer;
+                    "
+                  ></i>
+
+                  <i
+                    v-else
                     class="bi bi-bookmark img-hover-enlarge"
+                    @click="BookmarkAction(fundClass.id)"
                     style="
                       font-size: 1.5rem;
                       color: orange;
@@ -179,7 +197,12 @@
                   <div class="d-flex justify-content-between mt-2">
                     <p class="text-muted mb-0">同學 ?? 人</p>
 
-                    <p class="text-muted mb-0">剩餘 fundingEndDate 天</p>
+                    <p class="text-muted mb-0">
+                      <span class="text-secondary fw-bolder">
+                        {{ countLeftDay(fundClass.fundingEndDate) }}
+                      </span>
+                      結束
+                    </p>
                   </div>
                 </div>
               </div>
@@ -199,7 +222,7 @@
             "
           >
             <div class="card-body">
-              <h4>課程描述</h4>
+              <!-- <h4>課程描述</h4> -->
               <p>
                 {{ fundClass.description }}
               </p>
@@ -880,21 +903,78 @@
 </template>
 
 <script>
+import moment from "moment";
+import "moment/dist/locale/zh-tw";
+
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {
     return {
+      isLoading: false,
       isHover: "",
       fundingClass: [],
+      bookmarkData: [],
     };
   },
-
+  created() {
+    moment.locale("zh-tw");
+  },
   mounted() {
     this.getFundingClassList();
+    this.getLocalStorageBookmark();
+
+    // this.setLocalStorageBookmark();
+  },
+  watch: {
+    bookmarkData() {
+      this.setLocalStorageBookmark();
+    },
   },
 
   methods: {
+    countLeftDay(endTimeStr) {
+      const todayDateStr = Date.parse(new Date());
+
+      if (todayDateStr > endTimeStr) {
+        return "已";
+      }
+
+      // 換回時間格式
+      endTimeStr = new Date(endTimeStr).toISOString();
+
+      return moment(endTimeStr).fromNow();
+    },
+
+    setLocalStorageBookmark() {
+      localStorage.setItem("learnfundBookmark", this.bookmarkData);
+    },
+
+    getLocalStorageBookmark() {
+      const bookmarkStr = localStorage.getItem("learnfundBookmark");
+      this.bookmarkData = bookmarkStr.split(",");
+      console.log(this.bookmarkData);
+    },
+
+    BookmarkAction(id) {
+      console.log(this.bookmarkData);
+
+      if (event.target.classList.contains("bi-bookmark")) {
+        event.target.classList.remove("bi-bookmark");
+        event.target.classList.add("bi-bookmark-fill");
+        this.bookmarkData.push(id);
+        this.setLocalStorageBookmark();
+      } else {
+        const targetIndex = this.bookmarkData.indexOf(id);
+        console.log(targetIndex);
+        this.bookmarkData.splice(targetIndex, 1);
+        this.setLocalStorageBookmark();
+        console.log(this.bookmarkData);
+        event.target.classList.remove("bi-bookmark-fill");
+        event.target.classList.add("bi-bookmark");
+      }
+    },
+
     setHover(hoverClassId, status) {
       console.log(hoverClassId, status);
 
@@ -907,12 +987,13 @@ export default {
     },
 
     getFundingClassList() {
+      this.isLoading = true;
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
           console.log(res);
           console.log(res.data.products);
-
+          this.isLoading = false;
           const funding = res.data.products.filter((course) => {
             // console.log();
             return course.courseStatus === "classFunding";
@@ -921,6 +1002,7 @@ export default {
           this.fundingClass = funding;
         })
         .catch((err) => {
+          this.isLoading = false;
           console.log(err);
         });
     },
