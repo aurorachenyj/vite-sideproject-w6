@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as o}from"./index-2452b9d6.js";const n={data(){return{}},mounted(){},methods:{}};function r(s,c,a,_,d,p){return t(),o("div",null,"文章頁面")}const f=e(n,[["render",r]]);export{f as default};
