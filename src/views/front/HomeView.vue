@@ -914,6 +914,7 @@ export default {
       isLoading: false,
       isHover: "",
       fundingClass: [],
+      openingClass: [],
       bookmarkData: [],
     };
   },
@@ -921,7 +922,7 @@ export default {
     moment.locale("zh-tw");
   },
   mounted() {
-    this.getFundingClassList();
+    this.getFundingAndOpenClassList();
     this.getLocalStorageBookmark();
 
     // this.setLocalStorageBookmark();
@@ -986,7 +987,7 @@ export default {
       console.log(this.isHover);
     },
 
-    getFundingClassList() {
+    getFundingAndOpenClassList() {
       this.isLoading = true;
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
@@ -994,12 +995,16 @@ export default {
           console.log(res);
           console.log(res.data.products);
           this.isLoading = false;
-          const funding = res.data.products.filter((course) => {
-            // console.log();
+
+          this.fundingClass = res.data.products.filter((course) => {
             return course.courseStatus === "classFunding";
           });
-          console.log(funding);
-          this.fundingClass = funding;
+          console.log(this.fundingClass);
+
+          this.openingClass = res.data.products.filter((course) => {
+            return course.courseStatus === "classOpen";
+          });
+          console.log(this.openingClass);
         })
         .catch((err) => {
           this.isLoading = false;

@@ -1,9 +1,5 @@
 <template>
-  送出訂單後 顯示
-  <br />
-  <br />
-
-  <div class="container">
+  <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
         <h4 class="text-center mb-3">訂單內容</h4>

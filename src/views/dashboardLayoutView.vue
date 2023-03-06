@@ -89,16 +89,21 @@
         <div class="col">
           <div class="card shadow-sm">
             <div class="card-body pb-0">
-              <h4 class="text-end">在線人數</h4>
-              <p class="display-4 fw-bold pb-0 text-end">3,323</p>
+              <h4 class="text-end">學生總數</h4>
+
+              <p class="display-4 fw-bold pb-0 text-end">
+                {{ totalStudentNum }}
+              </p>
             </div>
           </div>
         </div>
         <div class="col">
           <div class="card shadow-sm">
             <div class="card-body pb-0">
-              <h4 class="text-end">訂單數</h4>
-              <p class="display-4 fw-bold pb-0 text-end">923</p>
+              <h4 class="text-end">已有學生之課程數</h4>
+              <p class="display-4 fw-bold pb-0 text-end">
+                {{ totalClassSalesNum }}
+              </p>
             </div>
           </div>
         </div>
@@ -106,7 +111,9 @@
           <div class="card shadow-sm">
             <div class="card-body pb-0">
               <h4 class="text-end">營業額</h4>
-              <p class="display-4 fw-bold pb-0 text-end">683,323</p>
+              <p class="display-4 fw-bold pb-0 text-end">
+                {{ totalSalesMoney }}
+              </p>
             </div>
           </div>
         </div>
@@ -118,18 +125,61 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
+import orderStore from "../stores/orderStore.js";
+
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
   data() {
-    return {};
+    return {
+      totalSalesMoney: null,
+      totalStudentNum: null,
+      totalClassSalesNum: null,
+    };
   },
   created() {
     this.checkAdmin();
   },
   mounted() {},
 
+  watch: {
+    showFinalorderInfoData() {
+      this.calcSaleData();
+    },
+  },
+
+  computed: {
+    ...mapState(orderStore, ["showFinalorderInfoData"]),
+  },
   methods: {
+    calcSaleData() {
+      console.log(this.showFinalorderInfoData);
+
+      let money = 0;
+
+      let studentNum = 0;
+      // let classSlaesNum = 0;
+
+      // classSlaesNum =  this.showFinalorderInfoData.length
+      this.showFinalorderInfoData.forEach((item) => {
+        studentNum += item.classmateNum;
+
+        if (item.fundingPrice === undefined) {
+          console.log(item);
+          money += item.classmateNum * item.price;
+        } else {
+          console.log(item);
+          money += item.classmateNum * item.fundingPrice;
+        }
+      });
+
+      // console.log(money);
+      this.totalSalesMoney = money;
+      this.totalStudentNum = studentNum;
+      this.totalClassSalesNum = this.showFinalorderInfoData.length;
+    },
+
     checkAdmin() {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,

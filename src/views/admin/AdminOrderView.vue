@@ -194,7 +194,7 @@ export default {
       //console.log(totalClassmate);
 
       // 想利用從orderStore.js 傳進來的 saveStudentNumData 函式 把totalClassmate的資料傳進去↓↓
-      this.saveStudentNumData(totalClassmate);
+      // this.saveStudentNumData(totalClassmate);
 
       this.courseStudentNumData = totalClassmate;
     },
