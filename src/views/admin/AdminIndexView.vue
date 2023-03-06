@@ -6,10 +6,11 @@
     <div class="text-end"></div>
     <div class="row">
       <div class="col-3">
-        hhh
-        {{ orderData }}
+        orderStore 的 page 資料應該要顯示在這，但沒有 QQ
 
-        {{ testtttt }}
+        <p v-if="page">{{ page }}</p>
+
+        {{ test }}
 
         <!-- <div class="list-group">
           <a
@@ -39,18 +40,21 @@
 
 <script>
 // const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
-
-import { mapState } from "pinia";
 import orderStore from "../../stores/orderStore.js";
+import { mapState, mapActions } from "pinia";
 
 export default {
   data() {
     return {};
   },
   computed: {
-    ...mapState(orderStore, ["orderData", "testtttt"]),
+    ...mapState(orderStore, ["test", "page"]),
   },
-  mounted() {},
-  methods: {},
+  methods: {
+    ...mapActions(orderStore, ["getTotalPage"]),
+  },
+  mounted() {
+    this.getTotalPage();
+  },
 };
 </script>

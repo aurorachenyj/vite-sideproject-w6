@@ -166,7 +166,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(orderStore, ["saveStudentNumData"]),
+    // ...mapActions(orderStore, ["saveStudentNumData"]),
     calcClassmate() {
       const arr = toRaw(this.totalOrderList);
       const OrderArr = [...arr];
@@ -225,7 +225,7 @@ export default {
           console.log(err);
         });
 
-      console.log(this.totalOrderList); // 拿到不分頁的全部訂單資料
+      console.log(this.totalOrderList); // 取得不分頁的全部訂單資料
     },
 
     getOrderList(page = 1) {
@@ -236,10 +236,10 @@ export default {
         .then((res) => {
           this.isLoading = false;
 
-          // Toast.fire({
-          //   icon: "success",
-          //   title: "成功取得資料",
-          // });
+          Toast.fire({
+            icon: "success",
+            title: "成功取得資料",
+          });
 
           this.allOrderList = res.data;
           this.totalPage = res.data.pagination.total_pages;
