@@ -18,10 +18,10 @@ export default defineStore("orderStore", {
         .then((res) => {
           // this.isLoading = false;
 
-          // Toast.fire({
-          //   icon: "success",
-          //   title: "成功取得資料",
-          // });
+          Toast.fire({
+            icon: "success",
+            title: "成功取得資料",
+          });
 
           // this.allOrderList = res.data;
           this.totalPage = res.data.pagination.total_pages;
