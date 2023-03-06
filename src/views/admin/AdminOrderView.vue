@@ -128,6 +128,10 @@ import Toast from "../../utils/Toast";
 import DelModal from "@/components/admin/DelModal.vue";
 import OrderDetailModal from "@/components/admin/OrderDetailModal.vue";
 import { toRaw } from "vue";
+import orderStore from "../../stores/orderStore.js";
+
+import { mapActions, mapState } from "pinia";
+
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default {
@@ -147,25 +151,25 @@ export default {
   mounted() {
     this.isLoading = true;
     this.getOrderList();
-
-    // this.calcClassmate();
   },
+  // provide() {
+  //   return {
+  //     saveToOrderStore: { courseStudentNumData: this.courseStudentNumData },
+  //   };
+
+  //   // saveStudentNumData:{this.courseStudentNumData},
+  // },
   watch: {
     totalPage() {
       this.getTotalOrderList();
     },
-
-    // totalOrderList() {
-    //   console.log(this.totalOrderList);
-    //   this.calcClassmate();
-    // },
   },
+
   methods: {
+    ...mapActions(orderStore, ["saveStudentNumData"]),
     calcClassmate() {
       const arr = toRaw(this.totalOrderList);
       const OrderArr = [...arr];
-
-      // console.log(AllOrderList);
 
       const OrderListArr = [];
 
@@ -187,10 +191,12 @@ export default {
         return obj;
       }, {});
 
-      console.log(totalClassmate);
+      //console.log(totalClassmate);
+
+      // 想利用從orderStore.js 傳進來的 saveStudentNumData 函式 把totalClassmate的資料傳進去↓↓
+      this.saveStudentNumData(totalClassmate);
 
       this.courseStudentNumData = totalClassmate;
-      console.log(this.courseStudentNumData);
     },
 
     getTotalOrderList() {

@@ -6,6 +6,11 @@
     <div class="text-end"></div>
     <div class="row">
       <div class="col-3">
+        hhh
+        {{ orderData }}
+
+        {{ testtttt }}
+
         <!-- <div class="list-group">
           <a
             href="#"
@@ -35,9 +40,15 @@
 <script>
 // const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
+import { mapState } from "pinia";
+import orderStore from "../../stores/orderStore.js";
+
 export default {
   data() {
     return {};
+  },
+  computed: {
+    ...mapState(orderStore, ["orderData", "testtttt"]),
   },
   mounted() {},
   methods: {},
