@@ -7,8 +7,28 @@ const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 export default defineStore("cartStore", {
   state: () => ({
     cartListData: {},
+    courseList: [],
+    check: [],
   }),
   actions: {
+    getAllCourse() {
+      this.isLoading = true;
+      axios
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
+        .then((res) => {
+          //console.log("courseList", res.data.products);
+          this.isLoading = false;
+          this.courseList = res.data.products;
+        })
+        .catch((err) => {
+          Toast.fire({
+            icon: "success",
+            title: err.response.data.message,
+          });
+          // alert(err.response.data.message);
+        });
+    },
+
     getCartList() {
       this.isLoading = true;
       axios
@@ -43,29 +63,48 @@ export default defineStore("cartStore", {
         .then((res) => {
           // this.getAllCourse();
           this.loadItem = false;
-          console.log(res.data.message);
-          console.log("有跑axios");
+          console.log(res.data);
 
           Toast.fire({
             icon: "success",
             title: res.data.message,
           });
 
+          this.getCartList();
+
           console.log("有跑最後");
         })
 
         .catch((err) => {
           console.log(err);
-          // Toast.fire({
-          //   icon: "error",
-          //   title: err.response.data.message,
-          // });
+          Toast.fire({
+            icon: "error",
+            title: err.response.data.message,
+          });
         });
+    },
+
+    checkedClass() {
+      this.courseList.forEach((item) => {
+        this.cartList.carts.forEach((i) => {
+          if (item.id === i.product_id) {
+            this.check.push(item.id);
+          }
+        });
+      });
     },
   },
   getters: {
     cartList: ({ cartListData }) => {
       return cartListData;
+    },
+
+    ShowCourseList: ({ courseList }) => {
+      return courseList;
+    },
+
+    showCheck: ({ check }) => {
+      return check;
     },
   },
 });

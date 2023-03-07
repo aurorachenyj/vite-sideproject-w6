@@ -71,7 +71,7 @@
 
       <div class="col-md-10">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div class="col" v-for="course in courseList" :key="course.id">
+          <div class="col" v-for="course in ShowCourseList" :key="course.id">
             <div class="card">
               <a class="overflow-hidden" @click="goToClassPage(course.id)">
                 <img
@@ -109,16 +109,19 @@
                     >課程詳情</a
                   > -->
                   <a
-                    v-if="check.includes(course.id)"
+                    v-if="showCheck.includes(course.id)"
                     href="#/cart"
                     type="button"
                     class="btn btn-secondary link-light"
                   >
                     已選購，結帳去
                   </a>
+
+                  <!-- @click="addToCartAndRender(course.id)" -->
+
                   <button
                     v-else
-                    @click="addToCartAndRender(course.id)"
+                    @click="addToCart(course.id)"
                     :disabled="loadItem"
                     type="button"
                     class="btn btn-outline-primary"
@@ -148,19 +151,17 @@ export default {
     return {
       loadItem: false,
       isLoading: false,
-      courseList: [],
+      // courseList: [],
       // cartList: { carts: [], final_total: 0, total: 0 },
-      check: [],
+      // check: [],
     };
   },
   mounted() {
     this.getAllCourse();
   },
-  computed: {
-    ...mapState(cartStore, ["cartList"]),
-  },
+
   watch: {
-    courseList() {
+    ShowCourseList() {
       this.getCartList();
     },
     cartList() {
@@ -168,34 +169,27 @@ export default {
     },
   },
 
+  computed: {
+    ...mapState(cartStore, ["cartList", "ShowCourseList", "showCheck"]),
+  },
+
   methods: {
-    ...mapActions(cartStore, ["getCartList", "addToCart"]),
+    ...mapActions(cartStore, [
+      "getCartList",
+      "addToCart",
+      "checkedClass",
+      "getAllCourse",
+    ]),
 
-    async addToCartAndRender(product_id) {
-      // console.log(this.addToCart);
-
-      await this.addToCart(product_id);
-      // await this.getAllCourse();
-      await this.getCartList();
-      // this.addToCart(product_id)
-      //   .then(() => {
-      //     // 在 addToCart 函式回傳成功後執行 getAllCourse 函式
-      //     this.getAllCourse();
-      //   })
-      //   .catch((error) => {
-      //     console.error(error);
-      //   });
-    },
-
-    checkedClass() {
-      this.courseList.forEach((item) => {
-        this.cartList.carts.forEach((i) => {
-          if (item.id === i.product_id) {
-            this.check.push(item.id);
-          }
-        });
-      });
-    },
+    // checkedClass() {
+    //   this.courseList.forEach((item) => {
+    //     this.cartList.carts.forEach((i) => {
+    //       if (item.id === i.product_id) {
+    //         this.check.push(item.id);
+    //       }
+    //     });
+    //   });
+    // },
 
     // getCartList() {
     //   this.$http
@@ -211,23 +205,23 @@ export default {
     //       console.log(err);
     //     });
     // },
-    getAllCourse() {
-      this.isLoading = true;
-      this.$http
-        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
-        .then((res) => {
-          //console.log("courseList", res.data.products);
-          this.isLoading = false;
-          this.courseList = res.data.products;
-        })
-        .catch((err) => {
-          Toast.fire({
-            icon: "success",
-            title: err.response.data.message,
-          });
-          // alert(err.response.data.message);
-        });
-    },
+    // getAllCourse() {
+    //   this.isLoading = true;
+    //   this.$http
+    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
+    //     .then((res) => {
+    //       //console.log("courseList", res.data.products);
+    //       this.isLoading = false;
+    //       this.courseList = res.data.products;
+    //     })
+    //     .catch((err) => {
+    //       Toast.fire({
+    //         icon: "success",
+    //         title: err.response.data.message,
+    //       });
+    //       // alert(err.response.data.message);
+    //     });
+    // },
 
     goToClassPage(id) {
       this.$router.push(`/course/${id}`);

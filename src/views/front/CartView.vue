@@ -4,7 +4,7 @@
     <h3 class="my-5">
       購物車
 
-      <span v-if="cartList.carts" class="fs-6">
+      <span v-if="cartList.carts" class="fs-6 text-darkblue fw-bold">
         目前有 {{ cartList.carts.length }} 門課程
       </span>
     </h3>

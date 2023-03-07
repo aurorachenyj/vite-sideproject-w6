@@ -149,84 +149,78 @@ export default {
   },
   components: { DelModal, OrderDetailModal },
   mounted() {
-    this.isLoading = true;
+    // this.isLoading = true;
     this.getOrderList();
   },
-  // provide() {
-  //   return {
-  //     saveToOrderStore: { courseStudentNumData: this.courseStudentNumData },
-  //   };
 
-  //   // saveStudentNumData:{this.courseStudentNumData},
+  // watch: {
+  //   totalPage() {
+  //     this.getTotalOrderList();
+  //   },
   // },
-  watch: {
-    totalPage() {
-      this.getTotalOrderList();
-    },
-  },
 
   methods: {
     // ...mapActions(orderStore, ["saveStudentNumData"]),
-    calcClassmate() {
-      const arr = toRaw(this.totalOrderList);
-      const OrderArr = [...arr];
+    // calcClassmate() {
+    //   const arr = toRaw(this.totalOrderList);
+    //   const OrderArr = [...arr];
 
-      const OrderListArr = [];
+    //   const OrderListArr = [];
 
-      OrderArr.forEach((item) => {
-        const temp = Object.values(item.products);
-        OrderListArr.push(...temp);
-      });
+    //   OrderArr.forEach((item) => {
+    //     const temp = Object.values(item.products);
+    //     OrderListArr.push(...temp);
+    //   });
 
-      const isArr = OrderListArr.map((i) => {
-        return i.product_id;
-      });
+    //   const isArr = OrderListArr.map((i) => {
+    //     return i.product_id;
+    //   });
 
-      const totalClassmate = isArr.reduce((obj, id) => {
-        if (obj[id]) {
-          obj[id]++;
-        } else {
-          obj[id] = 1;
-        }
-        return obj;
-      }, {});
+    //   const totalClassmate = isArr.reduce((obj, id) => {
+    //     if (obj[id]) {
+    //       obj[id]++;
+    //     } else {
+    //       obj[id] = 1;
+    //     }
+    //     return obj;
+    //   }, {});
 
-      //console.log(totalClassmate);
+    //   //console.log(totalClassmate);
 
-      // 想利用從orderStore.js 傳進來的 saveStudentNumData 函式 把totalClassmate的資料傳進去↓↓
-      // this.saveStudentNumData(totalClassmate);
+    //   // 想利用從orderStore.js 傳進來的 saveStudentNumData 函式 把totalClassmate的資料傳進去↓↓
+    //   // this.saveStudentNumData(totalClassmate);
 
-      this.courseStudentNumData = totalClassmate;
-    },
+    //   this.courseStudentNumData = totalClassmate;
+    // },
 
-    getTotalOrderList() {
-      const pageArr = [];
-      for (let i = 1; i <= this.totalPage; i++) {
-        pageArr.push(i);
-      }
+    // getTotalOrderList() {
+    //   const pageArr = [];
+    //   for (let i = 1; i <= this.totalPage; i++) {
+    //     pageArr.push(i);
+    //   }
 
-      const apiArr = pageArr.map((item) => {
-        return this.$http.get(
-          `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/orders?page=${item}`
-        );
-      });
+    //   const apiArr = pageArr.map((item) => {
+    //     return this.$http.get(
+    //       `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/orders?page=${item}`
+    //     );
+    //   });
 
-      Promise.all(apiArr)
-        .then((res) => {
-          console.log(res);
-          res.forEach((item) => {
-            this.totalOrderList.push(...item.data.orders);
-          });
+    //   Promise.all(apiArr)
+    //     .then((res) => {
+    //       console.log(res);
+    //       res.forEach((item) => {
+    //         this.totalOrderList.push(...item.data.orders);
+    //       });
 
-          console.log(this.totalOrderList);
-          this.calcClassmate();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    //       console.log(this.totalOrderList);
+    //       this.calcClassmate();
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
 
-      console.log(this.totalOrderList); // 取得不分頁的全部訂單資料
-    },
+    //   console.log(this.totalOrderList); // 取得不分頁的全部訂單資料
+    // },
 
     getOrderList(page = 1) {
       this.isLoading = true;

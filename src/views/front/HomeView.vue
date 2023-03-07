@@ -1,6 +1,8 @@
 <template>
   <!-- min-vh-100 -->
 
+  {{ showFinalorderInfoData }}
+
   <LoadingVue v-model:active="isLoading"> </LoadingVue>
 
   <header class="position-relative mb-5" style="min-height: 60vh">
@@ -210,17 +212,19 @@
           </div>
           <!-- 隱藏的區塊 -->
           <div
-            class="card text-white w-50"
+            class="card text-white w-50 d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
             v-if="isHover === fundClass.id"
             style="
               position: absolute;
               top: 10px;
               right: -100px;
               width: 100%;
-              background-color: rgba(48, 45, 42, 0.8);
+              background-color: rgba(48, 45, 42, 0.9);
               z-index: 100;
             "
           >
+            <!-- background-color: rgba(48, 45, 42, 0.8); -->
+
             <div class="card-body">
               <!-- <h4>課程描述</h4> -->
               <p>
@@ -236,7 +240,23 @@
                     查看詳情
                   </RouterLink>
                 </button>
-                <button class="btn btn-primary btn-sm">加入購物車</button>
+
+                <a
+                  v-if="showCheck.includes(fundClass.id)"
+                  href="#/cart"
+                  type="button"
+                  class="btn btn-primary text-white btn-sm"
+                >
+                  已選購，結帳去
+                </a>
+
+                <button
+                  v-else
+                  @click="addToCart(fundClass.id)"
+                  class="btn btn-primary btn-sm"
+                >
+                  加入購物車
+                </button>
               </div>
             </div>
           </div>
@@ -247,6 +267,7 @@
     </div>
   </div>
 
+  <!-- 最新募資課程 -->
   <div class="container py-4 mb-3">
     <div class="d-flex mb-3">
       <h3>最新募資課程</h3>
@@ -466,6 +487,7 @@
     </div>
   </div>
 
+  <!-- 已開課熱門課程 -->
   <div class="container py-4 mb-3">
     <div class="d-flex mb-3">
       <h3>已開課熱門課程</h3>
@@ -474,20 +496,26 @@
       </a>
     </div>
 
-    <div class="row">
-      <div class="col">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-2">
+      <div class="col" v-for="openClass in openingClass" :key="openClass.id">
         <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
+          <RouterLink
+            :to="`/course/${openClass.id}`"
+            class="text-decoration-none"
+          >
+            <div class="ratio ratio-16x9">
+              <img
+                :src="openClass.imageUrl"
+                class="card-img-top img-cover"
+                alt="..."
+              />
+            </div>
+          </RouterLink>
 
           <div class="card-body">
             <div class="h-100 d-flex flex-column">
               <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課</h5>
+                <h5>{{ openClass.title }}</h5>
                 <i
                   class="bi bi-bookmark img-hover-enlarge"
                   style="
@@ -501,16 +529,31 @@
 
               <div class="mt-auto">
                 <p>
-                  <del>NT$ 3900</del>
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
+                  <del>NT$ {{ openClass.origin_price }}</del>
+                  <span class="text-primary fw-bold h3">
+                    NT$ {{ openClass.price }}
+                  </span>
                 </p>
 
                 <div
                   class="d-flex justify-content-between mt-2 align-items-center"
                 >
-                  <p class="text-muted mb-0">同學 15 人</p>
+                  <p class="text-muted mb-0">同學 ?? 人</p>
 
-                  <button class="btn btn-outline-primary btn-sm">
+                  <a
+                    v-if="showCheck.includes(openClass.id)"
+                    href="#/cart"
+                    type="button"
+                    class="btn btn-primary text-white btn-sm"
+                  >
+                    已選購，結帳去
+                  </a>
+
+                  <button
+                    v-else
+                    @click="addToCart(openClass.id)"
+                    class="btn btn-outline-primary btn-sm"
+                  >
                     加入購物車
                   </button>
                 </div>
@@ -520,7 +563,7 @@
         </div>
       </div>
 
-      <div class="col">
+      <!-- <div class="col">
         <div class="card h-100">
           <a href="">
             <img
@@ -653,10 +696,11 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 
+  <!-- 學生回饋 -->
   <div class="bg-light py-4 mb-5">
     <div class="container">
       <h3 class="text-center mb-3">學生回饋</h3>
@@ -779,6 +823,7 @@
     </div>
   </div>
 
+  <!-- 課程類別 -->
   <div class="container pt-3 pb-4 mb-5">
     <h3 class="mb-3 text-center">課程類別</h3>
 
@@ -905,6 +950,9 @@
 <script>
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
+import { mapState, mapActions } from "pinia";
+import cartStore from "../../stores/cartStore.js";
+import orderStore from "../../stores/orderStore.js";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
@@ -924,6 +972,7 @@ export default {
   mounted() {
     this.getFundingAndOpenClassList();
     this.getLocalStorageBookmark();
+    this.getAllCourse();
 
     // this.setLocalStorageBookmark();
   },
@@ -931,9 +980,27 @@ export default {
     bookmarkData() {
       this.setLocalStorageBookmark();
     },
+    ShowCourseList() {
+      this.getCartList();
+    },
+    cartList() {
+      this.checkedClass();
+    },
+  },
+  computed: {
+    ...mapState(cartStore, ["cartList", "ShowCourseList", "showCheck"]),
+    ...mapState(orderStore, ["showFinalorderInfoData"]),
   },
 
   methods: {
+    ...mapActions(cartStore, [
+      "getCartList",
+      "addToCart",
+      "checkedClass",
+
+      "getAllCourse",
+    ]),
+
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());
 

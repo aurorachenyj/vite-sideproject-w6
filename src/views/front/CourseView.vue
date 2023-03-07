@@ -201,25 +201,28 @@
       <div class="col-md-7 mb-3">
         <div class="card">
           <div class="card-body">
-            <ul class="nav nav-tabs mb-3 sticky-top bg-white" style="top: 90px">
+            <ul class="nav nav-tabs mb-3 sticky-top bg-white" style="top: 95px">
               <li class="nav-item">
                 <a
+                  :class="{ active: activeItem === 'course' }"
                   class="nav-link fw-bold"
-                  onclick="document.getElementById('classSection').scrollIntoView()"
+                  onclick="{document.getElementById('classSection').scrollIntoView(),activeItem='course'}"
                   >課程章節</a
                 >
               </li>
               <li class="nav-item">
                 <a
+                  :class="{ active: activeItem === 'skillTree' }"
                   class="nav-link fw-bold"
-                  onclick="document.getElementById('getSkill').scrollIntoView()"
+                  onclick="{document.getElementById('getSkill').scrollIntoView() ,activeItem='skillTree'}"
                   >收穫技能</a
                 >
               </li>
               <li class="nav-item">
                 <a
+                  :class="{ active: activeItem === 'teacherInfo' }"
                   class="nav-link fw-bold"
-                  onclick="document.getElementById('teacherInfo').scrollIntoView()"
+                  onclick="{document.getElementById('teacherInfo').scrollIntoView(),activeItem='teacherInfo'}"
                   >講師介紹</a
                 >
               </li>
@@ -310,6 +313,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import cartStore from "../../stores/cartStore.js";
+// import orderStore from "../../stores/orderStore.js";
 
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
@@ -319,6 +323,7 @@ const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 export default {
   data() {
     return {
+      activeItem: "",
       classId: this.$route.params.id,
       classData: {},
       currentCategory: "",
@@ -333,6 +338,7 @@ export default {
   },
   computed: {
     ...mapState(cartStore, ["cartList"]),
+    // ...mapState(orderStore, ["showFinalorderInfoData"]),
   },
   watch: {
     currentCategory() {

@@ -1111,12 +1111,12 @@ $nav-link-transition: color 0.15s ease-in-out,
   background-color 0.15s ease-in-out, border-color 0.15s ease-in-out !default;
 $nav-link-disabled-color: $gray-600 !default;
 
-$nav-tabs-border-color: $gray-300 !default;
-$nav-tabs-border-width: $border-width !default;
-$nav-tabs-border-radius: $border-radius !default;
-$nav-tabs-link-hover-border-color: $gray-200 $gray-200 $nav-tabs-border-color !default;
-$nav-tabs-link-active-color: $gray-700 !default;
-$nav-tabs-link-active-bg: $primary; //custom  // $body-bg !default;
+$nav-tabs-border-color: $gray-300; //custom  // $gray-300 !default;
+$nav-tabs-border-width: 1px; //custom  // $border-width !default;
+$nav-tabs-border-radius: 10px; //custom  // $border-radius !default;
+$nav-tabs-link-hover-border-color: $primary; //custom  // $gray-200 $gray-200 $nav-tabs-border-color !default;
+$nav-tabs-link-active-color: $primary; //custom  // $gray-700 !default;
+$nav-tabs-link-active-bg: $body-bg; //custom  // $body-bg !default;
 $nav-tabs-link-active-border-color: $primary; //custom  //$gray-300 $gray-300 $nav-tabs-link-active-bg !default;
 
 $nav-pills-border-radius: $border-radius !default;

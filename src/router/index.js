@@ -3,6 +3,18 @@ import { createRouter, createWebHashHistory } from "vue-router";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
+  linkActiveClass: "active",
+  scrollBehavior(to, from, savePosition) {
+    if (to.fullPath.match("course")) {
+      return {
+        top: 0,
+      };
+    }
+
+    return {
+      top: 10,
+    };
+  },
   routes: [
     {
       path: "/",

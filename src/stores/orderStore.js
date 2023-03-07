@@ -15,6 +15,10 @@ export default defineStore("orderStore", {
     // orderNumData: [],
   }),
 
+  mounted() {
+    this.getTotalPage();
+  },
+
   watch: {
     totalPage() {
       this.getTotalOrderList();
@@ -22,11 +26,6 @@ export default defineStore("orderStore", {
   },
 
   actions: {
-    // saveStudentNumData(data) {
-    //   this.orderNumData = data;
-    //   console.log(this.orderNumData);
-    // },
-
     getTotalPage() {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/orders?page=1`)
