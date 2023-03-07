@@ -9,7 +9,17 @@ export default defineStore("cartStore", {
     cartListData: {},
     courseList: [],
     check: [],
+    loadItem: false,
   }),
+
+  // watch: {
+  //   cartListData() {
+  //     if (this.cartListData === {}) {
+  //       this.clearCartList();
+  //     }
+  //   },
+  // },
+
   actions: {
     getAllCourse() {
       this.isLoading = true;
@@ -44,12 +54,15 @@ export default defineStore("cartStore", {
 
     clearCartList() {
       this.cartListData = {};
+      this.check = [];
     },
 
     addToCart(product_id) {
       this.loadItem = true;
       console.log(product_id);
       console.log(this.cartListData);
+
+      this.check.push(product_id);
 
       const data = {
         product_id,
@@ -85,9 +98,11 @@ export default defineStore("cartStore", {
     },
 
     checkedClass() {
+      console.log("已購買產品顯示", this.check);
+
       this.courseList.forEach((item) => {
         this.cartList.carts.forEach((i) => {
-          if (item.id === i.product_id) {
+          if (item.id === i.product_id && !this.check.includes(item.id)) {
             this.check.push(item.id);
           }
         });

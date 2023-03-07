@@ -1,8 +1,6 @@
 <template>
   <!-- min-vh-100 -->
-
-  {{ showFinalorderInfoData }}
-
+  123 {{ finalStuOrderData }}
   <LoadingVue v-model:active="isLoading"> </LoadingVue>
 
   <header class="position-relative mb-5" style="min-height: 60vh">
@@ -211,6 +209,7 @@
             </div>
           </div>
           <!-- 隱藏的區塊 -->
+
           <div
             class="card text-white w-50 d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
             v-if="isHover === fundClass.id"
@@ -497,7 +496,13 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-2">
-      <div class="col" v-for="openClass in openingClass" :key="openClass.id">
+      <div
+        @mouseenter="setHover(openClass.id, true)"
+        @mouseleave="setHover(openClass.id, false)"
+        class="col position-relative"
+        v-for="openClass in openingClass"
+        :key="openClass.id"
+      >
         <div class="card h-100">
           <RouterLink
             :to="`/course/${openClass.id}`"
@@ -551,6 +556,7 @@
 
                   <button
                     v-else
+                    :disabled="sendLoadItem === true"
                     @click="addToCart(openClass.id)"
                     class="btn btn-outline-primary btn-sm"
                   >
@@ -561,142 +567,59 @@
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- <div class="col">
-        <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
+        <!-- 隱藏區塊 -->
+        <div
+          class="card text-white w-50 d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
+          v-if="isHover === openClass.id"
+          style="
+            position: absolute;
+            top: 10px;
+            right: -100px;
+            width: 100%;
+            background-color: rgba(48, 45, 42, 0.9);
+            z-index: 100;
+          "
+        >
+          <!-- background-color: rgba(48, 45, 42, 0.8); -->
 
           <div class="card-body">
-            <div class="h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課</h5>
-                <i
-                  class="bi bi-bookmark img-hover-enlarge"
-                  style="
-                    font-size: 1.5rem;
-                    color: orange;
-                    font-weight: 500;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
+            <!-- <h4>課程描述</h4> -->
+            <p>
+              {{ openClass.description }}
+            </p>
 
-              <div class="mt-auto">
-                <p>
-                  <del>NT$ 3900</del>
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                </p>
-
-                <div
-                  class="d-flex justify-content-between mt-2 align-items-center"
+            <div class="d-flex flex-column">
+              <button class="btn btn-outline-primary btn-sm mb-2">
+                <RouterLink
+                  :to="`/course/${openClass.id}`"
+                  class="text-white text-decoration-none"
                 >
-                  <p class="text-muted mb-0">同學 15 人</p>
+                  查看詳情
+                </RouterLink>
+              </button>
 
-                  <button class="btn btn-outline-primary btn-sm">
-                    加入購物車
-                  </button>
-                </div>
-              </div>
+              <a
+                v-if="showCheck.includes(openClass.id)"
+                href="#/cart"
+                type="button"
+                class="btn btn-primary text-white btn-sm"
+              >
+                已選購，結帳去
+              </a>
+
+              <button
+                v-else
+                @click="addToCart(openClass.id)"
+                :disabled="sendLoadItem === true"
+                class="btn btn-primary btn-sm"
+              >
+                加入購物車
+              </button>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="col">
-        <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
-
-          <div class="card-body">
-            <div class="h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課222</h5>
-                <i
-                  class="bi bi-bookmark img-hover-enlarge"
-                  style="
-                    font-size: 1.5rem;
-                    color: orange;
-                    font-weight: 500;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
-
-              <div class="mt-auto">
-                <p>
-                  <del>NT$ 3900</del>
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                </p>
-
-                <div
-                  class="d-flex justify-content-between mt-2 align-items-center"
-                >
-                  <p class="text-muted mb-0">同學 15 人</p>
-
-                  <button class="btn btn-outline-primary btn-sm">
-                    加入購物車
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
-
-          <div class="card-body">
-            <div class="h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課</h5>
-                <i
-                  class="bi bi-bookmark img-hover-enlarge"
-                  style="
-                    font-size: 1.5rem;
-                    color: orange;
-                    font-weight: 500;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
-
-              <div class="mt-auto">
-                <p>
-                  <del>NT$ 3900</del>
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                </p>
-
-                <div
-                  class="d-flex justify-content-between mt-2 align-items-center"
-                >
-                  <p class="text-muted mb-0">同學 15 人</p>
-
-                  <button class="btn btn-outline-primary btn-sm">
-                    加入購物車
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 
@@ -950,9 +873,12 @@
 <script>
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
+import axios from "axios";
+import { toRaw } from "vue";
 import { mapState, mapActions } from "pinia";
 import cartStore from "../../stores/cartStore.js";
-import orderStore from "../../stores/orderStore.js";
+import { objectToString } from "@vue/shared";
+// import orderStore from "../../stores/orderStore.js";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
@@ -961,15 +887,20 @@ export default {
     return {
       isLoading: false,
       isHover: "",
+      // sendLoadItem: false,
       fundingClass: [],
       openingClass: [],
       bookmarkData: [],
+      totalStuOrderList: [],
+      finalStuOrderData: [],
     };
   },
   created() {
     moment.locale("zh-tw");
   },
   mounted() {
+    this.getStuOrderList();
+
     this.getFundingAndOpenClassList();
     this.getLocalStorageBookmark();
     this.getAllCourse();
@@ -988,8 +919,12 @@ export default {
     },
   },
   computed: {
-    ...mapState(cartStore, ["cartList", "ShowCourseList", "showCheck"]),
-    ...mapState(orderStore, ["showFinalorderInfoData"]),
+    ...mapState(cartStore, [
+      "cartList",
+      "ShowCourseList",
+      "showCheck",
+      "sendLoadItem",
+    ]),
   },
 
   methods: {
@@ -1000,6 +935,71 @@ export default {
 
       "getAllCourse",
     ]),
+
+    getStuOrderList() {
+      axios
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/orders`)
+        .then((res) => {
+          const totalPage = res.data.pagination.total_pages;
+          const pageArr = [];
+          for (let i = 1; i <= totalPage; i++) {
+            pageArr.push(i);
+          }
+
+          const apiArr = pageArr.map((item) => {
+            return axios.get(
+              `${VITE_APP_URL}/api/${VITE_APP_PATH}/orders?page=${item}`
+            );
+          });
+
+          Promise.all(apiArr)
+            .then((res) => {
+              //console.log(res);
+
+              res.forEach((item) => {
+                this.totalStuOrderList.push(...item.data.orders);
+              });
+
+              //console.log(this.totalStuOrderList);
+              const arr = [...toRaw(this.totalStuOrderList)];
+
+              const orderArr = arr.map((i) => {
+                return Object.values(i.products);
+              });
+
+              const orderNumArr = orderArr.flat().map((i) => {
+                return {
+                  classId: i.product.id,
+                  classTitle: i.product.title,
+                  classPrice: i.product.price,
+                  classFundingPrice: i.product.funding_price,
+                  classfundingTarget: i.product.funding_target,
+                };
+              });
+
+              const finalOrderNumArr = Object.values(
+                orderNumArr.reduce((acc, obj) => {
+                  if (acc[obj.classId]) {
+                    acc[obj.classId].num += 1;
+                  } else {
+                    acc[obj.classId] = { ...obj, num: 1 };
+                  }
+                  return acc;
+                }, {})
+              );
+
+              console.log(finalOrderNumArr);
+
+              this.finalStuOrderData = finalOrderNumArr;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
 
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());
@@ -1021,7 +1021,7 @@ export default {
     getLocalStorageBookmark() {
       const bookmarkStr = localStorage.getItem("learnfundBookmark");
       this.bookmarkData = bookmarkStr.split(",");
-      console.log(this.bookmarkData);
+      // console.log(this.bookmarkData);
     },
 
     BookmarkAction(id) {
@@ -1059,19 +1059,19 @@ export default {
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          console.log(res);
-          console.log(res.data.products);
+          // console.log(res);
+          // console.log(res.data.products);
           this.isLoading = false;
 
           this.fundingClass = res.data.products.filter((course) => {
             return course.courseStatus === "classFunding";
           });
-          console.log(this.fundingClass);
+          // console.log(this.fundingClass);
 
           this.openingClass = res.data.products.filter((course) => {
             return course.courseStatus === "classOpen";
           });
-          console.log(this.openingClass);
+          // console.log(this.openingClass);
         })
         .catch((err) => {
           this.isLoading = false;

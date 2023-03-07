@@ -164,9 +164,9 @@ export default {
     ShowCourseList() {
       this.getCartList();
     },
-    cartList() {
-      this.checkedClass();
-    },
+    // cartList() {
+    //   this.checkedClass();
+    // },
   },
 
   computed: {

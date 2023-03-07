@@ -33,7 +33,10 @@
 
               <tr v-for="item in cartList.carts" :key="item.id">
                 <td>
-                  <a @click="delCartItem(item.id)" class="link-primary">
+                  <a
+                    @click="delCartItem(item.id, item.product_id)"
+                    class="link-primary"
+                  >
                     <i class="bi bi-trash3"></i>
                   </a>
                 </td>
@@ -101,7 +104,7 @@
       </div>
     </div>
   </div>
-
+  {{ showCheck }}
   <br />
   <br />
   <br />
@@ -125,7 +128,16 @@ export default {
     this.getCartList();
   },
   computed: {
-    ...mapState(cartStore, ["cartList"]),
+    ...mapState(cartStore, ["cartList", "showCheck"]),
+  },
+
+  watch: {
+    cartList() {
+      console.log(this.cartList);
+      // if (this.cartList === ) {
+      //   this.clearCartList();
+      // }
+    },
   },
 
   methods: {
@@ -144,7 +156,17 @@ export default {
     //     });
     // },
 
-    delCartItem(id) {
+    delCartItem(id, productId) {
+      // console.log(this.cartList);
+      console.log("id", id);
+      console.log("productId", productId);
+      console.log(this.showCheck);
+      const targetDelIndex = this.showCheck.indexOf(productId);
+      console.log(targetDelIndex);
+
+      this.showCheck.splice(targetDelIndex, 1);
+      console.log(this.showCheck);
+
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart/${id}`)
         .then((res) => {
