@@ -174,7 +174,7 @@
                   ></i>
                 </div>
 
-                <div class="mt-auto">
+                <div class="mt-auto" v-if="finalStuOrderData">
                   <p>
                     募資價
                     <span class="text-primary fw-bold h3">
@@ -188,14 +188,18 @@
                       aria-valuenow="75"
                       aria-valuemin="0"
                       aria-valuemax="100"
-                      style="width: 75%"
-                    >
-                      達標率 ?? %
-                    </div>
+                      style="width: 78%"
+                    ></div>
+
+                    <!-- style="width:{{ matchFundingTarget(fundClass.id)}}" -->
                   </div>
 
+                  達標率 {{ matchFundingTarget(fundClass.id) }} %
+
                   <div class="d-flex justify-content-between mt-2">
-                    <p class="text-muted mb-0">同學 ?? 人</p>
+                    <p class="text-muted mb-0">
+                      同學 {{ matchStuNumAndClass(fundClass.id) }} 人
+                    </p>
 
                     <p class="text-muted mb-0">
                       <span class="text-secondary fw-bolder">
@@ -543,7 +547,9 @@
                 <div
                   class="d-flex justify-content-between mt-2 align-items-center"
                 >
-                  <p class="text-muted mb-0">同學 ?? 人</p>
+                  <p class="text-muted mb-0">
+                    同學 {{ matchStuNumAndClass(openClass.id) }} 人
+                  </p>
 
                   <a
                     v-if="showCheck.includes(openClass.id)"
@@ -917,6 +923,10 @@ export default {
     cartList() {
       this.checkedClass();
     },
+    finalStuOrderData() {
+      this.matchStuNumAndClass();
+      this.matchFundingTarget();
+    },
   },
   computed: {
     ...mapState(cartStore, [
@@ -935,6 +945,44 @@ export default {
 
       "getAllCourse",
     ]),
+
+    matchFundingTarget(targetId) {
+      console.log(targetId);
+      console.log(this.finalStuOrderData);
+
+      let targetPrecent = null;
+
+      this.finalStuOrderData.find((i) => {
+        if (i.classId === targetId) {
+          targetPrecent = Math.round(
+            ((i.stuNum * i.classFundingPrice) / i.classfundingTarget) * 100
+          );
+          return true;
+        } else {
+          targetPrecent = 0;
+        }
+      });
+
+      return targetPrecent;
+    },
+
+    matchStuNumAndClass(targetId) {
+      console.log(targetId);
+      console.log(this.finalStuOrderData);
+
+      let showNum = null;
+
+      this.finalStuOrderData.find((i) => {
+        if (i.classId === targetId) {
+          showNum = i.stuNum;
+          return true;
+        } else {
+          showNum = 0;
+        }
+      });
+
+      return showNum;
+    },
 
     getStuOrderList() {
       axios
@@ -980,9 +1028,9 @@ export default {
               const finalOrderNumArr = Object.values(
                 orderNumArr.reduce((acc, obj) => {
                   if (acc[obj.classId]) {
-                    acc[obj.classId].num += 1;
+                    acc[obj.classId].stuNum += 1;
                   } else {
-                    acc[obj.classId] = { ...obj, num: 1 };
+                    acc[obj.classId] = { ...obj, stuNum: 1 };
                   }
                   return acc;
                 }, {})
