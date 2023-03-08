@@ -5,7 +5,7 @@ const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   linkActiveClass: "active",
   scrollBehavior(to, from, savePosition) {
-    if (to.fullPath.match("course")) {
+    if (to.fullPath.match("courses")) {
       return {
         top: 0,
       };

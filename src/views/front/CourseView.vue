@@ -1,9 +1,33 @@
 <template>
   <!-- 手機版置底 收藏、購物按鈕 -->
-  <div class="d-md-none fixed-bottom bg-white py-3">
+  <div class="d-md-none fixed-bottom py-2 shadow-lg bg-light">
     <div class="container">
       <button class="btn w-25">
-        <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i>
+        <!-- <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i> -->
+
+        <i
+          v-if="showbookmarkData.includes(classData.id)"
+          class="bi bi-bookmark-fill img-hover-enlarge"
+          @click="BookmarkAction(classData.id)"
+          style="
+            font-size: 1.5rem;
+            color: orange;
+            font-weight: 500;
+            cursor: pointer;
+          "
+        ></i>
+
+        <i
+          v-else
+          class="bi bi-bookmark img-hover-enlarge"
+          @click="BookmarkAction(classData.id)"
+          style="
+            font-size: 1.5rem;
+            color: orange;
+            font-weight: 500;
+            cursor: pointer;
+          "
+        ></i>
       </button>
       <!-- <button class="btn btn-outline-primary w-75">立即購買</button> -->
 
@@ -104,7 +128,31 @@
 
             <div>
               <button class="btn w-25">
-                <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i>
+                <!-- <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i> -->
+
+                <i
+                  v-if="showbookmarkData.includes(classData.id)"
+                  class="bi bi-bookmark-fill img-hover-enlarge"
+                  @click="BookmarkAction(classData.id)"
+                  style="
+                    font-size: 1.5rem;
+                    color: orange;
+                    font-weight: 500;
+                    cursor: pointer;
+                  "
+                ></i>
+
+                <i
+                  v-else
+                  class="bi bi-bookmark img-hover-enlarge"
+                  @click="BookmarkAction(classData.id)"
+                  style="
+                    font-size: 1.5rem;
+                    color: orange;
+                    font-weight: 500;
+                    cursor: pointer;
+                  "
+                ></i>
               </button>
 
               <!-- <button class="btn btn-outline-primary w-75">立即購買</button> -->
@@ -171,7 +219,31 @@
 
               <div class="mt-auto">
                 <button class="btn w-25">
-                  <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i>
+                  <!-- <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i> -->
+
+                  <i
+                    v-if="showbookmarkData.includes(classData.id)"
+                    class="bi bi-bookmark-fill img-hover-enlarge"
+                    @click="BookmarkAction(classData.id)"
+                    style="
+                      font-size: 1.5rem;
+                      color: orange;
+                      font-weight: 500;
+                      cursor: pointer;
+                    "
+                  ></i>
+
+                  <i
+                    v-else
+                    class="bi bi-bookmark img-hover-enlarge"
+                    @click="BookmarkAction(classData.id)"
+                    style="
+                      font-size: 1.5rem;
+                      color: orange;
+                      font-weight: 500;
+                      cursor: pointer;
+                    "
+                  ></i>
                 </button>
 
                 <a
@@ -258,7 +330,10 @@
         v-for="similarClass in similarClasses"
         :key="similarClass.id"
       >
-        <div class="card hover-pointer" @click="refreshPage(similarClass.id)">
+        <div
+          class="card h-100 hover-pointer"
+          @click="refreshPage(similarClass.id)"
+        >
           <!-- <div class="d-flex flex-row flex-md-column"> -->
           <div class="row align-items-center g-0">
             <div class="col-4 col-md-12">
@@ -271,18 +346,23 @@
               </div>
             </div>
             <div class="col-8 col-md-12">
-              <div class="card-body">
-                <h5>{{ similarClass.title }}</h5>
-                <div
-                  class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center"
-                >
-                  <p class="mb-0 text-muted">
-                    <i class="bi bi-book"></i> 課程時數
-                    {{ similarClass.unit }} 小時
-                  </p>
-                  <p class="text-primary fw-bold fs-3 mb-0">
-                    NT$ {{ similarClass.price }}
-                  </p>
+              <div class="h-100 d-flex flex-column">
+                <div class="card-body">
+                  <h5 class="truncate">
+                    {{ similarClass.title }}
+                  </h5>
+
+                  <div
+                    class="d-flex flex-column mt-auto flex-lg-row justify-content-between align-items-lg-center"
+                  >
+                    <p class="mb-0 text-muted">
+                      <i class="bi bi-book"></i> 課程時數
+                      {{ similarClass.unit }} 小時
+                    </p>
+                    <p class="text-primary fw-bold fs-3 mb-0">
+                      NT$ {{ similarClass.price }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -308,12 +388,13 @@
 </template>
 
 <script>
+import moment from "moment";
+import "moment/dist/locale/zh-tw";
+
 import { mapActions, mapState } from "pinia";
 import cartStore from "../../stores/cartStore.js";
 import frontOrderStore from "../../stores/frontOrderStore.js";
-
-import moment from "moment";
-import "moment/dist/locale/zh-tw";
+import bookmarkStore from "../../stores/bookmarkStore.js";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
@@ -332,12 +413,17 @@ export default {
     this.classId = this.$route.params.id;
     this.getClassData();
     this.getCartList();
+    this.getStuOrderList();
   },
   computed: {
     ...mapState(cartStore, ["cartList"]),
     ...mapState(frontOrderStore, ["showFinalStuOrderData"]),
+    ...mapState(bookmarkStore, ["showbookmarkData"]),
   },
   watch: {
+    showbookmarkData() {
+      this.setLocalStorageBookmark();
+    },
     currentCategory() {
       this.getSmilarClassData();
     },
@@ -361,9 +447,15 @@ export default {
     ...mapActions(cartStore, ["getCartList", "addToCart"]),
 
     ...mapActions(frontOrderStore, [
+      "getStuOrderList",
       "matchStuNumAndClass",
       "matchFundingTarget",
       "matchFundingMoney",
+    ]),
+    ...mapActions(bookmarkStore, [
+      "setLocalStorageBookmark",
+      "getLocalStorageBookmark",
+      "BookmarkAction",
     ]),
 
     countLeftDay(endTimeStr) {

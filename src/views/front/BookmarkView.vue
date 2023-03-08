@@ -32,14 +32,19 @@
           >
             <img
               :src="bookmark.imageUrl"
-              style="width: 10rem"
+              style="width: 10rem; height: 8rem"
               class="img-cover d-none d-md-block"
               alt=""
             />
           </RouterLink>
         </div>
         <div class="col-md-6">
-          <h5 class="mb-0">{{ bookmark.title }}</h5>
+          <RouterLink
+            :to="`/course/${bookmark.id}`"
+            class="text-decoration-none text-dark fw-bold"
+          >
+            <h5 class="mb-0">{{ bookmark.title }}</h5>
+          </RouterLink>
           <div class="mt-3 d-flex align-items-center">
             <span
               class="badge bg-darkblue me-3"

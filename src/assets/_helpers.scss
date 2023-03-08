@@ -85,6 +85,12 @@
   }
 }
 
+.hover-shadow {
+  &:hover {
+    box-shadow: 2px 3px 5px rgba(226, 222, 222, 0.5);
+  }
+}
+
 .hover-pointer {
   &:hover {
     cursor: pointer;
@@ -95,5 +101,13 @@
 .ratio-4x3 {
   @include media-breakpoint-up(md) {
     --bs-aspect-ratio: calc(9 / 16 * 100%); // 16x9
+  }
+}
+
+.truncate {
+  @include media-breakpoint-up(md) {
+    white-space: nowrap; /* 避免文字換行 */
+    overflow: hidden; /* 隱藏超出範圍的文字 */
+    text-overflow: ellipsis; /* 用省略號表示被截斷的文字 */
   }
 }

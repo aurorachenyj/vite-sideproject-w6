@@ -141,6 +141,13 @@
                   alt="..."
                 />
               </div>
+
+              <div class="position-absolute top-rem-1 start-rem-1">
+                <span class="badge bg-darkblue me-2">
+                  {{ fundClass.category }}</span
+                >
+                <!-- <span class="badge bg-white text-primary fw-bold"> 募資中</span> -->
+              </div>
             </RouterLink>
 
             <div class="card-body">
@@ -175,12 +182,37 @@
                 </div>
 
                 <div class="mt-auto" v-if="showFinalStuOrderData">
-                  <p>
-                    募資價
-                    <span class="text-primary fw-bold h3">
-                      NT$ {{ fundClass.funding_price }}
-                    </span>
-                  </p>
+                  <div
+                    class="d-flex justify-content-between align-items-center my-3"
+                  >
+                    <p class="mb-0">
+                      募資價
+                      <span class="text-primary fw-bold h3">
+                        NT$ {{ fundClass.funding_price }}
+                      </span>
+                    </p>
+
+                    <!-- <button class="btn btn-outline-primary btn-sm">
+                      加入購物車
+                    </button> -->
+
+                    <a
+                      v-if="showCheck.includes(fundClass.id)"
+                      href="#/cart"
+                      type="button"
+                      class="btn btn-primary text-white btn-sm"
+                    >
+                      已選購，結帳去
+                    </a>
+
+                    <button
+                      v-else
+                      @click="addToCart(fundClass.id)"
+                      class="btn btn-outline-primary btn-sm"
+                    >
+                      加入購物車
+                    </button>
+                  </div>
                   <div class="progress" style="height: 20px">
                     <div
                       class="progress-bar progress-bar-striped progress-bar-animated"
@@ -499,6 +531,7 @@
       </a>
     </div>
 
+    <!-- 已開課卡片版型 -->
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-2">
       <div
         @mouseenter="setHover(openClass.id, true)"
@@ -519,6 +552,12 @@
                 alt="..."
               />
             </div>
+
+            <span
+              class="badge bg-darkblue position-absolute top-rem-1 start-rem-1"
+            >
+              {{ openClass.category }}</span
+            >
           </RouterLink>
 
           <div class="card-body">

@@ -24,11 +24,7 @@
 <template>
   <div class="container mb-5 full-height">
     <LoadingVue v-model:active="isLoading"> </LoadingVue>
-    <nav
-      class="mt-5"
-      style="--bs-breadcrumb-divider: '>'"
-      aria-label="breadcrumb"
-    >
+    <nav class="mt-5" style="--bs-breadcrumb-divider" aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="#" class="text-decoration-none text-muted">首頁</a>
@@ -40,28 +36,79 @@
     </nav>
     <h3 class="mb-5">全部課程總覽</h3>
 
-    <div class="row g-3">
-      <div class="col-md-2">
+    <div class="row g-4">
+      <div class="col-md-1">
         <!-- 側欄選單 -->
         <div class="overflow-auto sticky-top" style="top: 120px">
           <div
-            class="list-group list-group-flush d-flex flex-row flex-md-column"
+            class="list-group bg-darkblue list-group-flush d-flex flex-row flex-md-column"
           >
-            <a href="#" class="list-group-item list-group-item-action">
+            <a
+              href=".#/courses"
+              @click.prevent="
+                {
+                  (clickItem = 'allCourse'), getpageData(1);
+                }
+              "
+              :class="{ active: clickItem === 'allCourse' }"
+              class="list-group-item list-group-item-action"
+            >
               所有<br />
               課程</a
             >
-            <a href=".#/courses" class="list-group-item list-group-item-action"
+            <a
+              href=".#/courses"
+              @click.prevent="
+                {
+                  (clickItem = 'language'), getpageData(1, '語言');
+                }
+              "
+              :class="{ active: clickItem === 'language' }"
+              class="list-group-item list-group-item-action"
               >語言</a
             >
-            <a href=".#/courses" class="list-group-item list-group-item-action"
+            <a
+              href=".#/courses"
+              @click.prevent="
+                {
+                  (clickItem = 'art'), getpageData(1, '藝術');
+                }
+              "
+              :class="{ active: clickItem === 'art' }"
+              class="list-group-item list-group-item-action"
               >藝術</a
             >
-            <a href="#" class="list-group-item list-group-item-action">攝影</a>
-
-            <a href="#" class="list-group-item list-group-item-action">商業</a>
             <a
               href="#"
+              @click.prevent="
+                {
+                  (clickItem = 'photography'), getpageData(1, '攝影');
+                }
+              "
+              :class="{ active: clickItem === 'photography' }"
+              class="list-group-item list-group-item-action"
+              >攝影</a
+            >
+
+            <a
+              href="#"
+              @click.prevent="
+                {
+                  (clickItem = 'business'), getpageData(1, '商業');
+                }
+              "
+              :class="{ active: clickItem === 'business' }"
+              class="list-group-item list-group-item-action"
+              >商業</a
+            >
+            <a
+              href="#"
+              @click.prevent="
+                {
+                  (clickItem = 'finance'), getpageData(1, '投資理財');
+                }
+              "
+              :class="{ active: clickItem === 'finance' }"
               class="list-group-item list-group-item-action border-bottom"
               >投資<br />理財</a
             >
@@ -69,9 +116,313 @@
         </div>
       </div>
 
-      <div class="col-md-10">
+      <div class="col-md-11">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <div class="col" v-for="course in ShowCourseList" :key="course.id">
+          <!-- @mouseenter="setHover(course.id, true)"
+            @mouseleave="setHover(course.id, false)" -->
+
+          <div
+            class="col position-relative"
+            v-for="course in pageClassData.products"
+            :key="course.id"
+          >
+            <div
+              class="card h-100 hover-shadow"
+              v-if="course.courseStatus === 'classOpen'"
+            >
+              <RouterLink
+                :to="`/course/${course.id}`"
+                class="text-decoration-none"
+              >
+                <div class="ratio ratio-16x9 overflow-hidden">
+                  <img
+                    :src="course.imageUrl"
+                    class="card-img-top img-cover img-hover-enlarge"
+                    alt="..."
+                  />
+                </div>
+
+                <div class="position-absolute top-rem-1 start-rem-1">
+                  <span class="badge bg-darkblue me-2">
+                    {{ course.category }}</span
+                  >
+                  <span class="badge bg-secondary"> 已開課</span>
+                </div>
+              </RouterLink>
+
+              <div class="card-body">
+                <div class="h-100 d-flex flex-column">
+                  <div class="d-flex justify-content-between">
+                    <h5>{{ course.title }}</h5>
+
+                    <i
+                      v-if="showbookmarkData.includes(course.id)"
+                      class="bi bi-bookmark-fill img-hover-enlarge"
+                      @click="BookmarkAction(course.id)"
+                      style="
+                        font-size: 1.5rem;
+                        color: orange;
+                        font-weight: 500;
+                        cursor: pointer;
+                      "
+                    ></i>
+
+                    <i
+                      v-else
+                      class="bi bi-bookmark img-hover-enlarge"
+                      @click="BookmarkAction(course.id)"
+                      style="
+                        font-size: 1.5rem;
+                        color: orange;
+                        font-weight: 500;
+                        cursor: pointer;
+                      "
+                    ></i>
+                  </div>
+
+                  <div class="mt-auto">
+                    <div class="mb-2">
+                      <p class="mb-0">
+                        <i class="bi bi-book"></i> {{ course.unit }}
+                        小時
+                      </p>
+                      <p class="mb-0">
+                        <i class="bi bi-card-list"></i>
+                        {{ course.classSectionNum }} 章節
+                        {{ course.classUnitNum }} 單元
+                      </p>
+                    </div>
+
+                    <p>
+                      <del>NT$ {{ course.origin_price }}</del>
+                      <span class="text-primary fw-bold h3">
+                        NT$ {{ course.price }}
+                      </span>
+                    </p>
+
+                    <div
+                      class="d-flex justify-content-between mt-2 align-items-center"
+                    >
+                      <p class="text-muted mb-0">
+                        同學 {{ matchStuNumAndClass(course.id) }} 人
+                      </p>
+
+                      <a
+                        v-if="showCheck.includes(course.id)"
+                        href="#/cart"
+                        type="button"
+                        class="btn btn-primary text-white btn-sm"
+                      >
+                        已選購，結帳去
+                      </a>
+
+                      <button
+                        v-else
+                        :disabled="sendLoadItem === true"
+                        @click="addToCart(course.id)"
+                        class="btn btn-outline-primary btn-sm"
+                      >
+                        加入購物車
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="card h-100 hover-shadow"
+              v-else-if="course.courseStatus === 'classFunding'"
+            >
+              <RouterLink
+                :to="`/course/${course.id}`"
+                class="text-decoration-none"
+              >
+                <div class="ratio ratio-16x9 overflow-hidden">
+                  <img
+                    :src="course.imageUrl"
+                    class="card-img-top img-cover img-hover-enlarge"
+                    alt="..."
+                  />
+                </div>
+
+                <div class="position-absolute top-rem-1 start-rem-1">
+                  <span class="badge bg-darkblue me-2">
+                    {{ course.category }}</span
+                  >
+                  <span class="badge bg-white text-primary fw-bold">
+                    募資中</span
+                  >
+                </div>
+              </RouterLink>
+
+              <div class="card-body">
+                <div class="h-100 d-flex flex-column">
+                  <div class="d-flex justify-content-between">
+                    <h5>{{ course.title }}</h5>
+                    <!-- <i class="bi bi-bookmark-fill img-hover-enlarge"></i> -->
+
+                    <i
+                      v-if="showbookmarkData.includes(course.id)"
+                      class="bi bi-bookmark-fill img-hover-enlarge"
+                      @click="BookmarkAction(course.id)"
+                      style="
+                        font-size: 1.5rem;
+                        color: orange;
+                        font-weight: 500;
+                        cursor: pointer;
+                      "
+                    ></i>
+
+                    <i
+                      v-else
+                      class="bi bi-bookmark img-hover-enlarge"
+                      @click="BookmarkAction(course.id)"
+                      style="
+                        font-size: 1.5rem;
+                        color: orange;
+                        font-weight: 500;
+                        cursor: pointer;
+                      "
+                    ></i>
+                  </div>
+
+                  <div class="mt-auto" v-if="showFinalStuOrderData">
+                    <!-- <div
+                      class="d-flex justify-content-between align-items-center mt-1 mb-3"
+                    > -->
+                    <p class="mb-0 mt-1 mb-2">
+                      募資價
+                      <span class="text-primary fw-bold h3">
+                        NT$ {{ course.funding_price }}
+                      </span>
+                    </p>
+
+                    <!-- <a
+                        v-if="showCheck.includes(course.id)"
+                        href="#/cart"
+                        type="button"
+                        class="btn btn-primary text-white btn-sm"
+                      >
+                        已選購，結帳去
+                      </a>
+
+                      <button
+                        v-else
+                        @click="addToCart(course.id)"
+                        class="btn btn-outline-primary btn-sm"
+                      >
+                        加入購物車
+                      </button> -->
+                    <!-- </div> -->
+
+                    <div class="progress" style="height: 20px">
+                      <div
+                        class="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        aria-valuenow="75"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        :style="{ width: matchFundingTarget(course.id) + '%' }"
+                      ></div>
+
+                      <!-- :style="{ width: matchFundingTarget(course.id) + '%' }" -->
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                      <p class="mb-0 text-muted">
+                        達標率 {{ matchFundingTarget(course.id) }} %
+                      </p>
+                      <p class="text-muted mb-0">
+                        <span class="text-secondary fw-bolder">
+                          {{ countLeftDay(course.fundingEndDate) }}
+                        </span>
+                        結束
+                      </p>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-2">
+                      <p class="text-muted mb-0">
+                        同學 {{ matchStuNumAndClass(course.id) }} 人
+                      </p>
+
+                      <a
+                        v-if="showCheck.includes(course.id)"
+                        href="#/cart"
+                        type="button"
+                        class="btn btn-primary text-white btn-sm"
+                      >
+                        已選購，結帳去
+                      </a>
+
+                      <button
+                        v-else
+                        @click="addToCart(course.id)"
+                        class="btn btn-outline-primary btn-sm"
+                      >
+                        加入購物車
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 隱藏區塊 -->
+            <!-- <div
+              class="card text-white d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
+              v-if="isHover === course.id"
+              style="
+                position: absolute;
+                top: -30px;
+                right: -100px;
+                width: 100%;
+                background-color: rgba(48, 45, 42, 0.9);
+                z-index: 100;
+              "
+            >
+            
+
+              <div class="card-body">
+               
+                <p>
+                  {{ course.description }}
+                </p>
+
+                <div class="d-flex flex-column">
+                  <button class="btn btn-outline-primary btn-sm mb-2">
+                    <RouterLink
+                      :to="`/course/${course.id}`"
+                      class="text-white text-decoration-none"
+                    >
+                      查看詳情
+                    </RouterLink>
+                  </button>
+
+                  <a
+                    v-if="showCheck.includes(course.id)"
+                    href="#/cart"
+                    type="button"
+                    class="btn btn-primary text-white btn-sm"
+                  >
+                    已選購，結帳去
+                  </a>
+
+                  <button
+                    v-else
+                    @click="addToCart(course.id)"
+                    :disabled="sendLoadItem === true"
+                    class="btn btn-primary btn-sm"
+                  >
+                    加入購物車
+                  </button>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- 原本舊的 開始 -->
+          <!-- <div class="col" v-for="course in ShowCourseList" :key="course.id">
             <div class="card">
               <a class="overflow-hidden" @click="goToClassPage(course.id)">
                 <img
@@ -90,7 +441,7 @@
               <div class="card-body">
                 <h5 class="card-title">{{ course.title }}</h5>
                 <p class="card-text">
-                  <!-- {{ course.content }} -->
+                 
                 </p>
                 <h4 class="text-end">
                   <span class="fs-6">
@@ -103,11 +454,7 @@
                   role="group"
                   aria-label="Basic outlined example"
                 >
-                  <!-- <a
-                    @click="goToClassPage(course.id)"
-                    class="btn btn-outline-secondary btn-hover-light"
-                    >課程詳情</a
-                  > -->
+                 
                   <a
                     v-if="showCheck.includes(course.id)"
                     href="#/cart"
@@ -117,7 +464,7 @@
                     已選購，結帳去
                   </a>
 
-                  <!-- @click="addToCartAndRender(course.id)" -->
+                  
 
                   <button
                     v-else
@@ -131,18 +478,67 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
+          <!-- 原本舊的  結束-->
         </div>
       </div>
     </div>
+
+    <!-- 分頁 -->
+    <nav
+      aria-label="Page navigation "
+      class="mt-5"
+      v-if="pageClassData.pagination"
+    >
+      <ul class="pagination justify-content-center">
+        <li
+          class="page-item"
+          :class="{ disabled: !pageClassData.pagination.has_pre }"
+          @click.prevent="changePage(currentPage - 1)"
+        >
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <li
+          class="page-item"
+          v-for="i in pageClassData.pagination.total_pages"
+          :key="i + 'hello'"
+          @click.prevent="changePage(i)"
+          :class="{ active: i === currentPage }"
+        >
+          <a class="page-link" href="#"> {{ i }} </a>
+        </li>
+        <!-- <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+
+        <li
+          class="page-item"
+          :class="{ disabled: !pageClassData.pagination.has_next }"
+          @click.prevent="changePage(currentPage + 1)"
+        >
+          <a class="page-link" href="" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script>
 // import Swal from "sweetalert2/dist/sweetalert2.js";
+import moment from "moment";
+import "moment/dist/locale/zh-tw";
 import Toast from "../../utils/Toast";
-import cartStore from "../../stores/cartStore.js";
+import axios from "axios";
+
 import { mapActions, mapState } from "pinia";
+import cartStore from "../../stores/cartStore.js";
+import frontOrderStore from "../../stores/frontOrderStore.js";
+
+import bookmarkStore from "../../stores/bookmarkStore.js";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
@@ -151,26 +547,55 @@ export default {
     return {
       loadItem: false,
       isLoading: false,
+
+      pageClassData: [],
+      currentPage: 1,
+      clickItem: "",
       // courseList: [],
       // cartList: { carts: [], final_total: 0, total: 0 },
       // check: [],
     };
   },
+  created() {
+    moment.locale("zh-tw");
+  },
   mounted() {
-    this.getAllCourse();
+    this.getpageData();
+
+    // this.getAllCourse(); // 不分頁的全部課程資料
+
+    this.getStuOrderList();
+
+    this.getLocalStorageBookmark();
   },
 
   watch: {
+    currentPage() {
+      this.getpageData(this.currentPage);
+    },
+
+    showbookmarkData() {
+      this.setLocalStorageBookmark();
+    },
     ShowCourseList() {
       this.getCartList();
     },
-    // cartList() {
-    //   this.checkedClass();
-    // },
+
+    cartList() {
+      this.checkedClass();
+    },
+    showFinalStuOrderData() {
+      this.matchStuNumAndClass();
+      this.matchFundingTarget();
+    },
   },
 
   computed: {
     ...mapState(cartStore, ["cartList", "ShowCourseList", "showCheck"]),
+
+    ...mapState(frontOrderStore, ["showFinalStuOrderData"]),
+
+    ...mapState(bookmarkStore, ["showbookmarkData"]),
   },
 
   methods: {
@@ -180,78 +605,73 @@ export default {
       "checkedClass",
       "getAllCourse",
     ]),
+    ...mapActions(frontOrderStore, [
+      "getStuOrderList",
+      "matchFundingTarget",
+      "matchStuNumAndClass",
+    ]),
 
-    // checkedClass() {
-    //   this.courseList.forEach((item) => {
-    //     this.cartList.carts.forEach((i) => {
-    //       if (item.id === i.product_id) {
-    //         this.check.push(item.id);
-    //       }
-    //     });
-    //   });
-    // },
+    ...mapActions(bookmarkStore, [
+      "setLocalStorageBookmark",
+      "getLocalStorageBookmark",
+      "BookmarkAction",
+    ]),
 
-    // getCartList() {
-    //   this.$http
-    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
-    //     .then((res) => {
-    //       console.log(res.data.data);
+    changePage(targetPage) {
+      this.currentPage = targetPage;
 
-    //       this.cartList = res.data.data;
-    //       console.log(this.cartList);
-    //       this.checkedClass();
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
-    // getAllCourse() {
-    //   this.isLoading = true;
-    //   this.$http
-    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
-    //     .then((res) => {
-    //       //console.log("courseList", res.data.products);
-    //       this.isLoading = false;
-    //       this.courseList = res.data.products;
-    //     })
-    //     .catch((err) => {
-    //       Toast.fire({
-    //         icon: "success",
-    //         title: err.response.data.message,
-    //       });
-    //       // alert(err.response.data.message);
-    //     });
-    // },
-
-    goToClassPage(id) {
-      this.$router.push(`/course/${id}`);
+      window.scrollTo({
+        top: 0,
+        // behavior: "smooth",
+      });
     },
 
-    // addToCart(product_id) {
-    //   this.loadItem = true;
-    //   const data = {
-    //     product_id,
-    //     qty: 1,
-    //   };
+    getpageData(page = 1, category = null) {
+      console.log(page);
+      console.log(category);
 
-    //   this.$http
-    //     .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`, { data })
-    //     .then((res) => {
-    //       this.getAllCourse();
-    //       this.loadItem = false;
+      let url = "";
 
-    //       Toast.fire({
-    //         icon: "success",
-    //         title: res.data.message,
-    //       });
-    //     })
+      if (category === null) {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?page=${page}`;
+      } else if (category != null) {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?page=${page}&category=${category}`;
+      }
 
-    //     .catch((err) => {
-    //       Toast.fire({
-    //         icon: "error",
-    //         title: err.response.data.message,
-    //       });
-    //     });
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.pageClassData = res.data;
+
+          this.currentPage = res.data.pagination.current_page;
+
+          window.scrollTo({
+            top: 0,
+            // behavior: "smooth",
+          });
+          console.log(this.pageClassData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    countLeftDay(endTimeStr) {
+      const todayDateStr = Date.parse(new Date());
+
+      if (todayDateStr > endTimeStr) {
+        return "已";
+      }
+
+      // 換回時間格式
+      endTimeStr = new Date(endTimeStr).toISOString();
+
+      return moment(endTimeStr).fromNow();
+    },
+
+    // goToClassPage(id) {
+    //   this.$router.push(`/course/${id}`);
     // },
   },
 };

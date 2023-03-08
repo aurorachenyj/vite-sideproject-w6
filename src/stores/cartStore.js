@@ -62,11 +62,11 @@ export default defineStore("cartStore", {
       console.log(product_id);
       console.log(this.cartListData);
 
-      this.check.push(product_id);
-
       if (this.check.includes(product_id)) {
         return;
       }
+
+      this.check.push(product_id);
 
       const data = {
         product_id,
