@@ -1,6 +1,6 @@
 <template>
   <!-- min-vh-100 -->
-  123 {{ finalStuOrderData }}
+  123 {{ showFinalStuOrderData }}
   <LoadingVue v-model:active="isLoading"> </LoadingVue>
 
   <header class="position-relative mb-5" style="min-height: 60vh">
@@ -150,7 +150,7 @@
                   <!-- <i class="bi bi-bookmark-fill img-hover-enlarge"></i> -->
 
                   <i
-                    v-if="bookmarkData.includes(fundClass.id)"
+                    v-if="showbookmarkData.includes(fundClass.id)"
                     class="bi bi-bookmark-fill img-hover-enlarge"
                     @click="BookmarkAction(fundClass.id)"
                     style="
@@ -174,7 +174,7 @@
                   ></i>
                 </div>
 
-                <div class="mt-auto" v-if="finalStuOrderData">
+                <div class="mt-auto" v-if="showFinalStuOrderData">
                   <p>
                     募資價
                     <span class="text-primary fw-bold h3">
@@ -188,7 +188,7 @@
                       aria-valuenow="75"
                       aria-valuemin="0"
                       aria-valuemax="100"
-                      style="width: 78%"
+                      :style="{ width: matchFundingTarget(fundClass.id) + '%' }"
                     ></div>
 
                     <!-- style="width:{{ matchFundingTarget(fundClass.id)}}" -->
@@ -215,11 +215,11 @@
           <!-- 隱藏的區塊 -->
 
           <div
-            class="card text-white w-50 d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
+            class="card text-white d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
             v-if="isHover === fundClass.id"
             style="
               position: absolute;
-              top: 10px;
+              top: -30px;
               right: -100px;
               width: 100%;
               background-color: rgba(48, 45, 42, 0.9);
@@ -526,7 +526,21 @@
               <div class="d-flex justify-content-between">
                 <h5>{{ openClass.title }}</h5>
                 <i
+                  v-if="showbookmarkData.includes(openClass.id)"
+                  class="bi bi-bookmark-fill img-hover-enlarge"
+                  @click="BookmarkAction(openClass.id)"
+                  style="
+                    font-size: 1.5rem;
+                    color: orange;
+                    font-weight: 500;
+                    cursor: pointer;
+                  "
+                ></i>
+
+                <i
+                  v-else
                   class="bi bi-bookmark img-hover-enlarge"
+                  @click="BookmarkAction(openClass.id)"
                   style="
                     font-size: 1.5rem;
                     color: orange;
@@ -576,11 +590,11 @@
 
         <!-- 隱藏區塊 -->
         <div
-          class="card text-white w-50 d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
+          class="card text-white d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
           v-if="isHover === openClass.id"
           style="
             position: absolute;
-            top: 10px;
+            top: -30px;
             right: -100px;
             width: 100%;
             background-color: rgba(48, 45, 42, 0.9);
@@ -883,7 +897,11 @@ import axios from "axios";
 import { toRaw } from "vue";
 import { mapState, mapActions } from "pinia";
 import cartStore from "../../stores/cartStore.js";
-import { objectToString } from "@vue/shared";
+import frontOrderStore from "../../stores/frontOrderStore.js";
+
+import bookmarkStore from "../../stores/bookmarkStore.js";
+
+// import { objectToString } from "@vue/shared";
 // import orderStore from "../../stores/orderStore.js";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
@@ -896,9 +914,8 @@ export default {
       // sendLoadItem: false,
       fundingClass: [],
       openingClass: [],
-      bookmarkData: [],
-      totalStuOrderList: [],
-      finalStuOrderData: [],
+
+      // bookmarkData: [],
     };
   },
   created() {
@@ -914,7 +931,7 @@ export default {
     // this.setLocalStorageBookmark();
   },
   watch: {
-    bookmarkData() {
+    showbookmarkData() {
       this.setLocalStorageBookmark();
     },
     ShowCourseList() {
@@ -923,7 +940,7 @@ export default {
     cartList() {
       this.checkedClass();
     },
-    finalStuOrderData() {
+    showFinalStuOrderData() {
       this.matchStuNumAndClass();
       this.matchFundingTarget();
     },
@@ -935,6 +952,10 @@ export default {
       "showCheck",
       "sendLoadItem",
     ]),
+
+    ...mapState(frontOrderStore, ["showFinalStuOrderData"]),
+
+    ...mapState(bookmarkStore, ["showbookmarkData"]),
   },
 
   methods: {
@@ -942,112 +963,151 @@ export default {
       "getCartList",
       "addToCart",
       "checkedClass",
-
       "getAllCourse",
     ]),
+    ...mapActions(frontOrderStore, [
+      "getStuOrderList",
+      "matchFundingTarget",
+      "matchStuNumAndClass",
+    ]),
 
-    matchFundingTarget(targetId) {
-      console.log(targetId);
-      console.log(this.finalStuOrderData);
+    ...mapActions(bookmarkStore, [
+      "setLocalStorageBookmark",
+      "getLocalStorageBookmark",
+      "BookmarkAction",
+    ]),
 
-      let targetPrecent = null;
+    // setLocalStorageBookmark() {
+    //   localStorage.setItem("learnfundBookmark", this.bookmarkData);
+    // },
 
-      this.finalStuOrderData.find((i) => {
-        if (i.classId === targetId) {
-          targetPrecent = Math.round(
-            ((i.stuNum * i.classFundingPrice) / i.classfundingTarget) * 100
-          );
-          return true;
-        } else {
-          targetPrecent = 0;
-        }
-      });
+    // getLocalStorageBookmark() {
+    //   const bookmarkStr = localStorage.getItem("learnfundBookmark");
+    //   this.bookmarkData = bookmarkStr.split(",");
+    //   // console.log(this.bookmarkData);
+    // },
 
-      return targetPrecent;
-    },
+    // BookmarkAction(id) {
+    //   console.log(this.bookmarkData);
 
-    matchStuNumAndClass(targetId) {
-      console.log(targetId);
-      console.log(this.finalStuOrderData);
+    //   if (event.target.classList.contains("bi-bookmark")) {
+    //     event.target.classList.remove("bi-bookmark");
+    //     event.target.classList.add("bi-bookmark-fill");
+    //     this.bookmarkData.push(id);
+    //     this.setLocalStorageBookmark();
+    //   } else {
+    //     const targetIndex = this.bookmarkData.indexOf(id);
+    //     console.log(targetIndex);
+    //     this.bookmarkData.splice(targetIndex, 1);
+    //     this.setLocalStorageBookmark();
+    //     console.log(this.bookmarkData);
+    //     event.target.classList.remove("bi-bookmark-fill");
+    //     event.target.classList.add("bi-bookmark");
+    //   }
+    // },
 
-      let showNum = null;
+    // matchFundingTarget(targetId) {
+    //   console.log(targetId);
+    //   console.log(this.showFinalStuOrderData);
 
-      this.finalStuOrderData.find((i) => {
-        if (i.classId === targetId) {
-          showNum = i.stuNum;
-          return true;
-        } else {
-          showNum = 0;
-        }
-      });
+    //   let targetPrecent = null;
 
-      return showNum;
-    },
+    //   this.showFinalStuOrderData.find((i) => {
+    //     if (i.classId === targetId) {
+    //       targetPrecent = Math.round(
+    //         ((i.stuNum * i.classFundingPrice) / i.classfundingTarget) * 100
+    //       );
+    //       return true;
+    //     } else {
+    //       targetPrecent = 0;
+    //     }
+    //   });
 
-    getStuOrderList() {
-      axios
-        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/orders`)
-        .then((res) => {
-          const totalPage = res.data.pagination.total_pages;
-          const pageArr = [];
-          for (let i = 1; i <= totalPage; i++) {
-            pageArr.push(i);
-          }
+    //   return targetPrecent;
+    // },
 
-          const apiArr = pageArr.map((item) => {
-            return axios.get(
-              `${VITE_APP_URL}/api/${VITE_APP_PATH}/orders?page=${item}`
-            );
-          });
+    // matchStuNumAndClass(targetId) {
+    //   console.log(targetId);
+    //   console.log(this.showFinalStuOrderData);
 
-          Promise.all(apiArr)
-            .then((res) => {
-              //console.log(res);
+    //   let showNum = null;
 
-              res.forEach((item) => {
-                this.totalStuOrderList.push(...item.data.orders);
-              });
+    //   this.showFinalStuOrderData.find((i) => {
+    //     if (i.classId === targetId) {
+    //       showNum = i.stuNum;
+    //       return true;
+    //     } else {
+    //       showNum = 0;
+    //     }
+    //   });
 
-              //console.log(this.totalStuOrderList);
-              const arr = [...toRaw(this.totalStuOrderList)];
+    //   return showNum;
+    // },
 
-              const orderArr = arr.map((i) => {
-                return Object.values(i.products);
-              });
+    // getStuOrderList() {
+    //   axios
+    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/orders`)
+    //     .then((res) => {
+    //       const totalPage = res.data.pagination.total_pages;
+    //       const pageArr = [];
+    //       for (let i = 1; i <= totalPage; i++) {
+    //         pageArr.push(i);
+    //       }
 
-              const orderNumArr = orderArr.flat().map((i) => {
-                return {
-                  classId: i.product.id,
-                  classTitle: i.product.title,
-                  classPrice: i.product.price,
-                  classFundingPrice: i.product.funding_price,
-                  classfundingTarget: i.product.funding_target,
-                };
-              });
+    //       const apiArr = pageArr.map((item) => {
+    //         return axios.get(
+    //           `${VITE_APP_URL}/api/${VITE_APP_PATH}/orders?page=${item}`
+    //         );
+    //       });
 
-              const finalOrderNumArr = Object.values(
-                orderNumArr.reduce((acc, obj) => {
-                  if (acc[obj.classId]) {
-                    acc[obj.classId].stuNum += 1;
-                  } else {
-                    acc[obj.classId] = { ...obj, stuNum: 1 };
-                  }
-                  return acc;
-                }, {})
-              );
+    //       Promise.all(apiArr)
+    //         .then((res) => {
+    //           //console.log(res);
 
-              console.log(finalOrderNumArr);
+    //           res.forEach((item) => {
+    //             this.totalStuOrderList.push(...item.data.orders);
+    //           });
 
-              this.finalStuOrderData = finalOrderNumArr;
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    //           //console.log(this.totalStuOrderList);
+    //           const arr = [...toRaw(this.totalStuOrderList)];
+
+    //           const orderArr = arr.map((i) => {
+    //             return Object.values(i.products);
+    //           });
+
+    //           const orderNumArr = orderArr.flat().map((i) => {
+    //             return {
+    //               classId: i.product.id,
+    //               classTitle: i.product.title,
+    //               classPrice: i.product.price,
+    //               classFundingPrice: i.product.funding_price,
+    //               classfundingTarget: i.product.funding_target,
+    //             };
+    //           });
+
+    //           const finalOrderNumArr = Object.values(
+    //             orderNumArr.reduce((acc, obj) => {
+    //               if (acc[obj.classId]) {
+    //                 acc[obj.classId].stuNum += 1;
+    //               } else {
+    //                 acc[obj.classId] = { ...obj, stuNum: 1 };
+    //               }
+    //               return acc;
+    //             }, {})
+    //           );
+
+    //           console.log(finalOrderNumArr);
+
+    //           this.finalStuOrderData = finalOrderNumArr;
+    //         })
+    //         .catch((err) => {
+    //           console.log(err);
+    //         });
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
 
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());
@@ -1060,35 +1120,6 @@ export default {
       endTimeStr = new Date(endTimeStr).toISOString();
 
       return moment(endTimeStr).fromNow();
-    },
-
-    setLocalStorageBookmark() {
-      localStorage.setItem("learnfundBookmark", this.bookmarkData);
-    },
-
-    getLocalStorageBookmark() {
-      const bookmarkStr = localStorage.getItem("learnfundBookmark");
-      this.bookmarkData = bookmarkStr.split(",");
-      // console.log(this.bookmarkData);
-    },
-
-    BookmarkAction(id) {
-      console.log(this.bookmarkData);
-
-      if (event.target.classList.contains("bi-bookmark")) {
-        event.target.classList.remove("bi-bookmark");
-        event.target.classList.add("bi-bookmark-fill");
-        this.bookmarkData.push(id);
-        this.setLocalStorageBookmark();
-      } else {
-        const targetIndex = this.bookmarkData.indexOf(id);
-        console.log(targetIndex);
-        this.bookmarkData.splice(targetIndex, 1);
-        this.setLocalStorageBookmark();
-        console.log(this.bookmarkData);
-        event.target.classList.remove("bi-bookmark-fill");
-        event.target.classList.add("bi-bookmark");
-      }
     },
 
     setHover(hoverClassId, status) {

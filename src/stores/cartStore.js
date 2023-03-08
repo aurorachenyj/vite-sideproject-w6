@@ -64,6 +64,10 @@ export default defineStore("cartStore", {
 
       this.check.push(product_id);
 
+      if (this.check.includes(product_id)) {
+        return;
+      }
+
       const data = {
         product_id,
         qty: 1,

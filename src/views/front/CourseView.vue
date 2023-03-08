@@ -49,18 +49,15 @@
             <span class="w-25 badge bg-secondary mb-3 ms-2"> 募資中 </span>
             <h4>{{ classData.title }}</h4>
 
-            <!-- <p class="h4 text-primary fw-bold my-3">
-              NT$ 3689
-              <del class="ms-1 fs-6 text-muted fw-light"> NT$ 5366 </del>
-            </p> -->
-
             <div class="bg-light p-3 my-3">
               <p class="text-muted mb-0">
                 募資達標門檻 NT$ {{ classData.funding_target }}
               </p>
               <p class="text-dark mb-2">
                 已募資金額
-                <span class="fw-bold"> NT$ ??? </span>
+                <span class="fw-bold">
+                  NT$ {{ matchFundingMoney(classData.id) }}
+                </span>
               </p>
               <div class="progress">
                 <div
@@ -69,12 +66,10 @@
                   aria-valuenow="75"
                   aria-valuemin="0"
                   aria-valuemax="100"
-                  style="width: 75%"
-                >
-                  ??%
-                </div>
+                  :style="{ width: matchFundingTarget(classData.id) + '%' }"
+                ></div>
               </div>
-
+              達標率 {{ matchFundingTarget(classData.id) }}%
               <div class="d-flex justify-content-between mt-2">
                 <p class="mb-0">
                   募資倒數
@@ -82,7 +77,9 @@
                     {{ countLeftDay(classData.fundingEndDate) }}
                   </span>
                 </p>
-                <p class="mb-0">同學 ?? 人</p>
+                <p class="mb-0">
+                  同學 {{ matchStuNumAndClass(classData.id) }} 人
+                </p>
               </div>
               <div
                 class="d-flex mt-3 py-3 justify-content-between"
@@ -313,7 +310,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import cartStore from "../../stores/cartStore.js";
-// import orderStore from "../../stores/orderStore.js";
+import frontOrderStore from "../../stores/frontOrderStore.js";
 
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
@@ -338,7 +335,7 @@ export default {
   },
   computed: {
     ...mapState(cartStore, ["cartList"]),
-    // ...mapState(orderStore, ["showFinalorderInfoData"]),
+    ...mapState(frontOrderStore, ["showFinalStuOrderData"]),
   },
   watch: {
     currentCategory() {
@@ -354,9 +351,20 @@ export default {
 
       // console.log(checkBuyStatus);
     },
+
+    showFinalStuOrderData() {
+      this.matchStuNumAndClass();
+      this.matchFundingTarget();
+    },
   },
   methods: {
     ...mapActions(cartStore, ["getCartList", "addToCart"]),
+
+    ...mapActions(frontOrderStore, [
+      "matchStuNumAndClass",
+      "matchFundingTarget",
+      "matchFundingMoney",
+    ]),
 
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());
