@@ -1,1 +1,0 @@
-import{_ as e,o as t,b as o,d as s}from"./index-0dad1233.js";const n={data(){return{}},mounted(){},methods:{}},c={class:"container full-height"},a=s("div",null,"文章頁面",-1),r=[a];function _(d,i,l,p,u,f){return t(),o("div",c,r)}const m=e(n,[["render",_]]);export{m as default};
