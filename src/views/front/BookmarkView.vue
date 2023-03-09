@@ -164,6 +164,7 @@ export default {
       this.bookmarkClassDetail = [];
 
       console.log(this.showbookmarkData);
+      console.log(this.bookmarkClassDetail);
 
       const apiArr = this.showbookmarkData.map((item) => {
         return axios.get(

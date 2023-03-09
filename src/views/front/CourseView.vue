@@ -204,7 +204,10 @@
                     NT$ {{ classData.origin_price }}
                   </del>
                 </p>
-                <p class="mb-3"><i class="bi bi-people-fill"></i> 同學 ?? 人</p>
+                <p class="mb-3">
+                  <i class="bi bi-people-fill"></i> 同學
+                  {{ matchStuNumAndClass(classData.id) }} 人
+                </p>
               </div>
 
               <p class="mb-1">

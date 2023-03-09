@@ -48,6 +48,11 @@ const router = createRouter({
           component: () => import("../views/front/ContentsView.vue"),
         },
         {
+          path: "article/:articleId",
+          name: "article",
+          component: () => import("../views/front/articleView.vue"),
+        },
+        {
           path: "bookmark",
           name: "bookmark",
           component: () => import("../views/front/BookmarkView.vue"),

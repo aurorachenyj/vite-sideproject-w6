@@ -111,3 +111,38 @@
     text-overflow: ellipsis; /* 用省略號表示被截斷的文字 */
   }
 }
+
+.text-hover-bg-secondary {
+  transition: background-color 1s ease;
+  &:hover {
+    // display: inline;
+    background-color: rgb(228, 200, 148);
+  }
+}
+
+.hover-bg-primary {
+  background-color: white;
+  color: $primary;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: $primary;
+    color: white;
+    transform: rotate(5deg);
+  }
+}
+
+.highlight-on-hover {
+  position: relative;
+
+  &:hover::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -5;
+    width: 100%;
+    height: 5px;
+    background-color: yellow;
+    z-index: -1;
+  }
+}

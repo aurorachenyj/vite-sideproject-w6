@@ -63,7 +63,10 @@ export default defineStore("cartStore", {
       console.log(this.cartListData);
 
       if (this.check.includes(product_id)) {
-        return;
+        return Toast.fire({
+          icon: "success",
+          title: "已在購物車內",
+        });
       }
 
       this.check.push(product_id);

@@ -30,7 +30,7 @@
               v-for="article in allArticleList.articles"
               :key="article.id"
             >
-              <td class="py-3 ps-3">{{ article.title }} 1</td>
+              <td class="py-3 ps-3">{{ article.title }}</td>
               <td class="">{{ article.author }}</td>
 
               <td>
