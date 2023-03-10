@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height">
+  <div class="full-height mb-5">
     <div class="bg-light py-5">
       <div class="container">
         <div class="row my-3">
@@ -167,166 +167,144 @@
           </div>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-md-9" v-if="articleListData.articles">
           <h4 class="fw-bold mb-3">最新文章</h4>
 
           <!-- 到時改成router link -->
-          <a href="" class="text-decoration-none text-dark">
-            <!-- :to="`/article/${}`" -->
-            <!-- <RouterLink class="text-decoration-none"> -->
-            <div class="row align-items-center g-3 border-bottom py-3">
-              <div class="col-4">
+
+          <!-- :to="`/article/${}`" -->
+          <!-- <RouterLink class="text-decoration-none"> -->
+          <div
+            class="row align-items-center g-3 border-bottom py-3"
+            v-for="article in articleListData.articles"
+            :key="article.id"
+          >
+            <div class="col-4">
+              <RouterLink
+                :to="`/article/${article.id}`"
+                class="text-decoration-none"
+              >
                 <div class="ratio ratio-4x3">
-                  <img
-                    style=""
-                    class="img-cover"
-                    src="https://images.unsplash.com/photo-1678043638715-df1cb9b98ae8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                    alt=""
-                  />
+                  <img style="" class="img-cover" :src="article.image" alt="" />
                 </div>
-              </div>
-              <div class="col-8">
-                <div>
-                  <span
-                    class="badge bg-light text-muted me-2 mb-2 border-bottom"
-                  >
-                    攝影
-                  </span>
-                  <span
-                    class="badge bg-light text-muted me-2 mb-2 border-bottom"
-                  >
-                    攝影技巧 </span
-                  ><span
-                    class="badge bg-light text-muted me-2 mb-2 border-bottom"
-                  >
-                    手機攝影 </span
-                  ><span
-                    class="badge bg-light text-muted me-2 mb-2 border-bottom"
-                  >
-                    動態攝影
-                  </span>
-
-                  <h5>標題標題標題標題標題標，題標題題標題題標題題2</h5>
-                  <p class="d-none d-md-block text-muted">
-                    中文描述 中文描述 中文描述 中文描述 中文描述 描述 中文描述
-                    中文描述 中文描述
-                  </p>
-                  <span class="me-4"
-                    ><i class="bi bi-person-vcard me-2"></i>kren
-                  </span>
-                  <span>
-                    <i class="bi bi-calendar2-week me-2"></i> 2023/3/9
-                  </span>
-                </div>
-              </div>
-            </div>
-            <!-- </RouterLink> -->
-          </a>
-          <div class="row align-items-center mb-3 g-2 border-bottom py-3">
-            <div class="col-4">
-              <div class="ratio ratio-4x3">
-                <img
-                  style=""
-                  class="img-cover"
-                  src="https://images.unsplash.com/photo-1678043638715-df1cb9b98ae8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                  alt=""
-                />
-              </div>
+              </RouterLink>
             </div>
             <div class="col-8">
-              <div>
-                <span class="me-4"
-                  ><i class="bi bi-person-vcard me-2"></i>kren
+              <RouterLink
+                :to="`/article/${article.id}`"
+                class="text-decoration-none text-dark"
+              >
+                <!-- <div> -->
+                <span
+                  v-for="singleTag in article.tag"
+                  :key="singleTag + 'yoyo'"
+                  class="badge bg-light text-muted me-2 mb-2 border-bottom"
+                >
+                  {{ singleTag }}
                 </span>
-                <span>
-                  <i class="bi bi-calendar2-week me-2"></i> 2023/3/9
-                </span>
-                <h5>標題標題標題標題標題標，題標題題標題題標題題2</h5>
-                <p>中文描述 中文描述 中文描述 中文描述 中文描述 中文描述</p>
-                <!-- <span class="badge bg-secondary me-2 mb-2"> 攝影 </span>
-                <span class="badge bg-darkblue me-2 mb-2"> 手機攝影 </span>
-                <span class="badge bg-primary me-2 mb-2"> 手機攝影 </span> -->
-              </div>
-            </div>
-          </div>
 
-          <div class="row align-items-center mb-3 g-2 border-bottom py-3">
-            <div class="col-4">
-              <div class="ratio ratio-4x3">
-                <img
-                  style=""
-                  class="img-cover"
-                  src="https://images.unsplash.com/photo-1678043638715-df1cb9b98ae8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="col-8">
-              <div>
-                <h5>標題標題標題標題標題標，題標題題標題題標題題2</h5>
-                <p>
-                  中文描述 中文描述 中文描述 中文描述 中文描述 中文描述中文描述
-                  中文描述 中文描述 中文描述 中文描述 中文描述 中文描述 中文描述
-                  中文描述 中文描述
+                <h5>{{ article.title }}</h5>
+                <p class="d-none d-md-block text-muted">
+                  {{ article.description }}
                 </p>
                 <span class="me-4"
-                  ><i class="bi bi-person-vcard me-2"></i>kren
+                  ><i class="bi bi-person-vcard me-2"></i>{{ article.author }}
                 </span>
                 <span>
-                  <i class="bi bi-calendar2-week me-2"></i> 2023/3/9
+                  <i class="bi bi-calendar2-week me-2"></i>
+                  {{ switchTime(article.create_at) }}
                 </span>
-              </div>
-            </div>
-          </div>
-          <div class="row align-items-center mb-3 g-2">
-            <div class="col-4">
-              <div class="ratio ratio-4x3">
-                <img
-                  style=""
-                  class="img-cover"
-                  src="https://images.unsplash.com/photo-1678043638715-df1cb9b98ae8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="col-8">
-              <div>
-                <h5>標題標題標題標題標題標，題標題題標題題標題題2</h5>
-                <p>中文描述 中文描述 中文描述 中文描述 中文描述 中文描述</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="row align-items-center mb-3 g-2">
-            <div class="col-4">
-              <div class="ratio ratio-4x3">
-                <img
-                  style=""
-                  class="img-cover"
-                  src="https://images.unsplash.com/photo-1678043638715-df1cb9b98ae8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                  alt=""
-                />
-              </div>
-            </div>
-            <div class="col-8">
-              <div>
-                <h5>標題標題標題標題標題標，題標題題標題題標題題2</h5>
-                <p>中文描述 中文描述 中文描述 中文描述 中文描述 中文描述</p>
-              </div>
+                <!-- </div> -->
+              </RouterLink>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <nav aria-label="Page navigation " v-if="articleListData.pagination">
+      <ul class="pagination justify-content-center">
+        <li
+          class="page-item"
+          :class="{ disabled: !articleListData.pagination.has_pre }"
+          @click.prevent="changePage(currentPage - 1)"
+        >
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <li
+          class="page-item"
+          v-for="i in articleListData.pagination.total_pages"
+          :key="i + 'jojo'"
+          @click.prevent="changePage(i)"
+          :class="{ active: i === currentPage }"
+        >
+          <a class="page-link" href="#">{{ i }}</a>
+        </li>
+
+        <li
+          class="page-item"
+          :class="{ disabled: !articleListData.pagination.has_next }"
+          @click.prevent="changePage(currentPage + 1)"
+        >
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- 分頁 -->
   </div>
+
+  <!-- tag點擊 -->
 </template>
 
 <script>
+import axios from "axios";
+import Toast from "../../utils/Toast";
+const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
+
 export default {
   data() {
-    return {};
+    return {
+      articleListData: {},
+      currentPage: 1,
+    };
   },
-  mounted() {},
-  methods: {},
+  mounted() {
+    this.getArticleList();
+  },
+  watch: {
+    currentPage() {
+      this.getArticleList(this.currentPage);
+    },
+  },
+
+  methods: {
+    switchTime(timeStamp) {
+      const nowDate = new Date(timeStamp * 1000).toLocaleDateString();
+      return nowDate;
+    },
+
+    changePage(page) {
+      console.log(page);
+      this.currentPage = page;
+    },
+
+    getArticleList(page = 1) {
+      axios
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/articles?page=${page}`)
+        .then((res) => {
+          console.log(res);
+          this.articleListData = res.data;
+          this.currentPage = res.data.pagination.current_page;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
 };
 </script>
