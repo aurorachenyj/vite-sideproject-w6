@@ -125,40 +125,19 @@
               </div> -->
 
               <!-- <h4 class="fw-bold mb-3">主題標籤探索</h4> -->
-              <div class="col-12">
+              <div class="col-12" v-if="allarticleTag">
                 <div
                   class="card bg-light border-0"
                   style="background: url(../../../public/img/content-bg.png)"
                 >
                   <div class="card-body">
                     <a
+                      @click.prevent="searchTagArticle(tag)"
+                      v-for="tag in allarticleTag"
+                      :key="tag + 'jojo'"
                       href=""
                       class="m-1 badge text-decoration-none rounded-pill fs-7 hover-bg-primary"
-                      >#123</a
-                    ><a
-                      href=""
-                      class="m-1 badge hover-bg-primary text-decoration-none rounded-pill fs-7"
-                      >#生活</a
-                    ><a
-                      href=""
-                      class="m-1 badge hover-bg-primary text-decoration-none rounded-pill fs-7"
-                      >#攝影</a
-                    ><a
-                      href=""
-                      class="m-1 badge hover-bg-primary text-decoration-none rounded-pill fs-7"
-                      >#投資理財</a
-                    >
-
-                    <a
-                      href=""
-                      class="m-1 badge hover-bg-primary text-decoration-none rounded-pill fs-7"
-                      >#投資</a
-                    >
-
-                    <a
-                      href=""
-                      class="m-1 badge hover-bg-primary text-decoration-none rounded-pill fs-7"
-                      >#理財</a
+                      >#{{ tag }}</a
                     >
                   </div>
                 </div>
@@ -263,6 +242,7 @@
 
 <script>
 import axios from "axios";
+import { toRaw } from "vue";
 import Toast from "../../utils/Toast";
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
@@ -271,6 +251,10 @@ export default {
     return {
       articleListData: {},
       currentPage: 1,
+      totalPage: 1,
+      allarticleListData: [],
+      allarticleTag: [],
+      clickTagData: [],
     };
   },
   mounted() {
@@ -280,9 +264,76 @@ export default {
     currentPage() {
       this.getArticleList(this.currentPage);
     },
+
+    totalPage() {
+      this.getAllArticleList(this.totalPage);
+    },
   },
 
   methods: {
+    searchTagArticle(targetTag) {
+      console.log(targetTag);
+      console.log(this.allarticleListData);
+
+      const arr = this.allarticleListData.filter((item) => {
+        // console.log(item);
+        if (item.tag.includes(targetTag)) {
+          return item;
+        }
+      });
+
+      this.clickTagData = arr;
+      console.log(this.clickTagData);
+    },
+
+    getAllArticleList(page) {
+      console.log(page);
+      const pageArr = [];
+      for (let i = 1; i <= page; i++) {
+        pageArr.push(i);
+      }
+
+      console.log(pageArr);
+
+      const apiArr = pageArr.map((item) => {
+        return axios.get(
+          `${VITE_APP_URL}/api/${VITE_APP_PATH}/articles?page=${item}`
+        );
+      });
+
+      console.log(apiArr);
+
+      Promise.all(apiArr)
+        .then((res) => {
+          console.log(res);
+          let articleArr = [];
+          res.forEach((item) => {
+            articleArr.push(item.data.articles);
+          });
+
+          // console.log(this.allarticleListData);
+
+          this.allarticleListData = [...toRaw(articleArr)].flat();
+
+          console.log(this.allarticleListData);
+
+          const allTag = [];
+          this.allarticleListData.forEach((item) => {
+            item.tag.forEach((i) => {
+              if (!allTag.includes(i)) {
+                allTag.push(i);
+              }
+            });
+          });
+
+          this.allarticleTag = allTag;
+          // console.log(allTag);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     switchTime(timeStamp) {
       const nowDate = new Date(timeStamp * 1000).toLocaleDateString();
       return nowDate;
@@ -300,6 +351,7 @@ export default {
           console.log(res);
           this.articleListData = res.data;
           this.currentPage = res.data.pagination.current_page;
+          this.totalPage = res.data.pagination.total_pages;
         })
         .catch((err) => {
           console.log(err);

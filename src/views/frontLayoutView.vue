@@ -4,7 +4,7 @@
     
   </div> -->
   <!-- header -->
-
+  <gototop @to-top="goTotop" />
   <header class="bg-white shadow-sm sticky-top" style="z-index: 1200">
     <div class="container">
       <nav
@@ -192,7 +192,10 @@
 </template>
 
 <script>
+import Gototop from "../components/front/Gototop.vue";
+
 import cartStore from "../stores/cartStore.js";
+
 import { mapActions, mapState } from "pinia";
 import "bootstrap/js/dist/collapse.js";
 import "bootstrap/js/dist/dropdown.js";
@@ -205,11 +208,30 @@ export default {
       isLoading: false,
     };
   },
+  components: { Gototop },
   computed: {
     ...mapState(cartStore, ["cartList"]),
   },
   methods: {
     ...mapActions(cartStore, ["getCartList"]),
+
+    goTotop() {
+      window.scrollTo(0, 0);
+    },
+
+    toTopBtnStatus() {
+      console.log(window.scrollY);
+      this.toTopBtn = document.querySelector("#toTopBtn");
+
+      if (window.scrollY > 100) {
+        console.log("u.3ql");
+        this.toTopBtn.classList.remove("d-none");
+        this.toTopBtn.classList.add("d-block");
+      } else {
+        this.toTopBtn.classList.remove("d-block");
+        this.toTopBtn.classList.add("d-none");
+      }
+    },
   },
   mounted() {
     this.getCartList();

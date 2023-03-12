@@ -1,5 +1,12 @@
 <template>
-  <div class="full-height bg-light py-5">
+  <div class="full-height bg-light py-5 position-relative">
+    <!-- <i
+      class="bi bi bi-rocket fs-2 text-primary img-hover-enlarge d-none"
+      id="toTopBtn"
+      @click="goTotop"
+      style="bottom: 2rem; right: 3rem; position: fixed; z-index: 2000"
+    ></i> -->
+
     <div class="container" v-if="articleData.author">
       <h3 class="mt-3">{{ articleData.title }}</h3>
 
@@ -36,9 +43,34 @@
 
           <article class="my-5 fs-5" v-html="articleData.content"></article>
         </div>
-        <div class="col-md-3">
-          <div class="card">
-            <div class="card-body">相關推薦</div>
+        <div class="col-md-3" v-if="similarClassData">
+          <div class="card border-0 sticky-top" style="top: 100px">
+            <div class="card-body">
+              <h5 class="fw-bold text-secondary">相關課程推薦</h5>
+
+              <div
+                class="my-3 border border-end border-bottom rounded-3 hover-shadow"
+                v-for="similarClass in similarClassData"
+                :key="similarClass.id"
+              >
+                <router-link
+                  :to="`/course/${similarClass.id}`"
+                  class="text-decoration-none text-dark"
+                >
+                  <div class="overflow-hidden">
+                    <div class="ratio ratio-16x9">
+                      <img
+                        class="img-cover img-hover-enlarge"
+                        :src="similarClass.imageUrl"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+
+                  <h6 class="p-3 mb-0">{{ similarClass.title }}</h6>
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -56,18 +88,66 @@ export default {
     return {
       articleId: "",
       articleData: {},
+      similarClassData: [],
+      toTopBtn: "",
     };
   },
   watch: {
     articleId() {
       this.getArticle();
     },
+    articleData() {
+      this.getSimilarClass();
+    },
+  },
+  created() {
+    window.addEventListener("scroll", this.toTopBtnStatus);
   },
   mounted() {
-    // console.log(this.$route.params.articleId);
     this.articleId = this.$route.params.articleId;
   },
   methods: {
+    toTopBtnStatus() {
+      console.log(window.scrollY);
+      this.toTopBtn = document.querySelector("#toTopBtn");
+
+      if (window.scrollY > 100) {
+        console.log("u.3ql");
+        this.toTopBtn.classList.remove("d-none");
+        this.toTopBtn.classList.add("d-block");
+      } else {
+        this.toTopBtn.classList.remove("d-block");
+        this.toTopBtn.classList.add("d-none");
+      }
+    },
+
+    goTotop() {
+      window.scrollTo(0, 0);
+    },
+
+    getSimilarClass() {
+      console.log(this.articleData.tag);
+      const categoryArr = ["商業", "藝術", "語言", "投資理財", "攝影"];
+      const targetCategory = this.articleData.tag.find((item) => {
+        return categoryArr.includes(item);
+      });
+      console.log(targetCategory);
+
+      axios
+        .get(
+          `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${targetCategory}`
+        )
+        .then((res) => {
+          console.log(res);
+          console.log(res.data.products);
+          this.similarClassData = res.data.products;
+        })
+
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
     switchTime(timeStamp) {
       const nowDate = new Date(timeStamp * 1000).toLocaleDateString();
 
