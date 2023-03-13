@@ -83,7 +83,7 @@
       >
     </aside> -->
 
-  <main class="main-content" style="margin-top: 80px">
+  <main class="main-content" style="margin-top: 80px" v-if="finalStuOrderData">
     <div class="container my-4">
       <div class="row gy-3">
         <div class="col">
@@ -125,8 +125,9 @@
 </template>
 
 <script>
-import { mapState } from "pinia";
+import { mapState, mapActions } from "pinia";
 import orderStore from "../stores/orderStore.js";
+import frontOrderStore from "../stores/frontOrderStore";
 
 const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
@@ -141,43 +142,51 @@ export default {
   created() {
     this.checkAdmin();
   },
-  mounted() {},
+  mounted() {
+    this.getStuOrderList();
+  },
 
   watch: {
-    showFinalorderInfoData() {
+    // showFinalorderInfoData() {
+    //   this.calcSaleData();
+    // },
+
+    finalStuOrderData() {
       this.calcSaleData();
     },
   },
 
   computed: {
-    ...mapState(orderStore, ["showFinalorderInfoData"]),
+    ...mapState(frontOrderStore, ["finalStuOrderData"]),
   },
   methods: {
+    ...mapActions(frontOrderStore, ["getStuOrderList"]),
+
     calcSaleData() {
-      console.log(this.showFinalorderInfoData);
+      console.log("u.3ql3");
+      console.log(this.finalStuOrderData);
 
       let money = 0;
-
       let studentNum = 0;
       // let classSlaesNum = 0;
 
       // classSlaesNum =  this.showFinalorderInfoData.length
-      this.showFinalorderInfoData.forEach((item) => {
-        studentNum += item.classmateNum;
+      this.finalStuOrderData.forEach((item) => {
+        studentNum += item.stuNum;
 
         if (item.fundingPrice === undefined) {
           console.log(item);
-          money += item.classmateNum * item.price;
+          money += item.stuNum * item.classPrice;
         } else {
           console.log(item);
-          money += item.classmateNum * item.fundingPrice;
+          money += item.stuNum * item.classFundingPrice;
         }
       });
 
-      // console.log(money);
+      console.log(money);
       this.totalSalesMoney = money;
       this.totalStudentNum = studentNum;
-      this.totalClassSalesNum = this.showFinalorderInfoData.length;
+      this.totalClassSalesNum = this.finalStuOrderData.length;
     },
 
     checkAdmin() {

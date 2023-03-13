@@ -2,44 +2,50 @@
   <div class="full-height mb-5">
     <div class="bg-light py-5">
       <div class="container">
-        <div class="row my-3">
+        <!-- <div class="row my-3">
           <div class="col">
             這裡做輪播
             <div class="card">
               <div class="card-body">1222222</div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="row">
-          <div class="col-12">
+          <div class="col-12" v-if="selectArticle.length > 0">
             <h3 class="my-3 fw-bold">精選文章</h3>
 
             <div class="row g-4">
               <div class="col-lg-6">
                 <div class="h-100 position-relative">
-                  <div class="ratio ratio-4x3">
-                    <img
-                      class="img-cover"
-                      src="https://images.unsplash.com/photo-1678067573406-7e206fcfe184?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=388&q=80"
-                      alt=""
-                    />
-                  </div>
-
-                  <div
-                    class="position-absolute bottom-0 start-0 end-0 p-2"
-                    style="
-                      background: linear-gradient(
-                        to top,
-                        black,
-                        rgba(226, 222, 222, 0.1)
-                      );
-                    "
+                  <RouterLink
+                    :to="`/article/${selectArticle[0].id}`"
+                    class="text-decoration-none"
                   >
-                    <h4 class="text-white fw-bold mb-0 p-2">
-                      標題標題標題標題標題標 題標題題標題題標題題題題標題題標題
-                    </h4>
-                  </div>
+                    <div class="overflow-hidden">
+                      <div class="ratio ratio-4x3">
+                        <img
+                          class="img-cover img-hover-enlarge"
+                          :src="selectArticle[0].image"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="position-absolute bottom-0 start-0 end-0 p-2"
+                      style="
+                        background: linear-gradient(
+                          to top,
+                          black,
+                          rgba(226, 222, 222, 0.1)
+                        );
+                      "
+                    >
+                      <h4 class="text-white fw-bold mb-0 p-2">
+                        {{ selectArticle[0].title }}
+                      </h4>
+                    </div>
+                  </RouterLink>
                 </div>
               </div>
 
@@ -47,43 +53,67 @@
                 <div class="h-100 d-flex flex-column justify-content-between">
                   <div class="row align-items-center mb-3 g-2">
                     <div class="col-8">
-                      <h5>標題標題標題標題標題標題</h5>
+                      <RouterLink
+                        :to="`/article/${selectArticle[1].id}`"
+                        class="text-decoration-none text-dark"
+                      >
+                        <h5 class="link-style d-inline-block">
+                          {{ selectArticle[1].title }}
+                        </h5>
 
-                      <p class="" style="">
-                        中文描述 中文描述 中文描述 中文描述 中文描述 中文描述
-                        中文描述 中文描述 中文描述 中文描述 中文描
-                      </p>
+                        <p class="text-muted fs-7" style="">
+                          {{ selectArticle[1].description }}
+                        </p>
+                      </RouterLink>
                     </div>
                     <div class="col-4">
-                      <div class="ratio ratio-4x3">
-                        <img
-                          style=""
-                          class="img-cover"
-                          src="https://images.unsplash.com/photo-1678244660394-fa02a19ac24a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1MXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-                          alt=""
-                        />
-                      </div>
+                      <RouterLink
+                        :to="`/article/${selectArticle[1].id}`"
+                        class="text-decoration-none text-dark"
+                      >
+                        <div class="overflow-hidden">
+                          <div class="ratio ratio-4x3">
+                            <img
+                              style=""
+                              class="img-cover img-hover-enlarge"
+                              :src="selectArticle[1].image"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </RouterLink>
                     </div>
                   </div>
 
                   <div class="row align-items-center mb-3 g-2">
                     <div class="col-8">
-                      <div>
-                        <h5>標題標題標題標題標題標，題標題題標題題標題題2</h5>
-                        <p>
-                          中文描述 中文描述 中文描述 中文描述 中文描述 中文描述
+                      <RouterLink
+                        :to="`/article/${selectArticle[2].id}`"
+                        class="text-decoration-none text-dark"
+                      >
+                        <h5 class="link-style d-inline-block">
+                          {{ selectArticle[2].title }}
+                        </h5>
+                        <p class="text-muted fs-7">
+                          {{ selectArticle[2].description }}
                         </p>
-                      </div>
+                      </RouterLink>
                     </div>
                     <div class="col-4">
-                      <div class="ratio ratio-4x3">
-                        <img
-                          style=""
-                          class="img-cover"
-                          src="https://images.unsplash.com/photo-1678043638715-df1cb9b98ae8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"
-                          alt=""
-                        />
-                      </div>
+                      <RouterLink
+                        :to="`/article/${selectArticle[2].id}`"
+                        class="text-decoration-none text-dark"
+                        ><div class="overflow-hidden">
+                          <div class="ratio ratio-4x3">
+                            <img
+                              style=""
+                              class="img-cover img-hover-enlarge"
+                              :src="selectArticle[2].image"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </RouterLink>
                     </div>
                   </div>
                 </div>
@@ -146,8 +176,67 @@
           </div>
         </div>
 
-        <div class="col-md-9" v-if="articleListData.articles">
-          <h4 class="fw-bold mb-3">最新文章</h4>
+        <div class="col-md-9">
+          <div
+            v-if="clickTagData.length > 0"
+            class="mb-5 border rounded p-3 border-primary border-top-0 border-bottom-0"
+          >
+            <h4 class="fw-bold mb-3">
+              關鍵字探索文章
+              <span class="text-primary"> #{{ showTargetTag }} </span>
+            </h4>
+            <div
+              class="row align-items-center g-3 border-bottom py-3"
+              v-for="clickArticle in clickTagData"
+              :key="clickArticle.id"
+            >
+              <div class="col-4">
+                <RouterLink
+                  :to="`/article/${clickArticle.id}`"
+                  class="text-decoration-none"
+                  ><div class="overflow-hidden">
+                    <div class="ratio ratio-4x3">
+                      <img
+                        style=""
+                        class="img-cover img-hover-enlarge"
+                        :src="clickArticle.image"
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                </RouterLink>
+              </div>
+              <div class="col-8">
+                <RouterLink
+                  :to="`/article/${clickArticle.id}`"
+                  class="text-decoration-none text-dark"
+                >
+                  <span
+                    v-for="singleTag in clickArticle.tag"
+                    :key="singleTag + 'yoyo'"
+                    class="badge bg-light text-muted me-2 mb-2 border-bottom"
+                  >
+                    {{ singleTag }}
+                  </span>
+
+                  <h5>{{ clickArticle.title }}</h5>
+                  <p class="d-none d-md-block text-muted">
+                    {{ clickArticle.description }}
+                  </p>
+                  <span class="me-4"
+                    ><i class="bi bi-person-vcard me-2"></i
+                    >{{ clickArticle.author }}
+                  </span>
+                  <span>
+                    <i class="bi bi-calendar2-week me-2"></i>
+                    {{ switchTime(clickArticle.create_at) }}
+                  </span>
+                </RouterLink>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="fw-bold my-3">最新文章</h4>
 
           <!-- 到時改成router link -->
 
@@ -162,9 +251,15 @@
               <RouterLink
                 :to="`/article/${article.id}`"
                 class="text-decoration-none"
-              >
-                <div class="ratio ratio-4x3">
-                  <img style="" class="img-cover" :src="article.image" alt="" />
+                ><div class="overflow-hidden">
+                  <div class="ratio ratio-4x3">
+                    <img
+                      style=""
+                      class="img-cover img-hover-enlarge"
+                      :src="article.image"
+                      alt=""
+                    />
+                  </div>
                 </div>
               </RouterLink>
             </div>
@@ -181,16 +276,16 @@
                 >
                   {{ singleTag }}
                 </span>
-
-                <h5>{{ article.title }}</h5>
+                <br />
+                <h5 class="d-inline-block link-style">{{ article.title }}</h5>
                 <p class="d-none d-md-block text-muted">
                   {{ article.description }}
                 </p>
-                <span class="me-4"
+                <span class="me-2"
                   ><i class="bi bi-person-vcard me-2"></i>{{ article.author }}
                 </span>
                 <span>
-                  <i class="bi bi-calendar2-week me-2"></i>
+                  <!-- <i class="bi bi-calendar2-week me-2"></i> -->
                   {{ switchTime(article.create_at) }}
                 </span>
                 <!-- </div> -->
@@ -255,11 +350,26 @@ export default {
       allarticleListData: [],
       allarticleTag: [],
       clickTagData: [],
+      showTargetTag: "",
+      selectArticle: [],
     };
   },
   mounted() {
     this.getArticleList();
   },
+
+  // computed: {
+  //   sortArticle() {
+  //     console.log(this.articleListData);
+  //     // const sortArr = this.articleListData.articles.sort((a, b) => {
+  //     //   return a.create_at - b.create_at;
+  //     // });
+
+  //     // console.log(sortArr);
+  //     // return sortArr;
+  //   },
+  // },
+
   watch: {
     currentPage() {
       this.getArticleList(this.currentPage);
@@ -272,6 +382,8 @@ export default {
 
   methods: {
     searchTagArticle(targetTag) {
+      window.scrollTo(0, 400);
+      this.showTargetTag = targetTag;
       console.log(targetTag);
       console.log(this.allarticleListData);
 
@@ -282,7 +394,7 @@ export default {
         }
       });
 
-      this.clickTagData = arr;
+      this.clickTagData = [...toRaw(arr)];
       console.log(this.clickTagData);
     },
 
@@ -348,8 +460,22 @@ export default {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/articles?page=${page}`)
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
           this.articleListData = res.data;
+
+          const hotArticle = [];
+          if (res.data.articles.length >= 3) {
+            for (let i = 0; i <= 2; i++) {
+              hotArticle.push(res.data.articles[i]);
+            }
+            console.log(hotArticle);
+            this.selectArticle = hotArticle;
+          }
+
+          this.articleListData.articles = res.data.articles.sort((a, b) => {
+            return b.create_at - a.create_at;
+          });
+
           this.currentPage = res.data.pagination.current_page;
           this.totalPage = res.data.pagination.total_pages;
         })

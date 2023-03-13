@@ -1,6 +1,6 @@
 <template>
   <!-- min-vh-100 -->
-  123 {{ showFinalStuOrderData }}
+
   <LoadingVue v-model:active="isLoading"> </LoadingVue>
 
   <header class="position-relative mb-5" style="min-height: 60vh">
@@ -253,7 +253,7 @@
               position: absolute;
               top: -30px;
               right: -100px;
-              width: 100%;
+              width: 70%;
               background-color: rgba(48, 45, 42, 0.9);
               z-index: 100;
             "
@@ -266,7 +266,7 @@
                 {{ fundClass.description }}
               </p>
 
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column justify-content-center">
                 <button class="btn btn-outline-primary btn-sm mb-2">
                   <RouterLink
                     :to="`/course/${fundClass.id}`"
@@ -688,7 +688,7 @@
       <h3 class="text-center mb-3">學生回饋</h3>
 
       <div
-        class="d-flex align-items-center col-md-8 col-lg-6 mb-3 p-3 border-bottom img-hover-enlarge"
+        class="d-flex align-items-center col-md-8 col-lg-6 mb-3 p-3 border-bottom"
       >
         <img
           src="/img/jernej-graj-GY5gWDimEyg-unsplash.jpg"
@@ -717,7 +717,7 @@
 
       <div class="d-flex flex-row-reverse">
         <div
-          class="col-md-8 col-lg-6 d-flex flex-row-reverse align-items-center mb-3 p-3 border-bottom img-hover-enlarge"
+          class="col-md-8 col-lg-6 d-flex flex-row-reverse align-items-center mb-3 p-3 border-bottom"
         >
           <img
             src="/img/ke-atlas-eqHRrgRQDew-unsplash.jpg"
@@ -746,7 +746,7 @@
       </div>
 
       <div
-        class="d-flex align-items-center col-md-8 col-lg-6 mb-3 p-3 border-bottom img-hover-enlarge"
+        class="d-flex align-items-center col-md-8 col-lg-6 mb-3 p-3 border-bottom"
       >
         <img
           src="/img/sung-wang-g4DgCF90EM4-unsplash.jpg"
@@ -775,7 +775,7 @@
 
       <div class="d-flex flex-row-reverse">
         <div
-          class="col-md-8 col-lg-6 d-flex flex-row-reverse align-items-center p-3 border-bottom img-hover-enlarge"
+          class="col-md-8 col-lg-6 d-flex flex-row-reverse align-items-center p-3 border-bottom"
         >
           <img
             src="/img/lau-keith-dcZsxUAAJXs-unsplash.jpg"
