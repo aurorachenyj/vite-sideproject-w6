@@ -4,7 +4,7 @@
       class="sticky-top"
       style="
         top: 80px;
-        background-image: url(../../../public/img/content-bg.png);
+        background-image: url(/img/content-bg.png);
         background-position: bottom right;
       "
     >

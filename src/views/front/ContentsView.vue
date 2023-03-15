@@ -158,7 +158,7 @@
               <div class="col-12" v-if="allarticleTag">
                 <div
                   class="card bg-light border-0"
-                  style="background: url(../../../public/img/content-bg.png)"
+                  style="background: url(/img/content-bg.png)"
                 >
                   <div class="card-body">
                     <a
