@@ -252,7 +252,7 @@
                 :to="`/article/${article.id}`"
                 class="text-decoration-none"
                 ><div class="overflow-hidden">
-                  <div class="ratio ratio-4x3">
+                  <div class="ratio ratio-4x3 hoverItem">
                     <img
                       style=""
                       class="img-cover img-hover-enlarge"
@@ -266,7 +266,7 @@
             <div class="col-8">
               <RouterLink
                 :to="`/article/${article.id}`"
-                class="text-decoration-none text-dark"
+                class="text-decoration-none text-dark hoverItem"
               >
                 <!-- <div> -->
                 <span

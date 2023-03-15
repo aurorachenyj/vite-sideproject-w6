@@ -82,8 +82,8 @@ export default defineStore("frontOrderStore", {
     },
 
     matchFundingTarget(targetId) {
-      console.log(targetId);
-      console.log(this.finalStuOrderData);
+      // console.log(targetId);
+      // console.log(this.finalStuOrderData);
 
       let targetPrecent = null;
 
@@ -102,8 +102,8 @@ export default defineStore("frontOrderStore", {
     },
 
     matchFundingMoney(targetId) {
-      console.log(targetId);
-      console.log(this.finalStuOrderData);
+      // console.log(targetId);
+      // console.log(this.finalStuOrderData);
 
       let money = null;
 
@@ -120,8 +120,8 @@ export default defineStore("frontOrderStore", {
     },
 
     matchStuNumAndClass(targetId) {
-      console.log(targetId);
-      console.log(this.finalStuOrderData);
+      // console.log(targetId);
+      // console.log(this.finalStuOrderData);
 
       let showNum = null;
 

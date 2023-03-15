@@ -27,7 +27,7 @@ const router = createRouter({
           component: () => import("../views/front/HomeView.vue"),
         },
         {
-          path: "group",
+          path: "group/:category",
           name: "group",
           component: () => import("../views/front/GroupView.vue"),
         },

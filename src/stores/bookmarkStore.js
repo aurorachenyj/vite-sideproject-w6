@@ -16,6 +16,11 @@ export default defineStore("bookmarkStore", {
 
     getLocalStorageBookmark() {
       const bookmarkStr = localStorage.getItem("learnfundBookmark");
+      console.log(bookmarkStr);
+      if (bookmarkStr === null) {
+        return;
+      }
+
       this.bookmarkData = bookmarkStr.split(",").filter(Boolean);
       console.log(this.bookmarkData);
     },

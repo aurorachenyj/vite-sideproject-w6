@@ -59,8 +59,8 @@ export default defineStore("cartStore", {
 
     addToCart(product_id) {
       this.loadItem = true;
-      console.log(product_id);
-      console.log(this.cartListData);
+      // console.log(product_id);
+      // console.log(this.cartListData);
 
       if (this.check.includes(product_id)) {
         return Toast.fire({
@@ -83,7 +83,7 @@ export default defineStore("cartStore", {
         .then((res) => {
           // this.getAllCourse();
           this.loadItem = false;
-          console.log(res.data);
+          // console.log(res.data);
 
           Toast.fire({
             icon: "success",
@@ -96,7 +96,7 @@ export default defineStore("cartStore", {
         })
 
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           Toast.fire({
             icon: "error",
             title: err.response.data.message,

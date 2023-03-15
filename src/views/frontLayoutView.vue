@@ -70,12 +70,37 @@
                   >所有課程</RouterLink
                 > -->
                 <a class="dropdown-item" href=".#/courses">所有課程</a>
-                <a class="dropdown-item" href=".#/courses">語言</a>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('語言')"
+                  href=".#group/語言"
+                  >語言</a
+                >
 
-                <a class="dropdown-item" href="#">藝術</a>
-                <a class="dropdown-item" href="#">攝影</a>
-                <a class="dropdown-item" href="#">商業</a>
-                <a class="dropdown-item" href="#">投資理財</a>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('藝術')"
+                  href=".#group/藝術"
+                  >藝術</a
+                >
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('攝影')"
+                  href=".#group/攝影"
+                  >攝影</a
+                >
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('商業')"
+                  href=".#group/商業"
+                  >商業</a
+                >
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('投資理財')"
+                  href=".#group/投資理財"
+                  >投資理財</a
+                >
               </div>
             </li>
 
@@ -192,6 +217,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Gototop from "../components/front/Gototop.vue";
 
 import cartStore from "../stores/cartStore.js";
@@ -205,7 +231,7 @@ const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env; // 取出環境變數
 export default {
   data() {
     return {
-      isLoading: false,
+      // isLoading: false,
     };
   },
   components: { Gototop },
@@ -214,6 +240,12 @@ export default {
   },
   methods: {
     ...mapActions(cartStore, ["getCartList"]),
+
+    refreshPage(category) {
+      this.$router.push(`/group/${category}`);
+
+      window.scrollTo(0, 0);
+    },
 
     goTotop() {
       window.scrollTo(0, 0);

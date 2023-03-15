@@ -30,11 +30,11 @@
           <a href="#" class="text-decoration-none text-muted">首頁</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
-          <a href="#" class="text-decoration-none text-dark">所有課程</a>
+          <a href="#" class="text-decoration-none text-dark">{{ clickItem }}</a>
         </li>
       </ol>
     </nav>
-    <h3 class="mb-5">全部課程總覽</h3>
+    <h3 class="mb-5">{{ clickItem }}</h3>
 
     <div class="row g-4">
       <div class="col-md-1">
@@ -47,10 +47,10 @@
               href=".#/courses"
               @click.prevent="
                 {
-                  (clickItem = 'allCourse'), getpageData(1);
+                  (clickItem = '所有課程'), getpageData(1);
                 }
               "
-              :class="{ active: clickItem === 'allCourse' }"
+              :class="{ active: clickItem === '所有課程' }"
               class="list-group-item list-group-item-action"
             >
               所有<br />
@@ -60,10 +60,10 @@
               href=".#/courses"
               @click.prevent="
                 {
-                  (clickItem = 'language'), getpageData(1, '語言');
+                  (clickItem = '語言'), getpageData(1, '語言');
                 }
               "
-              :class="{ active: clickItem === 'language' }"
+              :class="{ active: clickItem === '語言' }"
               class="list-group-item list-group-item-action"
               >語言</a
             >
@@ -71,10 +71,10 @@
               href=".#/courses"
               @click.prevent="
                 {
-                  (clickItem = 'art'), getpageData(1, '藝術');
+                  (clickItem = '藝術'), getpageData(1, '藝術');
                 }
               "
-              :class="{ active: clickItem === 'art' }"
+              :class="{ active: clickItem === '藝術' }"
               class="list-group-item list-group-item-action"
               >藝術</a
             >
@@ -82,10 +82,10 @@
               href="#"
               @click.prevent="
                 {
-                  (clickItem = 'photography'), getpageData(1, '攝影');
+                  (clickItem = '攝影'), getpageData(1, '攝影');
                 }
               "
-              :class="{ active: clickItem === 'photography' }"
+              :class="{ active: clickItem === '攝影' }"
               class="list-group-item list-group-item-action"
               >攝影</a
             >
@@ -94,10 +94,10 @@
               href="#"
               @click.prevent="
                 {
-                  (clickItem = 'business'), getpageData(1, '商業');
+                  (clickItem = '商業'), getpageData(1, '商業');
                 }
               "
-              :class="{ active: clickItem === 'business' }"
+              :class="{ active: clickItem === '商業' }"
               class="list-group-item list-group-item-action"
               >商業</a
             >
@@ -105,10 +105,10 @@
               href="#"
               @click.prevent="
                 {
-                  (clickItem = 'finance'), getpageData(1, '投資理財');
+                  (clickItem = '投資理財'), getpageData(1, '投資理財');
                 }
               "
-              :class="{ active: clickItem === 'finance' }"
+              :class="{ active: clickItem === '投資理財' }"
               class="list-group-item list-group-item-action border-bottom"
               >投資<br />理財</a
             >
@@ -420,66 +420,6 @@
               </div>
             </div> -->
           </div>
-
-          <!-- 原本舊的 開始 -->
-          <!-- <div class="col" v-for="course in ShowCourseList" :key="course.id">
-            <div class="card">
-              <a class="overflow-hidden" @click="goToClassPage(course.id)">
-                <img
-                  :src="course.imageUrl"
-                  height="250"
-                  class="card-img-top img-cover img-hover-enlarge"
-                  alt="..."
-                />
-              </a>
-              <span
-                class="badge bg-dark position-absolute top-rem-1 start-rem-1"
-              >
-                {{ course.category }}</span
-              >
-
-              <div class="card-body">
-                <h5 class="card-title">{{ course.title }}</h5>
-                <p class="card-text">
-                 
-                </p>
-                <h4 class="text-end">
-                  <span class="fs-6">
-                    <del> NT$ {{ course.origin_price }} </del>
-                  </span>
-                  <span class="fw-bold"> NT$ {{ course.price }}</span>
-                </h4>
-                <div
-                  class="btn-group w-100"
-                  role="group"
-                  aria-label="Basic outlined example"
-                >
-                 
-                  <a
-                    v-if="showCheck.includes(course.id)"
-                    href="#/cart"
-                    type="button"
-                    class="btn btn-secondary link-light"
-                  >
-                    已選購，結帳去
-                  </a>
-
-                  
-
-                  <button
-                    v-else
-                    @click="addToCart(course.id)"
-                    :disabled="loadItem"
-                    type="button"
-                    class="btn btn-outline-primary"
-                  >
-                    加入購物車
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          <!-- 原本舊的  結束-->
         </div>
       </div>
     </div>

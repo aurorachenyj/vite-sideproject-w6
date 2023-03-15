@@ -34,14 +34,49 @@
             class="dropdown-menu dropdown-menu-light"
             aria-labelledby="dropdownMenuButton2"
           >
-            <li><a class="dropdown-item" href="#">所有課程</a></li>
+            <li><a class="dropdown-item" href=".#/courses">所有課程</a></li>
 
-            <li><a class="dropdown-item" href="#">語言</a></li>
-            <li><a class="dropdown-item" href="#">藝術</a></li>
-            <li><a class="dropdown-item" href="#">攝影</a></li>
-            <li><a class="dropdown-item" href="#">商業</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                @click.prevent="refreshPage('語言')"
+                href="#"
+                >語言</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                @click.prevent="refreshPage('藝術')"
+                href="#"
+                >藝術</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                @click.prevent="refreshPage('攝影')"
+                href="#"
+                >攝影</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item"
+                @click.prevent="refreshPage('商業')"
+                href="#"
+                >商業</a
+              >
+            </li>
 
-            <li><a class="dropdown-item" href="#">投資理財</a></li>
+            <li>
+              <a
+                class="dropdown-item"
+                @click.prevent="refreshPage('投資理財')"
+                href="#"
+                >投資理財</a
+              >
+            </li>
           </ul>
         </div>
 
@@ -83,7 +118,7 @@
             <img src="/img/tier.png" alt="" />
           </div>
 
-          <div>
+          <div class="ms-2">
             <h4>共同成長</h4>
             <p>
               和來自各地的學員 <br />
@@ -92,6 +127,7 @@
           </div>
         </div>
       </div>
+
       <div class="col">
         <div class="d-flex align-items-center justify-content-center">
           <div class="img-cover me-2">
@@ -311,21 +347,87 @@
       </a>
     </div>
 
-    <div class="row">
-      <div class="col">
+    <!-- <div
+     
+    > -->
+    <swiper
+      v-if="sixFundingClass.length > 0"
+      :spaceBetween="10"
+      :autoplay="{
+        delay: 2500,
+        disableOnInteraction: false,
+      }"
+      :breakpoints="{
+        '440': {
+          slidesPerView: 1.3,
+          spaceBetween: 20,
+        },
+        '640': {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        '768': {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        '1024': {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+      }"
+      :pagination="{
+        clickable: true,
+      }"
+      :navigation="true"
+      :modules="modules"
+    >
+      <!-- <> -->
+      <swiper-slide
+        v-for="newestClass in sixFundingClass"
+        :key="newestClass.id"
+      >
         <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
+          <RouterLink
+            :to="`/course/${newestClass.id}`"
+            class="text-decoration-none"
+          >
+            <div class="ratio ratio-16x9">
+              <img
+                :src="newestClass.imageUrl"
+                class="card-img-top img-cover"
+                alt="..."
+              />
+            </div>
+
+            <div class="position-absolute top-rem-1 start-rem-1">
+              <span class="badge bg-darkblue me-2">
+                {{ newestClass.category }}</span
+              >
+              <!-- <span class="badge bg-white text-primary fw-bold"> 募資中</span> -->
+            </div>
+          </RouterLink>
+
           <div class="card-body">
             <div class="h-100 d-flex flex-column">
               <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課</h5>
+                <h5>{{ newestClass.title }}</h5>
+
                 <i
+                  v-if="showbookmarkData.includes(newestClass.id)"
+                  class="bi bi-bookmark-fill img-hover-enlarge"
+                  @click="BookmarkAction(newestClass.id)"
+                  style="
+                    font-size: 1.5rem;
+                    color: orange;
+                    font-weight: 500;
+                    cursor: pointer;
+                  "
+                ></i>
+
+                <i
+                  v-else
                   class="bi bi-bookmark img-hover-enlarge"
+                  @click="BookmarkAction(newestClass.id)"
                   style="
                     font-size: 1.5rem;
                     color: orange;
@@ -338,7 +440,9 @@
               <div class="mt-auto">
                 <p>
                   募資價
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
+                  <span class="text-primary fw-bold h3">
+                    NT$ {{ newestClass.funding_price }}</span
+                  >
                 </p>
                 <div class="progress" style="height: 20px">
                   <div
@@ -347,180 +451,130 @@
                     aria-valuenow="75"
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style="width: 75%"
-                  >
-                    達標率 75%
-                  </div>
+                    :style="{
+                      width: matchFundingTarget(newestClass.id) + '%',
+                    }"
+                  ></div>
                 </div>
-
+                達標率 {{ matchFundingTarget(newestClass.id) }}%
                 <div class="d-flex justify-content-between mt-2">
-                  <p class="text-muted mb-0">同學 15 人</p>
+                  <p class="text-muted mb-0">
+                    同學 {{ matchStuNumAndClass(newestClass.id) }} 人
+                  </p>
 
-                  <p class="text-muted mb-0">剩餘 6 天</p>
+                  <p class="text-muted mb-0">
+                    <span class="text-secondary fw-bolder">
+                      {{ countLeftDay(newestClass.fundingEndDate) }} </span
+                    >結束
+                  </p>
                 </div>
+
+                <!-- <button class="btn btn-outline-primary btn-sm w-100">
+                  加入購物車
+                </button> -->
+
+                <a
+                  v-if="showCheck.includes(newestClass.id)"
+                  href="#/cart"
+                  type="button"
+                  class="btn btn-primary text-white btn-sm w-100 mt-2"
+                >
+                  已選購，結帳去
+                </a>
+
+                <button
+                  v-else
+                  @click="addToCart(newestClass.id)"
+                  class="btn btn-outline-primary btn-sm w-100 mt-2"
+                >
+                  加入購物車
+                </button>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
-          <div class="card-body">
-            <div class="h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課</h5>
-                <i
-                  class="bi bi-bookmark img-hover-enlarge"
-                  style="
-                    font-size: 1.5rem;
-                    color: orange;
-                    font-weight: 500;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
-
-              <div class="mt-auto">
-                <p>
-                  募資價
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                </p>
-                <div class="progress" style="height: 20px">
-                  <div
-                    class="progress-bar progress-bar-striped progress-bar-animated"
-                    role="progressbar"
-                    aria-valuenow="75"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: 75%"
-                  >
-                    達標率 75%
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-between mt-2">
-                  <p class="text-muted mb-0">同學 15 人</p>
-
-                  <p class="text-muted mb-0">剩餘 6 天</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
-
-          <div class="card-body">
-            <div class="h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課 課程名稱課</h5>
-                <i
-                  class="bi bi-bookmark img-hover-enlarge"
-                  style="
-                    font-size: 1.5rem;
-                    color: orange;
-                    font-weight: 500;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
-
-              <div class="mt-auto">
-                <p>
-                  募資價
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                </p>
-                <div class="progress" style="height: 20px">
-                  <div
-                    class="progress-bar progress-bar-striped progress-bar-animated"
-                    role="progressbar"
-                    aria-valuenow="75"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: 75%"
-                  >
-                    達標率 75%
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-between mt-2">
-                  <p class="text-muted mb-0">同學 15 人</p>
-
-                  <p class="text-muted mb-0">剩餘 6 天</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card h-100">
-          <a href="">
-            <img
-              src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=773&q=80"
-              class="card-img-top"
-              alt="..."
-          /></a>
-          <div class="card-body">
-            <div class="h-100 d-flex flex-column">
-              <div class="d-flex justify-content-between">
-                <h5>課程名稱 課程名稱課</h5>
-                <i
-                  class="bi bi-bookmark img-hover-enlarge"
-                  style="
-                    font-size: 1.5rem;
-                    color: orange;
-                    font-weight: 500;
-                    cursor: pointer;
-                  "
-                ></i>
-              </div>
-
-              <div class="mt-auto">
-                <p>
-                  募資價
-                  <span class="text-primary fw-bold h3"> NT$ 1111 </span>
-                </p>
-                <div class="progress" style="height: 20px">
-                  <div
-                    class="progress-bar progress-bar-striped progress-bar-animated"
-                    role="progressbar"
-                    aria-valuenow="75"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    style="width: 75%"
-                  >
-                    達標率 75%
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-between mt-2">
-                  <p class="text-muted mb-0">同學 15 人</p>
-
-                  <p class="text-muted mb-0">剩餘 6 天</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        <!-- </div> -->
+      </swiper-slide>
+    </swiper>
+    <!-- </div> -->
   </div>
+
+  <!-- <div class="container bg-info position-relative swiper-container">
+    <swiper
+      v-if="sixFundingClass.length > 0"
+      :spaceBetween="10"
+      :breakpoints="{
+        '440': {
+          slidesPerView: 1.3,
+          spaceBetween: 20,
+        },
+        '640': {
+          slidesPerView: 2,
+          spaceBetween: 20,
+        },
+        '768': {
+          slidesPerView: 3,
+          spaceBetween: 20,
+        },
+        '1024': {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+      }"
+      :pagination="{
+        clickable: true,
+      }"
+      :navigation="true"
+      :modules="modules"
+      class="row g-3 d-flex"
+    >
+      <swiper-slide>
+        <div class="card h-100">
+          <div class="card-body">
+            123 Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+            Distinctio repellat obcaecati similique accusamus repudiandae
+            dolorem voluptatem modi quidem inventore perspiciatis?
+          </div>
+        </div>
+      </swiper-slide>
+      <swiper-slide>
+        <div class="card h-100">
+          <div class="card-body">
+            123 Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+            Distinctio repellat obcaecati similique accusamus repudiandae
+            dolorem voluptatem modi quidem inventore perspiciatis?
+          </div>
+        </div>
+      </swiper-slide>
+      <swiper-slide>
+        <div class="card h-100">
+          <div class="card-body">
+            123 Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+            Distinctio repellat obcaecati similique accusamus repudiandae
+            dolorem voluptatem modi quidem inventore perspiciatis?
+          </div>
+        </div>
+      </swiper-slide>
+
+      <swiper-slide>
+        <div class="card h-100">
+          <div class="card-body">123</div>
+        </div>
+       
+      </swiper-slide>
+     
+      <swiper-slide>
+        <div class="card h-100">
+          <div class="card-body">123</div>
+        </div>
+       
+      </swiper-slide>
+    </swiper>
+    <div class="swiper-button-prev" style="left: -15px">
+     
+    </div>
+    <div class="swiper-button-next" style="right: -15px"></div>
+  </div> -->
 
   <!-- 已開課熱門課程 -->
   <div class="container py-4 mb-3">
@@ -530,9 +584,9 @@
         看更多 <i class="bi bi-heart-arrow"></i>
       </a>
     </div>
-
-    <!-- 已開課卡片版型 -->
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-2">
+      <!-- 已開課卡片版型 -->
+
       <div
         @mouseenter="setHover(openClass.id, true)"
         @mouseleave="setHover(openClass.id, false)"
@@ -812,7 +866,8 @@
     <div class="row row-cols-1 row-cols-md-5">
       <div class="col">
         <a
-          href=""
+          @click.prevent="refreshPage('語言')"
+          href=".#group/語言"
           class="btn btn-outline-primary w-100 border-top-0 border-start-0 shadow-sm"
           >語言學習 <br />
           <svg
@@ -835,7 +890,8 @@
 
       <div class="col">
         <a
-          href=""
+          @click.prevent="refreshPage('藝術')"
+          href=".#group/藝術"
           class="btn btn-outline-secondary w-100 border-top-0 border-start-0 shadow-sm"
           >藝術 <br />
           <svg
@@ -855,7 +911,8 @@
 
       <div class="col">
         <a
-          href=""
+          @click.prevent="refreshPage('攝影')"
+          href=".#group/攝影"
           class="btn btn-outline-primary w-100 border-top-0 border-start-0 shadow-sm"
           >攝影 <br />
           <svg
@@ -876,7 +933,8 @@
 
       <div class="col">
         <a
-          href=""
+          @click.prevent="refreshPage('商業')"
+          href=".#group/商業"
           class="btn btn-outline-secondary w-100 border-top-0 border-start-0 shadow-sm"
         >
           商業
@@ -898,7 +956,8 @@
 
       <div class="col">
         <a
-          href=""
+          @click.prevent="refreshPage('投資理財')"
+          href=".#group/投資理財"
           class="btn btn-outline-primary w-100 border-top-0 border-start-0 shadow-sm"
           >投資理財 <br />
           <svg
@@ -929,7 +988,64 @@
   </div>
 </template>
 
+<style>
+:root {
+  --swiper-theme-color: #ff4066;
+  --swiper-navigation-size: 20px;
+}
+
+.swiper {
+  /* padding-top: 10px; */
+  padding-bottom: 20px;
+  /* padding: 20px; */
+}
+
+.swiper-wrapper {
+  /* height: 80%; */
+}
+
+.swiper-slide {
+  height: auto;
+}
+
+.swiper-button-prev {
+  top: 57%;
+  left: 0px;
+  /* z-index: 100; */
+  /* bottom: 0px; */
+}
+.swiper-button-next {
+  top: 57%;
+  right: 0px;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  background: rgba(245, 239, 239, 0.7);
+  padding: 0.5rem;
+  /* font-family: swiper-icons; 原本的 */
+}
+
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: -7px;
+  top: var(--swiper-pagination-top, auto);
+  left: 0;
+  width: 100%;
+}
+</style>
+
 <script>
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Pagination, Autoplay } from "swiper";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
 import axios from "axios";
@@ -937,7 +1053,7 @@ import { toRaw } from "vue";
 import { mapState, mapActions } from "pinia";
 import cartStore from "../../stores/cartStore.js";
 import frontOrderStore from "../../stores/frontOrderStore.js";
-
+// import courseStore from "../../stores/courseStore.js";
 import bookmarkStore from "../../stores/bookmarkStore.js";
 
 // import { objectToString } from "@vue/shared";
@@ -948,14 +1064,19 @@ const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 export default {
   data() {
     return {
+      modules: [Navigation, Pagination, Autoplay],
       isLoading: false,
       isHover: "",
       // sendLoadItem: false,
       fundingClass: [],
       openingClass: [],
-
+      sixFundingClass: [],
       // bookmarkData: [],
     };
+  },
+  components: {
+    Swiper,
+    SwiperSlide,
   },
   created() {
     moment.locale("zh-tw");
@@ -966,8 +1087,6 @@ export default {
     this.getFundingAndOpenClassList();
     this.getLocalStorageBookmark();
     this.getAllCourse();
-
-    // this.setLocalStorageBookmark();
   },
   watch: {
     showbookmarkData() {
@@ -976,6 +1095,11 @@ export default {
     ShowCourseList() {
       this.getCartList();
     },
+
+    fundingClass() {
+      this.latestFundingCourseList();
+    },
+
     cartList() {
       this.checkedClass();
     },
@@ -995,6 +1119,8 @@ export default {
     ...mapState(frontOrderStore, ["showFinalStuOrderData"]),
 
     ...mapState(bookmarkStore, ["showbookmarkData"]),
+
+    // ...mapState(courseStore, ["showPageClassData", "showCurrentPage"]),
   },
 
   methods: {
@@ -1015,6 +1141,76 @@ export default {
       "getLocalStorageBookmark",
       "BookmarkAction",
     ]),
+
+    refreshPage(category) {
+      this.$router.push(`/group/${category}`);
+      this.getCategoryData(category);
+      // this.getClassData();
+      // this.getSmilarClassData();
+      window.scrollTo(0, 0);
+    },
+
+    getCategoryData(category) {
+      console.log(category);
+
+      axios
+        .get(
+          `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${category}`
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    getpageData(page = 1, category = null) {
+      console.log(this);
+
+      this.$router.push("./courses");
+
+      console.log(page);
+      console.log(category);
+
+      let url = "";
+
+      if (category === null) {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?page=${page}`;
+      } else if (category != null) {
+        url = `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?page=${page}&category=${category}`;
+      }
+
+      axios
+        .get(url)
+        .then((res) => {
+          console.log(res);
+          this.pageClassData = res.data;
+
+          this.currentPage = res.data.pagination.current_page;
+
+          window.scrollTo({
+            top: 0,
+            // behavior: "smooth",
+          });
+          console.log(this.pageClassData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    // ...mapActions(courseStore, ["getpageData"]),
+
+    latestFundingCourseList() {
+      console.log(this.fundingClass);
+
+      // const newestArr = [];
+      const newestArr = this.fundingClass.slice(-6).slice().reverse();
+
+      console.log(newestArr);
+      this.sixFundingClass = newestArr;
+    },
 
     // setLocalStorageBookmark() {
     //   localStorage.setItem("learnfundBookmark", this.bookmarkData);

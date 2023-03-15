@@ -8,7 +8,7 @@
   <!-- <div class="row">
     <div class="col-12"> -->
   <div class="card">
-    <table class="table" v-if="showFinalorderInfoData">
+    <table class="table" v-if="finalStuOrderData">
       <thead>
         <tr>
           <th scope="col" class="ps-5">id</th>
@@ -19,19 +19,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="singleInfo in showFinalorderInfoData"
-          :key="singleInfo.productId"
-        >
-          <td>{{ singleInfo.productId }}</td>
+        <tr v-for="singleInfo in finalStuOrderData" :key="singleInfo.classId">
+          <td>{{ singleInfo.classId }}</td>
 
-          <td>{{ singleInfo.title }}</td>
+          <td>{{ singleInfo.classTitle }}</td>
           <td class="text-center text-danger">
-            {{ singleInfo.classmateNum }}
+            {{ singleInfo.stuNum }}
           </td>
-          <td class="text-end">{{ singleInfo.price }}</td>
+          <td class="text-end">{{ singleInfo.classPrice }}</td>
           <td class="text-end text-danger">
-            {{ singleInfo.fundingPrice }}
+            {{ singleInfo.classFundingPrice }}
           </td>
         </tr>
       </tbody>
@@ -40,8 +37,9 @@
 </template>
 
 <script>
-import orderStore from "../../stores/orderStore.js";
+// import orderStore from "../../stores/orderStore.js";
 import { mapState, mapActions } from "pinia";
+import frontOrderStore from "../../stores/frontOrderStore.js";
 // import { toRaw } from "vue";
 // import axios from "axios";
 // import Toast from "../../utils/Toast.js";
@@ -55,33 +53,34 @@ export default {
     };
   },
   watch: {
-    page() {
-      this.getTotalOrderList(this.page);
-    },
-
-    sendOrderData() {
-      this.calcClassmate();
-    },
-    showStudentNumData() {
-      this.getOrderCourseDetail();
-    },
+    // page() {
+    //   this.getTotalOrderList(this.page);
+    // },
+    // sendOrderData() {
+    //   this.calcClassmate();
+    // },
+    // showStudentNumData() {
+    //   this.getOrderCourseDetail();
+    // },
   },
   computed: {
-    ...mapState(orderStore, [
-      "page",
-      "totalPage",
-      "sendOrderData",
-      "showStudentNumData",
-      "showFinalorderInfoData",
-    ]),
+    ...mapState(frontOrderStore, ["finalStuOrderData"]),
+    // ...mapState(orderStore, [
+    //   "page",
+    //   "totalPage",
+    //   "sendOrderData",
+    //   "showStudentNumData",
+    //   "showFinalorderInfoData",
+    // ]),
   },
   methods: {
-    ...mapActions(orderStore, [
-      "getTotalPage",
-      "getTotalOrderList",
-      "calcClassmate",
-      "getOrderCourseDetail",
-    ]),
+    ...mapActions(frontOrderStore, ["getStuOrderList"]),
+    // ...mapActions(orderStore, [
+    //   "getTotalPage",
+    //   "getTotalOrderList",
+    //   "calcClassmate",
+    //   "getOrderCourseDetail",
+    // ]),
 
     // getOrderCourseDetail() {
     //   this.isLoading = true;
@@ -141,7 +140,7 @@ export default {
     // },
   },
   mounted() {
-    this.getTotalPage();
+    this.getStuOrderList();
   },
 };
 </script>
