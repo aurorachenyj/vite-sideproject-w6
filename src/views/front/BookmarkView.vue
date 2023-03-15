@@ -1,5 +1,5 @@
 <template>
-  <div class="container full-height">
+  <div class="container full-height pb-5">
     <h4 class="my-5">我收藏的課程 <i class="bi bi-bookmark-heart"></i></h4>
 
     <!-- 沒有收藏時 -->

@@ -3,7 +3,7 @@
     class="bi bi bi-rocket fs-2 text-primary img-hover-enlarge d-none"
     id="toTopBtn"
     @click="this.$emit('toTop')"
-    style="bottom: 2rem; right: 2rem; position: fixed; z-index: 2000"
+    style="bottom: 4rem; right: 1.5rem; position: fixed; z-index: 2000"
   ></i>
 </template>
 

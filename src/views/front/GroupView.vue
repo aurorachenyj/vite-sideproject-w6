@@ -1,11 +1,11 @@
 <template>
-  <div class="full-height">
+  <div class="full-height mb-5">
     <div
       class="sticky-top"
       style="
         top: 80px;
         background-image: url(./img/content-bg.png);
-        background-position: bottom right;
+        background-position: center bottom;
       "
     >
       <div class="container">
@@ -22,27 +22,58 @@
             </li>
             <li class="breadcrumb-item active" aria-current="page">
               <a href="#" class="text-decoration-none text-dark">{{
-                category
+                categoryName
               }}</a>
             </li>
           </ol>
         </nav>
-        <h3 class="mb-3">{{ category }}</h3>
+        <h3 class="mb-3">{{ categoryName }}</h3>
         <div class="d-flex justify-content-center mb-5 pb-3">
-          <button class="btn btn-outline-primary me-3 bg-light opacity-75">
+          <button
+            @click="
+              {
+                getCategoryData(categoryName), (clickItem = 'all');
+              }
+            "
+            type="button"
+            class="btn btn-outline-primary me-3 opacity-75"
+            :class="{ active: clickItem === 'all' }"
+          >
             全部
           </button>
-          <button class="btn btn-outline-primary me-3 bg-light opacity-75">
+          <button
+            @click="
+              {
+                filterData('open'), (clickItem = 'open');
+              }
+            "
+            type="button"
+            class="btn btn-outline-primary me-3 opacity-75"
+            :class="{ active: clickItem === 'open' }"
+          >
             已開課
           </button>
-          <button class="btn btn-outline-primary bg-light opacity-75">
+          <button
+            @click="
+              {
+                filterData('funding'), (clickItem = 'funding');
+              }
+            "
+            type="button"
+            class="btn btn-outline-primary opacity-75"
+            :class="{ active: clickItem === 'funding' }"
+          >
             募資中
           </button>
         </div>
       </div>
     </div>
 
-    <div class="container">
+    <div class="container" v-if="categoryData.products">
+      <div class="row" v-if="categoryData.products.length === 0">
+        <div class="col text-center">查無資料</div>
+      </div>
+
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
         <div
           class="col position-relative"
@@ -209,33 +240,12 @@
                 </div>
 
                 <div class="mt-auto" v-if="showFinalStuOrderData">
-                  <!-- <div
-                      class="d-flex justify-content-between align-items-center mt-1 mb-3"
-                    > -->
                   <p class="mb-0 mt-1 mb-2">
                     募資價
                     <span class="text-primary fw-bold h3">
                       NT$ {{ course.funding_price }}
                     </span>
                   </p>
-
-                  <!-- <a
-                        v-if="showCheck.includes(course.id)"
-                        href="#/cart"
-                        type="button"
-                        class="btn btn-primary text-white btn-sm"
-                      >
-                        已選購，結帳去
-                      </a>
-
-                      <button
-                        v-else
-                        @click="addToCart(course.id)"
-                        class="btn btn-outline-primary btn-sm"
-                      >
-                        加入購物車
-                      </button> -->
-                  <!-- </div> -->
 
                   <div class="progress" style="height: 20px">
                     <div
@@ -246,8 +256,6 @@
                       aria-valuemax="100"
                       :style="{ width: matchFundingTarget(course.id) + '%' }"
                     ></div>
-
-                    <!-- :style="{ width: matchFundingTarget(course.id) + '%' }" -->
                   </div>
 
                   <div class="d-flex justify-content-between">
@@ -341,11 +349,6 @@
               </div>
             </div> -->
         </div>
-
-        <!-- <div class="col"><div class="card">123</div></div>
-        <div class="col"><div class="card">123</div></div>
-        <div class="col"><div class="card">123</div></div>
-        <div class="col"><div class="card">123</div></div> -->
       </div>
     </div>
   </div>
@@ -366,23 +369,22 @@ const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 export default {
   data() {
     return {
-      category: "",
+      clickItem: "",
       categoryData: {},
     };
   },
+  props: ["categoryName"],
 
   watch: {
-    category() {
-      this.getCategoryData(this.category);
+    categoryName() {
+      this.getCategoryData(this.categoryName);
     },
   },
   created() {
     moment.locale("zh-tw");
   },
   mounted() {
-    console.log(this.$route.params.category);
-    this.category = this.$route.params.category;
-    this.getCategoryData(this.category);
+    this.getCategoryData(this.categoryName);
   },
   computed: {
     ...mapState(cartStore, ["cartList", "ShowCourseList", "showCheck"]),
@@ -424,13 +426,53 @@ export default {
       return moment(endTimeStr).fromNow();
     },
 
-    getCategoryData(category) {
-      console.log(this.category);
+    filterData(filterTarget) {
+      console.log(filterTarget);
+      console.log(this.categoryName);
 
+      if (
+        this.categoryName === "已開課課程" ||
+        this.categoryName === "募資課程"
+      ) {
+        if (filterTarget === "open") {
+          this.getAllOpenData();
+        } else if (filterTarget === "funding") {
+          this.getAllFundingData();
+        }
+      } else {
+        axios
+          .get(
+            `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${this.categoryName}`
+          )
+          .then((res) => {
+            console.log(res);
+            this.categoryData.products = [];
+            if (filterTarget === "funding") {
+              res.data.products.forEach((item) => {
+                if (item.courseStatus === "classFunding") {
+                  this.categoryData.products.push(item);
+                }
+              });
+            } else if (filterTarget === "open") {
+              res.data.products.forEach((item) => {
+                if (item.courseStatus === "classOpen") {
+                  this.categoryData.products.push(item);
+                }
+              });
+            }
+            console.log(this.categoryData);
+            // this.categoryData = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$router.push("/notFound");
+          });
+      }
+    },
+
+    getAllClassData() {
       axios
-        .get(
-          `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${category}`
-        )
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
           console.log(res);
           this.categoryData = res.data;
@@ -438,6 +480,78 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+
+    getAllFundingData() {
+      axios
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
+        .then((res) => {
+          console.log(res);
+          this.categoryData.products = [];
+          res.data.products.forEach((item) => {
+            if (item.courseStatus === "classFunding") {
+              this.categoryData.products.push(item);
+            }
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    getAllOpenData() {
+      axios
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
+        .then((res) => {
+          console.log(res);
+          this.categoryData.products = [];
+          res.data.products.forEach((item) => {
+            if (item.courseStatus === "classOpen") {
+              this.categoryData.products.push(item);
+            }
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    getCategoryData(category) {
+      console.log(category);
+
+      const categoryArr = [
+        "語言",
+        "藝術",
+        "投資理財",
+        "攝影",
+        "商業",
+        "募資課程",
+        "已開課課程",
+      ];
+
+      if (!categoryArr.includes(category)) {
+        this.$router.push("/notFound");
+        return;
+      }
+
+      if (category === "募資課程") {
+        this.getAllFundingData();
+      } else if (category === "已開課課程") {
+        this.getAllOpenData();
+      } else {
+        axios
+          .get(
+            `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${category}`
+          )
+          .then((res) => {
+            console.log(res);
+            this.categoryData = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$router.push("/notFound");
+          });
+      }
     },
   },
 };

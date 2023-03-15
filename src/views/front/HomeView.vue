@@ -84,10 +84,11 @@
           type="search"
           id="form1"
           class="form-control"
+          v-model="searchItem"
           placeholder="想學什麼呢？"
         />
 
-        <button type="button" class="btn btn-primary">
+        <button @click="searchKeyWord" type="button" class="btn btn-primary">
           <i class="bi bi-search"></i>
         </button>
       </div>
@@ -150,7 +151,11 @@
     <div class="container py-4">
       <div class="d-flex mb-3">
         <h3>熱門募資課程</h3>
-        <a href="" class="fs-5 ms-auto link-primary text-decoration-none">
+        <a
+          @click.prevent="refreshPage('募資課程')"
+          href=""
+          class="fs-5 ms-auto link-primary text-decoration-none"
+        >
           看更多 <i class="bi bi-heart-arrow lg"></i>
         </a>
       </div>
@@ -342,7 +347,11 @@
   <div class="container py-4 mb-3">
     <div class="d-flex mb-3">
       <h3>最新募資課程</h3>
-      <a href="" class="fs-5 ms-auto link-primary text-decoration-none">
+      <a
+        @click.prevent="refreshPage('募資課程')"
+        href=""
+        class="fs-5 ms-auto link-primary text-decoration-none"
+      >
         看更多 <i class="bi bi-heart-arrow"></i>
       </a>
     </div>
@@ -580,7 +589,11 @@
   <div class="container py-4 mb-3">
     <div class="d-flex mb-3">
       <h3>已開課熱門課程</h3>
-      <a href="" class="fs-5 ms-auto link-primary text-decoration-none">
+      <a
+        @click.prevent="refreshPage('已開課課程')"
+        href=""
+        class="fs-5 ms-auto link-primary text-decoration-none"
+      >
         看更多 <i class="bi bi-heart-arrow"></i>
       </a>
     </div>
@@ -1045,7 +1058,7 @@ import { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
+import Toast from "../../utils/Toast";
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
 import axios from "axios";
@@ -1065,6 +1078,7 @@ export default {
   data() {
     return {
       modules: [Navigation, Pagination, Autoplay],
+      searchItem: "",
       isLoading: false,
       isHover: "",
       // sendLoadItem: false,
@@ -1142,9 +1156,22 @@ export default {
       "BookmarkAction",
     ]),
 
+    searchKeyWord() {
+      if (this.searchItem === "") {
+        console.log("no word");
+        Toast.fire({
+          icon: "error",
+          title: "尚未輸入關鍵字",
+        });
+        return;
+      }
+      console.log();
+      this.$router.push(`/search/${this.searchItem}`);
+    },
+
     refreshPage(category) {
       this.$router.push(`/group/${category}`);
-      this.getCategoryData(category);
+      // this.getCategoryData(category);
       // this.getClassData();
       // this.getSmilarClassData();
       window.scrollTo(0, 0);

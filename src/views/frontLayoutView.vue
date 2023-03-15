@@ -243,7 +243,7 @@ export default {
 
     refreshPage(category) {
       this.$router.push(`/group/${category}`);
-
+      this.$route.params.category = category;
       window.scrollTo(0, 0);
     },
 
