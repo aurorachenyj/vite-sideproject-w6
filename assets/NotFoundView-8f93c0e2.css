@@ -1,0 +1,1 @@
+@keyframes colorRotate{25%{color:red;transform:rotate(-5deg)}50%{color:#00008b;transform:translate(20px,-10px)}75%{color:orange;transform:rotate(3deg)}}.animate{animation:colorRotate 1s infinite}.animateTwo{animation:colorRotate 3s infinite}
