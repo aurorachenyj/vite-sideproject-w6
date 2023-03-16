@@ -117,8 +117,13 @@
                   type="search"
                   placeholder="想學什麼?"
                   aria-label="Search"
+                  v-model="searchItem"
                 />
-                <button class="btn btn-outline-secondary btn-sm" type="submit">
+                <button
+                  @click.prevent="searchKeyWord"
+                  class="btn btn-outline-secondary btn-sm"
+                  type="button"
+                >
                   <i class="bi bi-search"></i>
                 </button>
               </div>
@@ -219,9 +224,8 @@
 <script>
 import axios from "axios";
 import Gototop from "../components/front/Gototop.vue";
-
 import cartStore from "../stores/cartStore.js";
-
+import Toast from "../utils/Toast";
 import { mapActions, mapState } from "pinia";
 import "bootstrap/js/dist/collapse.js";
 import "bootstrap/js/dist/dropdown.js";
@@ -232,6 +236,7 @@ export default {
   data() {
     return {
       // isLoading: false,
+      searchItem: "",
     };
   },
   components: { Gototop },
@@ -240,6 +245,28 @@ export default {
   },
   methods: {
     ...mapActions(cartStore, ["getCartList"]),
+
+    searchKeyWord() {
+      console.log(this.$route);
+
+      if (this.searchItem === "") {
+        console.log("no word");
+        Toast.fire({
+          icon: "error",
+          title: "尚未輸入關鍵字",
+        });
+        return;
+      }
+
+      if (!this.$route.path.includes("search")) {
+        this.$router.push(`./search/${this.searchItem}`);
+      } else {
+        this.$router.push(`./${this.searchItem}`);
+      }
+
+      // this.$route.path = "";
+      console.log(this.$route);
+    },
 
     refreshPage(category) {
       this.$router.push(`/group/${category}`);

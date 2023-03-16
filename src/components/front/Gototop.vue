@@ -1,10 +1,27 @@
 <template>
-  <i
+  <img
+    src="/img/gotop.png"
+    alt=""
+    class="img-hover-enlarge d-none"
+    id="toTopBtn"
+    @click="this.$emit('toTop')"
+    style="
+      /* padding: 0.1rem; */
+      background-color: rgba(240, 248, 245, 0.8);
+      border-radius: 50%;
+      bottom: 4rem;
+      right: 1.5rem;
+      position: fixed;
+      z-index: 2000;
+    "
+  />
+
+  <!-- <i
     class="bi bi bi-rocket fs-2 text-primary img-hover-enlarge d-none"
     id="toTopBtn"
     @click="this.$emit('toTop')"
     style="bottom: 4rem; right: 1.5rem; position: fixed; z-index: 2000"
-  ></i>
+  ></i> -->
 </template>
 
 <script>

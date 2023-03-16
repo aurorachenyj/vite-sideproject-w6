@@ -255,15 +255,25 @@ export default {
   data() {
     return {
       searchData: [],
+      keyword: "",
     };
   },
   props: ["keywordName"],
+  beforeRouteUpdate(to, from) {
+    console.log(to.params.keyword);
+    this.keyword = to.params.keyword;
+  },
   mounted() {
-    console.log(this.keywordName);
-    this.searchKeyword();
+    this.keyword = this.keywordName;
+    this.matchSearchKeyword();
   },
   created() {
     moment.locale("zh-tw");
+  },
+  watch: {
+    keyword() {
+      this.matchSearchKeyword();
+    },
   },
   computed: {
     ...mapState(cartStore, ["cartList", "ShowCourseList", "showCheck"]),
@@ -272,6 +282,7 @@ export default {
 
     ...mapState(bookmarkStore, ["showbookmarkData"]),
   },
+
   methods: {
     ...mapActions(cartStore, [
       "getCartList",
@@ -291,6 +302,27 @@ export default {
       "BookmarkAction",
     ]),
 
+    matchSearchKeyword() {
+      axios
+        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
+        .then((res) => {
+          this.searchData = [];
+          res.data.products.forEach((item) => {
+            if (
+              item.content.includes(this.keyword) ||
+              item.description.includes(this.keyword) ||
+              item.title.includes(this.keyword) ||
+              item.category.includes(this.keyword)
+            ) {
+              this.searchData.push(item);
+            }
+          });
+          // console.log(this.searchData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());
 
@@ -302,32 +334,6 @@ export default {
       endTimeStr = new Date(endTimeStr).toISOString();
 
       return moment(endTimeStr).fromNow();
-    },
-
-    searchKeyword() {
-      console.log(this.keywordName);
-      axios
-        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
-        .then((res) => {
-          console.log(res);
-          this.searchData = [];
-          res.data.products.forEach((item) => {
-            console.log(typeof item.content);
-            if (
-              item.content.includes(this.keywordName) ||
-              item.description.includes(this.keywordName) ||
-              item.title.includes(this.keywordName) ||
-              item.category.includes(this.keywordName)
-            ) {
-              this.searchData.push(item);
-            }
-          });
-          console.log(this.searchData);
-          // this.searchData = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
   },
 };

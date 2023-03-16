@@ -597,7 +597,7 @@
         看更多 <i class="bi bi-heart-arrow"></i>
       </a>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-2">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-2">
       <!-- 已開課卡片版型 -->
 
       <div
@@ -1171,9 +1171,7 @@ export default {
 
     refreshPage(category) {
       this.$router.push(`/group/${category}`);
-      // this.getCategoryData(category);
-      // this.getClassData();
-      // this.getSmilarClassData();
+
       window.scrollTo(0, 0);
     },
 
@@ -1239,138 +1237,6 @@ export default {
       this.sixFundingClass = newestArr;
     },
 
-    // setLocalStorageBookmark() {
-    //   localStorage.setItem("learnfundBookmark", this.bookmarkData);
-    // },
-
-    // getLocalStorageBookmark() {
-    //   const bookmarkStr = localStorage.getItem("learnfundBookmark");
-    //   this.bookmarkData = bookmarkStr.split(",");
-    //   // console.log(this.bookmarkData);
-    // },
-
-    // BookmarkAction(id) {
-    //   console.log(this.bookmarkData);
-
-    //   if (event.target.classList.contains("bi-bookmark")) {
-    //     event.target.classList.remove("bi-bookmark");
-    //     event.target.classList.add("bi-bookmark-fill");
-    //     this.bookmarkData.push(id);
-    //     this.setLocalStorageBookmark();
-    //   } else {
-    //     const targetIndex = this.bookmarkData.indexOf(id);
-    //     console.log(targetIndex);
-    //     this.bookmarkData.splice(targetIndex, 1);
-    //     this.setLocalStorageBookmark();
-    //     console.log(this.bookmarkData);
-    //     event.target.classList.remove("bi-bookmark-fill");
-    //     event.target.classList.add("bi-bookmark");
-    //   }
-    // },
-
-    // matchFundingTarget(targetId) {
-    //   console.log(targetId);
-    //   console.log(this.showFinalStuOrderData);
-
-    //   let targetPrecent = null;
-
-    //   this.showFinalStuOrderData.find((i) => {
-    //     if (i.classId === targetId) {
-    //       targetPrecent = Math.round(
-    //         ((i.stuNum * i.classFundingPrice) / i.classfundingTarget) * 100
-    //       );
-    //       return true;
-    //     } else {
-    //       targetPrecent = 0;
-    //     }
-    //   });
-
-    //   return targetPrecent;
-    // },
-
-    // matchStuNumAndClass(targetId) {
-    //   console.log(targetId);
-    //   console.log(this.showFinalStuOrderData);
-
-    //   let showNum = null;
-
-    //   this.showFinalStuOrderData.find((i) => {
-    //     if (i.classId === targetId) {
-    //       showNum = i.stuNum;
-    //       return true;
-    //     } else {
-    //       showNum = 0;
-    //     }
-    //   });
-
-    //   return showNum;
-    // },
-
-    // getStuOrderList() {
-    //   axios
-    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/orders`)
-    //     .then((res) => {
-    //       const totalPage = res.data.pagination.total_pages;
-    //       const pageArr = [];
-    //       for (let i = 1; i <= totalPage; i++) {
-    //         pageArr.push(i);
-    //       }
-
-    //       const apiArr = pageArr.map((item) => {
-    //         return axios.get(
-    //           `${VITE_APP_URL}/api/${VITE_APP_PATH}/orders?page=${item}`
-    //         );
-    //       });
-
-    //       Promise.all(apiArr)
-    //         .then((res) => {
-    //           //console.log(res);
-
-    //           res.forEach((item) => {
-    //             this.totalStuOrderList.push(...item.data.orders);
-    //           });
-
-    //           //console.log(this.totalStuOrderList);
-    //           const arr = [...toRaw(this.totalStuOrderList)];
-
-    //           const orderArr = arr.map((i) => {
-    //             return Object.values(i.products);
-    //           });
-
-    //           const orderNumArr = orderArr.flat().map((i) => {
-    //             return {
-    //               classId: i.product.id,
-    //               classTitle: i.product.title,
-    //               classPrice: i.product.price,
-    //               classFundingPrice: i.product.funding_price,
-    //               classfundingTarget: i.product.funding_target,
-    //             };
-    //           });
-
-    //           const finalOrderNumArr = Object.values(
-    //             orderNumArr.reduce((acc, obj) => {
-    //               if (acc[obj.classId]) {
-    //                 acc[obj.classId].stuNum += 1;
-    //               } else {
-    //                 acc[obj.classId] = { ...obj, stuNum: 1 };
-    //               }
-    //               return acc;
-    //             }, {})
-    //           );
-
-    //           console.log(finalOrderNumArr);
-
-    //           this.finalStuOrderData = finalOrderNumArr;
-    //         })
-    //         .catch((err) => {
-    //           console.log(err);
-    //         });
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
-
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());
 
@@ -1407,11 +1273,21 @@ export default {
           this.fundingClass = res.data.products.filter((course) => {
             return course.courseStatus === "classFunding";
           });
+
+          if (this.fundingClass.length >= 6) {
+            this.fundingClass = this.fundingClass.slice(-6).slice();
+          }
+
           // console.log(this.fundingClass);
 
           this.openingClass = res.data.products.filter((course) => {
             return course.courseStatus === "classOpen";
           });
+
+          if (this.openingClass.length >= 4) {
+            this.openingClass = this.openingClass.slice(-4).slice();
+          }
+
           // console.log(this.openingClass);
         })
         .catch((err) => {
