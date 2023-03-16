@@ -36,11 +36,13 @@
 
     <!-- position-absolute top-30 start-10 -->
     <div class="banner-text-position">
-      <p class="h2 text-primary fw-bold">學習無限可能 遇見更好的自己</p>
+      <p class="h2 text-primary fw-bold" data-aos="fade-right">
+        學習無限可能 遇見更好的自己
+      </p>
 
       <!-- <div class="typeAnimate">學習無限可能 遇見更好的自己</div> -->
 
-      <div class="input-group">
+      <div class="input-group" data-aos="fade-right">
         <div class="dropdown">
           <button
             class="btn btn-outline-primary dropdown-toggle"
@@ -120,11 +122,11 @@
     <div class="row row-cols-1 row-cols-md-3 g-2 mb-5">
       <div class="col">
         <div class="d-flex align-items-center justify-content-center">
-          <div class="img-cover me-2">
+          <div class="img-cover me-2" data-aos="flip-left">
             <img src="/img/neural.png" alt="" />
           </div>
 
-          <div>
+          <div data-aos="flip-left">
             <h4>豐富多元</h4>
             <p>
               精彩豐富的內容 <br />
@@ -136,11 +138,11 @@
 
       <div class="col">
         <div class="d-flex align-items-center justify-content-center">
-          <div class="img-cover me-2">
+          <div class="img-cover me-2" data-aos="flip-left">
             <img src="/img/tier.png" alt="" />
           </div>
 
-          <div class="ms-2">
+          <div class="ms-2" data-aos="flip-left">
             <h4>共同成長</h4>
             <p>
               和來自各地的學員 <br />
@@ -152,11 +154,11 @@
 
       <div class="col">
         <div class="d-flex align-items-center justify-content-center">
-          <div class="img-cover me-2">
+          <div class="img-cover me-2" data-aos="flip-left">
             <img src="/img/invest.png" alt="" />
           </div>
 
-          <div>
+          <div data-aos="flip-left">
             <h4>彈性學習</h4>
             <p>
               依照自己的步調 <br />
@@ -170,7 +172,7 @@
 
   <div class="bg-light mb-3 py-4">
     <div class="container py-4">
-      <div class="d-flex mb-3">
+      <div class="d-flex mb-3" data-aos="fade-up">
         <h3>熱門募資課程</h3>
         <a
           @click.prevent="refreshPage('募資課程')"
@@ -185,6 +187,7 @@
         <!-- 募資卡片開始 -->
 
         <div
+          data-aos="fade-up"
           v-for="fundClass in fundingClass"
           :key="fundClass.id"
           class="col position-relative"
@@ -608,7 +611,7 @@
 
   <!-- 已開課熱門課程 -->
   <div class="container py-4 mb-3">
-    <div class="d-flex mb-3">
+    <div class="d-flex mb-3" data-aos="fade-right">
       <h3>已開課熱門課程</h3>
       <a
         @click.prevent="refreshPage('已開課課程')"
@@ -773,9 +776,10 @@
   <!-- 學生回饋 -->
   <div class="bg-light py-4 mb-5">
     <div class="container">
-      <h3 class="text-center mb-3">學生回饋</h3>
+      <h3 class="text-center mb-3" data-aos="fade-down">學生回饋</h3>
 
       <div
+        data-aos="fade-right"
         class="d-flex align-items-center col-md-8 col-lg-6 mb-3 p-3 border-bottom"
       >
         <img
@@ -803,7 +807,7 @@
         </div>
       </div>
 
-      <div class="d-flex flex-row-reverse">
+      <div class="d-flex flex-row-reverse" data-aos="fade-down">
         <div
           class="col-md-8 col-lg-6 d-flex flex-row-reverse align-items-center mb-3 p-3 border-bottom"
         >
@@ -834,6 +838,7 @@
       </div>
 
       <div
+        data-aos="fade-right"
         class="d-flex align-items-center col-md-8 col-lg-6 mb-3 p-3 border-bottom"
       >
         <img
@@ -861,7 +866,7 @@
         </div>
       </div>
 
-      <div class="d-flex flex-row-reverse">
+      <div class="d-flex flex-row-reverse" data-aos="fade-down">
         <div
           class="col-md-8 col-lg-6 d-flex flex-row-reverse align-items-center p-3 border-bottom"
         >
@@ -895,11 +900,12 @@
 
   <!-- 課程類別 -->
   <div class="container pt-3 pb-4 mb-5">
-    <h3 class="mb-5 text-center">課程類別</h3>
+    <h3 class="mb-5 text-center" data-aos="fade-down">課程類別</h3>
 
     <div class="row row-cols-1 row-cols-md-5">
       <div class="col">
         <a
+          data-aos="flip-right"
           @click.prevent="refreshPage('語言')"
           href=".#group/語言"
           class="btn btn-outline-primary w-100 border-top-0 border-start-0 shadow-sm"
@@ -924,6 +930,7 @@
 
       <div class="col">
         <a
+          data-aos="flip-right"
           @click.prevent="refreshPage('藝術')"
           href=".#group/藝術"
           class="btn btn-outline-secondary w-100 border-top-0 border-start-0 shadow-sm"
@@ -945,6 +952,7 @@
 
       <div class="col">
         <a
+          data-aos="flip-right"
           @click.prevent="refreshPage('攝影')"
           href=".#group/攝影"
           class="btn btn-outline-primary w-100 border-top-0 border-start-0 shadow-sm"
@@ -967,6 +975,7 @@
 
       <div class="col">
         <a
+          data-aos="flip-right"
           @click.prevent="refreshPage('商業')"
           href=".#group/商業"
           class="btn btn-outline-secondary w-100 border-top-0 border-start-0 shadow-sm"
@@ -990,6 +999,7 @@
 
       <div class="col">
         <a
+          data-aos="flip-right"
           @click.prevent="refreshPage('投資理財')"
           href=".#group/投資理財"
           class="btn btn-outline-primary w-100 border-top-0 border-start-0 shadow-sm"

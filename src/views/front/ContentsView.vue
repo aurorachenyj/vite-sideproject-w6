@@ -4,9 +4,9 @@
       <div class="container">
         <div class="row">
           <div class="col-12" v-if="selectArticle.length > 0">
-            <h3 class="my-3 fw-bold">精選文章</h3>
+            <h3 class="my-3 fw-bold" data-aos="fade-down">精選文章</h3>
 
-            <div class="row g-4">
+            <div class="row g-4" data-aos="fade-down">
               <div class="col-lg-6">
                 <div class="h-100 position-relative">
                   <RouterLink
@@ -115,7 +115,7 @@
       </div>
     </div>
 
-    <div class="container py-5">
+    <div class="container py-5" data-aos="fade-up">
       <div class="row flex-md-row-reverse gy-3 g-4">
         <div class="col-md-3">
           <div class="sticky-top" style="top: 110px">
@@ -245,6 +245,7 @@
                 </span>
                 <br />
                 <h5 class="d-inline-block link-style">{{ article.title }}</h5>
+                <br />
                 <p class="d-none d-md-block text-muted">
                   {{ article.description }}
                 </p>
@@ -350,6 +351,14 @@ export default {
   methods: {
     searchTagArticle(targetTag) {
       window.scrollTo(0, 400);
+      console.log(window.screen.width);
+
+      if (window.screen.width <= 992) {
+        window.scrollTo(0, 800);
+      } else if (window.screen.width <= 768) {
+        window.scrollTo(0, 1000);
+      }
+
       this.showTargetTag = targetTag;
       console.log(targetTag);
       console.log(this.allarticleListData);
