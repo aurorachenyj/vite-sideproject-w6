@@ -1,3 +1,22 @@
+<style>
+.typeAnimate {
+  animation: typeWord 2s infinite;
+}
+
+@keyframes typeWord {
+  0% {
+    left: 20%;
+  }
+
+  50% {
+    left: 60%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+</style>
+
 <template>
   <!-- min-vh-100 -->
 
@@ -18,6 +37,8 @@
     <!-- position-absolute top-30 start-10 -->
     <div class="banner-text-position">
       <p class="h2 text-primary fw-bold">學習無限可能 遇見更好的自己</p>
+
+      <!-- <div class="typeAnimate">學習無限可能 遇見更好的自己</div> -->
 
       <div class="input-group">
         <div class="dropdown">
@@ -293,8 +314,8 @@
             style="
               position: absolute;
               top: -30px;
-              right: -100px;
-              width: 70%;
+              right: -5px;
+              width: 100%;
               background-color: rgba(48, 45, 42, 0.9);
               z-index: 100;
             "
@@ -701,7 +722,7 @@
           style="
             position: absolute;
             top: -30px;
-            right: -100px;
+            right: -5px;
             width: 100%;
             background-color: rgba(48, 45, 42, 0.9);
             z-index: 100;
@@ -874,7 +895,7 @@
 
   <!-- 課程類別 -->
   <div class="container pt-3 pb-4 mb-5">
-    <h3 class="mb-3 text-center">課程類別</h3>
+    <h3 class="mb-5 text-center">課程類別</h3>
 
     <div class="row row-cols-1 row-cols-md-5">
       <div class="col">

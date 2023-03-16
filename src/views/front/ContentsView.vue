@@ -2,15 +2,6 @@
   <div class="full-height mb-5">
     <div class="bg-light py-5">
       <div class="container">
-        <!-- <div class="row my-3">
-          <div class="col">
-            這裡做輪播
-            <div class="card">
-              <div class="card-body">1222222</div>
-            </div>
-          </div>
-        </div> -->
-
         <div class="row">
           <div class="col-12" v-if="selectArticle.length > 0">
             <h3 class="my-3 fw-bold">精選文章</h3>
@@ -131,30 +122,6 @@
             <h4 class="fw-bold mb-3">主題標籤探索</h4>
 
             <div class="row g-1">
-              <!-- <div class="col-12">
-                <div class="d-flex flex-md-column justify-content-between">
-                  <button class="btn btn-outline-primary mb-2 me-2 me-md-0">
-                    藝術
-                  </button>
-                  <button class="btn btn-outline-secondary mb-2 me-2 me-md-0">
-                    藝術
-                  </button>
-                  <button class="btn btn-primary mb-2 me-2 me-md-0">
-                    藝術
-                  </button>
-                  <button class="btn btn-primary mb-2 me-2 me-md-0">
-                    藝術
-                  </button>
-                  <button class="btn btn-primary mb-2 me-2 me-md-0">
-                    藝術
-                  </button>
-                  <button class="btn btn-primary mb-2 me-2 me-md-0">
-                    藝術生活
-                  </button>
-                </div>
-              </div> -->
-
-              <!-- <h4 class="fw-bold mb-3">主題標籤探索</h4> -->
               <div class="col-12" v-if="allarticleTag">
                 <div
                   class="card bg-light border-0"

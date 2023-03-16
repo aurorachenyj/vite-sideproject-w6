@@ -1,9 +1,15 @@
 <script>
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 export default {
   components: [],
 
   data() {
     return {};
+  },
+  mounted() {
+    AOS.init();
   },
 };
 </script>
