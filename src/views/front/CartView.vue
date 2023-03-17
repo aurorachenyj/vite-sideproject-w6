@@ -104,7 +104,7 @@
       </div>
     </div>
   </div>
-  {{ showCheck }}
+  <!-- {{ showCheck }} -->
   <br />
   <br />
   <br />

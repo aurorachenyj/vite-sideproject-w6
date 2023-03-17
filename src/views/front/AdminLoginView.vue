@@ -44,7 +44,7 @@
 
 <script>
 import Toast from "../../utils/Toast";
-const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
+const { VITE_APP_URL } = import.meta.env;
 
 export default {
   data() {

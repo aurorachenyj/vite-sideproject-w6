@@ -126,10 +126,10 @@
 
 <script>
 import { mapState, mapActions } from "pinia";
-import orderStore from "../stores/orderStore.js";
+// import orderStore from "../stores/orderStore.js";
 import frontOrderStore from "../stores/frontOrderStore";
 
-const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
+const { VITE_APP_URL } = import.meta.env;
 
 export default {
   data() {
@@ -205,7 +205,7 @@ export default {
           }
           // alert("管理者 您好");
         })
-        .catch((err) => {
+        .catch(() => {
           alert("請重新登入驗證");
           this.$router.push("/adminLogin");
         });

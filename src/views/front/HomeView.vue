@@ -42,7 +42,7 @@
 
       <!-- <div class="typeAnimate">學習無限可能 遇見更好的自己</div> -->
 
-      <div class="input-group" data-aos="fade-right">
+      <div class="input-group">
         <div class="dropdown">
           <button
             class="btn btn-outline-primary dropdown-toggle"
@@ -1044,10 +1044,6 @@
   /* padding: 20px; */
 }
 
-.swiper-wrapper {
-  /* height: 80%; */
-}
-
 .swiper-slide {
   height: auto;
 }
@@ -1093,7 +1089,7 @@ import Toast from "../../utils/Toast";
 import moment from "moment";
 import "moment/dist/locale/zh-tw";
 import axios from "axios";
-import { toRaw } from "vue";
+// import { toRaw } from "vue";
 import { mapState, mapActions } from "pinia";
 import cartStore from "../../stores/cartStore.js";
 import frontOrderStore from "../../stores/frontOrderStore.js";

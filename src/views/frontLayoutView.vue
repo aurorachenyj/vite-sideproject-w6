@@ -4,7 +4,7 @@
     
   </div> -->
   <!-- header -->
-  <gototop @to-top="goTotop" />
+  <go-to-top @to-top="goTotop" />
   <header class="bg-white shadow-sm sticky-top" style="z-index: 1200">
     <div class="container">
       <nav
@@ -222,15 +222,15 @@
 </template>
 
 <script>
-import axios from "axios";
-import Gototop from "../components/front/Gototop.vue";
+// import axios from "axios";
+import GoToTop from "../components/front/Gototop.vue";
 import cartStore from "../stores/cartStore.js";
 import Toast from "../utils/Toast";
 import { mapActions, mapState } from "pinia";
 import "bootstrap/js/dist/collapse.js";
 import "bootstrap/js/dist/dropdown.js";
 
-const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env; // 取出環境變數
+// const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env; // 取出環境變數
 
 export default {
   data() {
@@ -239,7 +239,7 @@ export default {
       searchItem: "",
     };
   },
-  components: { Gototop },
+  components: { GoToTop },
   computed: {
     ...mapState(cartStore, ["cartList"]),
   },
