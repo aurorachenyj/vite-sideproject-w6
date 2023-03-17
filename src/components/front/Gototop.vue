@@ -27,6 +27,7 @@
 
 <script>
 export default {
+  name: "GoToTop",
   created() {
     window.addEventListener("scroll", this.toTopBtnStatus);
   },
