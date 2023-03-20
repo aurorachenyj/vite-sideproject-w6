@@ -48,7 +48,7 @@ export default defineStore("cartStore", {
           this.isLoading = false;
         })
         .catch((err) => {
-          // alert(err.response.data.message);
+          alert(err.response.data.message);
         });
     },
 
