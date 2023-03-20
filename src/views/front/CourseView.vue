@@ -120,7 +120,7 @@
                 <div class="border-start text-center w-50">
                   <p class="mb-0">
                     正式售價 <br />
-                    <del class="fs-4"> NT$ {{ classData.price }}</del>
+                    <del class="fs-4"> NT$ {{ classData.origin_price }}</del>
                   </p>
                 </div>
               </div>

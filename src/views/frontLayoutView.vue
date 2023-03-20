@@ -5,6 +5,8 @@
   </div> -->
   <!-- header -->
   <go-to-top @to-top="goTotop" />
+  <email-get-coupon></email-get-coupon>
+
   <header class="bg-white shadow-sm sticky-top" style="z-index: 1200">
     <div class="container">
       <nav
@@ -191,16 +193,7 @@
           <a href="" class="text-decoration-none text-hover"> 使用條款 </a>
           <a href="" class="text-decoration-none text-hover"> 隱私權政策 </a>
         </div>
-        <!-- <div class="text-end">
-          <RouterLink
-            class="link-dark me-2 text-decoration-none"
-            to="/adminLogin"
-            >登入後台</RouterLink
-          >
-          <RouterLink class="link-dark text-decoration-none" to="/admin/index"
-            >後台首頁</RouterLink
-          >
-        </div> -->
+
         <div class="div">
           <a href="" style="font-size: 2rem" class="me-2 icon-hover">
             <i class="bi bi-instagram"></i
@@ -224,6 +217,7 @@
 <script>
 // import axios from "axios";
 import GoToTop from "../components/front/Gototop.vue";
+import EmailGetCoupon from "../components/front/EmailGetCoupon.vue";
 import cartStore from "../stores/cartStore.js";
 import Toast from "../utils/Toast";
 import { mapActions, mapState } from "pinia";
@@ -239,12 +233,17 @@ export default {
       searchItem: "",
     };
   },
-  components: { GoToTop },
+  components: { GoToTop, EmailGetCoupon },
   computed: {
     ...mapState(cartStore, ["cartList"]),
   },
   methods: {
     ...mapActions(cartStore, ["getCartList"]),
+
+    // removeAlert() {
+    //   console.log(this.$refs.emailGetCoupon);
+    //   this.$refs.emailGetCoupon.style.display = "none";
+    // },
 
     searchKeyWord() {
       console.log(this.$route);

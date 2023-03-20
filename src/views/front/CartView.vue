@@ -74,16 +74,42 @@
             <br />
 
             <div class="text-end">
-              <span class="badge bg-secondary btn mb-2">一鍵帶入</span>
+              <span
+                @click="fillInCouponData"
+                :class="{ disabled: cartList.carts.length === 0 }"
+                class="badge bg-secondary btn mb-2"
+                >一鍵帶入</span
+              >
             </div>
-            <div class="input-group mb-4">
+            <div class="input-group">
               <span class="input-group-text" id="discount">使用優惠券</span>
-              <input type="text" class="form-control" placeholder="輸入代碼" />
+              <input
+                v-model="couponCode"
+                type="text"
+                class="form-control"
+                placeholder="輸入代碼"
+              />
             </div>
+
+            <!-- <span
+              @click="removeCoupon"
+              v-if="couponCode !== ''"
+              class="badge bg-primary mt-1"
+              style="cursor: pointer; padding: 0.3rem"
+            >
+              <i class="bi bi-x-circle"></i> 取消優惠券
+            </span> -->
+
+            <p
+              class="fs-7 text-end text-muted mb-0"
+              v-if="couponResText !== ''"
+            >
+              {{ couponResText }}
+            </p>
 
             <button
               v-if="cartList.carts.length === 0"
-              class="btn btn-outline-primary w-100 disabled"
+              class="btn btn-outline-primary w-100 disabled mt-4"
               type="button"
             >
               未選購任何課程
@@ -94,7 +120,7 @@
             <RouterLink
               to="./cart/order"
               v-else
-              class="btn btn-outline-primary w-100"
+              class="btn btn-outline-primary w-100 mt-4"
               type="button"
             >
               結帳去
@@ -121,6 +147,8 @@ export default {
   data() {
     return {
       isLoading: false,
+      couponCode: "",
+      couponResText: "",
       // cartList: {}, 已移到 cartStore.js 的 cartListData 裡
     };
   },
@@ -155,6 +183,35 @@ export default {
     //       console.log(err);
     //     });
     // },
+
+    fillInCouponData() {
+      console.log(localStorage.getItem("coupon"));
+      this.couponCode = localStorage.getItem("coupon");
+
+      const data = {
+        code: this.couponCode,
+      };
+
+      this.$http
+        .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/coupon`, { data })
+        .then((res) => {
+          console.log(res);
+
+          this.couponResText = res.data.message;
+          this.cartList.final_total = res.data.data.final_total;
+
+          // this.getCartList();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    removeCoupon() {
+      this.couponCode = "";
+      // this.getCartList();
+      // 但沒有取消coupon api
+    },
 
     delCartItem(id, productId) {
       // console.log(this.cartList);
