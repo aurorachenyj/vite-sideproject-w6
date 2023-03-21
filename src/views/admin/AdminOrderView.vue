@@ -271,7 +271,7 @@ export default {
           this.checkOrderData = res.data;
           this.isLoading = false;
         })
-        .catch((err) => {
+        .catch(() => {
           this.isLoading = false;
         });
 
@@ -282,7 +282,7 @@ export default {
       const id = this.delId;
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/order/${id}`)
-        .then((res) => {
+        .then(() => {
           this.getOrderList(this.currentPage);
           this.$refs.deleteModal.hideModal();
         })

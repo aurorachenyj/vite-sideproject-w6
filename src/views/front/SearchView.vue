@@ -259,7 +259,7 @@ export default {
     };
   },
   props: ["keywordName"],
-  beforeRouteUpdate(to, from) {
+  beforeRouteUpdate(to) {
     console.log(to.params.keyword);
     this.keyword = to.params.keyword;
   },

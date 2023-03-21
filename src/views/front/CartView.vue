@@ -154,6 +154,7 @@ export default {
   },
   mounted() {
     this.getCartList();
+    this.fillInCouponData();
   },
   computed: {
     ...mapState(cartStore, ["cartList", "showCheck"]),
@@ -166,6 +167,9 @@ export default {
       //   this.clearCartList();
       // }
     },
+    // couponCode() {
+    //   this.fillInCouponData();
+    // },
   },
 
   methods: {
@@ -186,6 +190,16 @@ export default {
 
     fillInCouponData() {
       console.log(localStorage.getItem("coupon"));
+
+      if (localStorage.getItem("coupon") === null) {
+        Toast.fire({
+          icon: "error",
+          title: "尚未取得優惠券",
+        });
+
+        return;
+      }
+
       this.couponCode = localStorage.getItem("coupon");
 
       const data = {
@@ -199,6 +213,8 @@ export default {
 
           this.couponResText = res.data.message;
           this.cartList.final_total = res.data.data.final_total;
+
+          // localStorage.removeItem("coupon");
 
           // this.getCartList();
         })

@@ -194,7 +194,7 @@ export default {
             this.editorData = res.data.article.content;
             this.isLoading = false;
           })
-          .catch((err) => {
+          .catch(() => {
             this.isLoading = false;
           });
       }

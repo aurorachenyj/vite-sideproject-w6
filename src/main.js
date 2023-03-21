@@ -9,7 +9,7 @@ import "vue-loading-overlay/dist/css/index.css";
 import "./assets/all.scss";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
-import Swal from "sweetalert2/dist/sweetalert2.js";
+// import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 
 import axios from "axios";
