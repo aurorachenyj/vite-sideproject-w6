@@ -2,7 +2,7 @@
   <!-- 手機版置底 收藏、購物按鈕 -->
   <div class="d-md-none fixed-bottom py-2 shadow-lg bg-light">
     <div class="container">
-      <button class="btn w-25">
+      <button class="btn w-25" type="button">
         <!-- <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i> -->
 
         <i
@@ -39,6 +39,7 @@
         v-else
         @click="addToCart(classData.id)"
         class="btn btn-outline-primary w-75"
+        type="button"
       >
         立即購買
       </button>
@@ -127,7 +128,7 @@
             </div>
 
             <div>
-              <button class="btn w-25">
+              <button class="btn w-25" type="button">
                 <!-- <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i> -->
 
                 <i
@@ -168,6 +169,7 @@
                 v-else
                 @click="addToCart(classData.id)"
                 class="btn btn-outline-primary w-75"
+                type="button"
               >
                 立即購買
               </button>
@@ -221,7 +223,7 @@
               </p>
 
               <div class="mt-auto">
-                <button class="btn w-25">
+                <button class="btn w-25" type="button">
                   <!-- <i class="bi bi-bookmark fs-3 fw-bold text-secondary"></i> -->
 
                   <i
@@ -261,6 +263,7 @@
                   v-else
                   @click="addToCart(classData.id)"
                   class="btn btn-outline-primary w-75"
+                  type="button"
                 >
                   立即購買
                 </button>

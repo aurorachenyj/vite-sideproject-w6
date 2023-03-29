@@ -53,7 +53,7 @@
                 v-for="similarClass in similarClassData"
                 :key="similarClass.id"
               >
-                <router-link
+                <RouterLink
                   :to="`/course/${similarClass.id}`"
                   class="text-decoration-none text-dark"
                 >
@@ -68,7 +68,7 @@
                   </div>
 
                   <h6 class="p-3 mb-0">{{ similarClass.title }}</h6>
-                </router-link>
+                </RouterLink>
               </div>
             </div>
           </div>
@@ -108,11 +108,9 @@ export default {
   },
   methods: {
     toTopBtnStatus() {
-      console.log(window.scrollY);
       this.toTopBtn = document.querySelector("#toTopBtn");
 
       if (window.scrollY > 100) {
-        console.log("u.3ql");
         this.toTopBtn.classList.remove("d-none");
         this.toTopBtn.classList.add("d-block");
       } else {
@@ -126,20 +124,16 @@ export default {
     },
 
     getSimilarClass() {
-      console.log(this.articleData.tag);
       const categoryArr = ["商業", "藝術", "語言", "投資理財", "攝影"];
       const targetCategory = this.articleData.tag.find((item) => {
         return categoryArr.includes(item);
       });
-      console.log(targetCategory);
 
       axios
         .get(
           `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${targetCategory}`
         )
         .then((res) => {
-          console.log(res);
-          console.log(res.data.products);
           this.similarClassData = res.data.products;
         })
 
@@ -154,12 +148,9 @@ export default {
       return nowDate;
     },
     getArticle() {
-      console.log(this.articleId);
-
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/article/${this.articleId}`)
         .then((res) => {
-          console.log(res);
           this.articleData = res.data.article;
         })
         .catch((err) => {

@@ -216,11 +216,12 @@
                         已選購，結帳去
                       </a>
 
+                      <!-- :disabled="sendLoadItem === true" -->
                       <button
                         v-else
-                        :disabled="sendLoadItem === true"
                         @click="addToCart(course.id)"
                         class="btn btn-outline-primary btn-sm"
+                        type="button"
                       >
                         加入購物車
                       </button>
@@ -298,24 +299,6 @@
                       </span>
                     </p>
 
-                    <!-- <a
-                        v-if="showCheck.includes(course.id)"
-                        href="#/cart"
-                        type="button"
-                        class="btn btn-primary text-white btn-sm"
-                      >
-                        已選購，結帳去
-                      </a>
-
-                      <button
-                        v-else
-                        @click="addToCart(course.id)"
-                        class="btn btn-outline-primary btn-sm"
-                      >
-                        加入購物車
-                      </button> -->
-                    <!-- </div> -->
-
                     <div class="progress" style="height: 20px">
                       <div
                         class="progress-bar progress-bar-striped progress-bar-animated"
@@ -325,8 +308,6 @@
                         aria-valuemax="100"
                         :style="{ width: matchFundingTarget(course.id) + '%' }"
                       ></div>
-
-                      <!-- :style="{ width: matchFundingTarget(course.id) + '%' }" -->
                     </div>
 
                     <div class="d-flex justify-content-between">
@@ -359,6 +340,7 @@
                         v-else
                         @click="addToCart(course.id)"
                         class="btn btn-outline-primary btn-sm"
+                        type="button"
                       >
                         加入購物車
                       </button>
@@ -367,58 +349,6 @@
                 </div>
               </div>
             </div>
-
-            <!-- 隱藏區塊 -->
-            <!-- <div
-              class="card text-white d-none d-md-block border-5 border-primary border-end-0 border-bottom-0"
-              v-if="isHover === course.id"
-              style="
-                position: absolute;
-                top: -30px;
-                right: -100px;
-                width: 100%;
-                background-color: rgba(48, 45, 42, 0.9);
-                z-index: 100;
-              "
-            >
-            
-
-              <div class="card-body">
-               
-                <p>
-                  {{ course.description }}
-                </p>
-
-                <div class="d-flex flex-column">
-                  <button class="btn btn-outline-primary btn-sm mb-2">
-                    <RouterLink
-                      :to="`/course/${course.id}`"
-                      class="text-white text-decoration-none"
-                    >
-                      查看詳情
-                    </RouterLink>
-                  </button>
-
-                  <a
-                    v-if="showCheck.includes(course.id)"
-                    href="#/cart"
-                    type="button"
-                    class="btn btn-primary text-white btn-sm"
-                  >
-                    已選購，結帳去
-                  </a>
-
-                  <button
-                    v-else
-                    @click="addToCart(course.id)"
-                    :disabled="sendLoadItem === true"
-                    class="btn btn-primary btn-sm"
-                  >
-                    加入購物車
-                  </button>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>

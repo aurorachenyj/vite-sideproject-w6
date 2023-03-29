@@ -351,7 +351,6 @@ export default {
   methods: {
     searchTagArticle(targetTag) {
       window.scrollTo(0, 400);
-      console.log(window.screen.width);
 
       if (window.screen.width <= 992) {
         window.scrollTo(0, 800);
@@ -360,8 +359,6 @@ export default {
       }
 
       this.showTargetTag = targetTag;
-      console.log(targetTag);
-      console.log(this.allarticleListData);
 
       const arr = this.allarticleListData.filter((item) => {
         // console.log(item);
@@ -371,17 +368,13 @@ export default {
       });
 
       this.clickTagData = [...toRaw(arr)];
-      console.log(this.clickTagData);
     },
 
     getAllArticleList(page) {
-      console.log(page);
       const pageArr = [];
       for (let i = 1; i <= page; i++) {
         pageArr.push(i);
       }
-
-      console.log(pageArr);
 
       const apiArr = pageArr.map((item) => {
         return axios.get(
@@ -389,11 +382,8 @@ export default {
         );
       });
 
-      console.log(apiArr);
-
       Promise.all(apiArr)
         .then((res) => {
-          console.log(res);
           let articleArr = [];
           res.forEach((item) => {
             articleArr.push(item.data.articles);
@@ -402,8 +392,6 @@ export default {
           // console.log(this.allarticleListData);
 
           this.allarticleListData = [...toRaw(articleArr)].flat();
-
-          console.log(this.allarticleListData);
 
           const allTag = [];
           this.allarticleListData.forEach((item) => {
@@ -428,7 +416,6 @@ export default {
     },
 
     changePage(page) {
-      console.log(page);
       this.currentPage = page;
     },
 
@@ -436,7 +423,6 @@ export default {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/articles?page=${page}`)
         .then((res) => {
-          console.log(res.data);
           this.articleListData = res.data;
 
           const hotArticle = [];
@@ -444,7 +430,7 @@ export default {
             for (let i = 0; i <= 2; i++) {
               hotArticle.push(res.data.articles[i]);
             }
-            console.log(hotArticle);
+            // console.log(hotArticle);
             this.selectArticle = hotArticle;
           }
 

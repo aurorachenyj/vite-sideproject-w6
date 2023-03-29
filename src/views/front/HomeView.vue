@@ -274,6 +274,7 @@
                       v-else
                       @click="addToCart(fundClass.id)"
                       class="btn btn-outline-primary btn-sm"
+                      type="button"
                     >
                       加入購物車
                     </button>
@@ -332,7 +333,10 @@
               </p>
 
               <div class="d-flex flex-column justify-content-center">
-                <button class="btn btn-outline-primary btn-sm mb-2">
+                <button
+                  class="btn btn-outline-primary btn-sm mb-2"
+                  type="button"
+                >
                   <RouterLink
                     :to="`/course/${fundClass.id}`"
                     class="text-white text-decoration-none"
@@ -354,6 +358,7 @@
                   v-else
                   @click="addToCart(fundClass.id)"
                   class="btn btn-primary btn-sm"
+                  type="button"
                 >
                   加入購物車
                 </button>
@@ -519,6 +524,7 @@
                   v-else
                   @click="addToCart(newestClass.id)"
                   class="btn btn-outline-primary btn-sm w-100 mt-2"
+                  type="button"
                 >
                   加入購物車
                 </button>
@@ -709,6 +715,7 @@
                     :disabled="sendLoadItem === true"
                     @click="addToCart(openClass.id)"
                     class="btn btn-outline-primary btn-sm"
+                    type="button"
                   >
                     加入購物車
                   </button>
@@ -740,7 +747,7 @@
             </p>
 
             <div class="d-flex flex-column">
-              <button class="btn btn-outline-primary btn-sm mb-2">
+              <button class="btn btn-outline-primary btn-sm mb-2" type="button">
                 <RouterLink
                   :to="`/course/${openClass.id}`"
                   class="text-white text-decoration-none"
@@ -763,6 +770,7 @@
                 @click="addToCart(openClass.id)"
                 :disabled="sendLoadItem === true"
                 class="btn btn-primary btn-sm"
+                type="button"
               >
                 加入購物車
               </button>

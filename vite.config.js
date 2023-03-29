@@ -6,7 +6,7 @@ import vue from "@vitejs/plugin-vue";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  base: "/vite-sideproject-w6/",
+  base: "/vue-learnFund/",
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),

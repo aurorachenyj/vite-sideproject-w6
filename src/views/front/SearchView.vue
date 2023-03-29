@@ -30,7 +30,7 @@
                 <img
                   :src="course.imageUrl"
                   class="card-img-top img-cover img-hover-enlarge"
-                  alt="..."
+                  :alt="course.title"
                 />
               </div>
 
@@ -108,11 +108,12 @@
                       已選購，結帳去
                     </a>
 
+                    <!-- :disabled="sendLoadItem === true" -->
                     <button
                       v-else
-                      :disabled="sendLoadItem === true"
                       @click="addToCart(course.id)"
                       class="btn btn-outline-primary btn-sm"
+                      type="button"
                     >
                       加入購物車
                     </button>
@@ -134,7 +135,7 @@
                 <img
                   :src="course.imageUrl"
                   class="card-img-top img-cover img-hover-enlarge"
-                  alt="..."
+                  :alt="course.title"
                 />
               </div>
 
@@ -226,6 +227,7 @@
                       v-else
                       @click="addToCart(course.id)"
                       class="btn btn-outline-primary btn-sm"
+                      type="button"
                     >
                       加入購物車
                     </button>
@@ -260,7 +262,7 @@ export default {
   },
   props: ["keywordName"],
   beforeRouteUpdate(to) {
-    console.log(to.params.keyword);
+    // console.log(to.params.keyword);
     this.keyword = to.params.keyword;
   },
   mounted() {
@@ -273,6 +275,12 @@ export default {
   watch: {
     keyword() {
       this.matchSearchKeyword();
+    },
+
+    searchData() {
+      this.getStuOrderList();
+      this.matchFundingTarget();
+      this.matchStuNumAndClass();
     },
   },
   computed: {

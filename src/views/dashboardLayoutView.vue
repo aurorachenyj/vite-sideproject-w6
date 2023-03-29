@@ -51,38 +51,6 @@
     </nav>
   </div>
 
-  <!-- <aside
-      class="sidebar vh-100 d-flex flex-column bg-light border-end h-100 shadow-sm"
-    >
-      <h5 class="p-3 text-center">募課趣-後台系統</h5>
-
-      <div class="overflow-auto">
-        <RouterLink to="/admin/index" class="ps-3 py-3 sidebar-link"
-          >後台首頁</RouterLink
-        >
-
-        <RouterLink to="/admin/order" class="ps-3 py-3 sidebar-link"
-          >訂單管理</RouterLink
-        >
-        <RouterLink to="/admin/courses" class="ps-3 py-3 sidebar-link"
-          >課程管理</RouterLink
-        >
-        <RouterLink to="/admin/content" class="ps-3 py-3 sidebar-link"
-          >文章管理</RouterLink
-        >
-        <RouterLink to="/adminLogin" class="ps-3 py-3 sidebar-link"
-          >回後台登入頁</RouterLink
-        >
-        <RouterLink to="/" class="ps-3 py-3 sidebar-link"
-          >回前台首頁</RouterLink
-        >
-      </div>
-
-      <a class="mt-auto sidebar-link border text-center"
-        ><i class="bi bi-box-arrow-left"></i> 登出</a
-      >
-    </aside> -->
-
   <main class="main-content" style="margin-top: 80px" v-if="finalStuOrderData">
     <div class="container my-4">
       <div class="row gy-3">
@@ -126,7 +94,7 @@
 
 <script>
 import { mapState, mapActions } from "pinia";
-// import orderStore from "../stores/orderStore.js";
+
 import frontOrderStore from "../stores/frontOrderStore";
 
 const { VITE_APP_URL } = import.meta.env;
@@ -147,10 +115,6 @@ export default {
   },
 
   watch: {
-    // showFinalorderInfoData() {
-    //   this.calcSaleData();
-    // },
-
     finalStuOrderData() {
       this.calcSaleData();
     },
@@ -163,14 +127,9 @@ export default {
     ...mapActions(frontOrderStore, ["getStuOrderList"]),
 
     calcSaleData() {
-      console.log("u.3ql3");
-      console.log(this.finalStuOrderData);
-
       let money = 0;
       let studentNum = 0;
-      // let classSlaesNum = 0;
 
-      // classSlaesNum =  this.showFinalorderInfoData.length
       this.finalStuOrderData.forEach((item) => {
         studentNum += item.stuNum;
 
@@ -183,7 +142,6 @@ export default {
         }
       });
 
-      console.log(money);
       this.totalSalesMoney = money;
       this.totalStudentNum = studentNum;
       this.totalClassSalesNum = this.finalStuOrderData.length;

@@ -168,7 +168,7 @@
         <a class="navbar-brand" href="#">
           <img
             src="../assets/LFlogo.svg"
-            alt=""
+            alt="LOGO"
             width="90"
             height="72"
             class="d-inline-block align-text-top"

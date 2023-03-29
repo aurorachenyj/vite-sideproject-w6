@@ -22,7 +22,7 @@ const router = createRouter({
       component: () => import("../views/FrontLayoutView.vue"),
       children: [
         {
-          path: "/",
+          path: "",
           name: "home",
           component: () => import("../views/front/HomeView.vue"),
         },
@@ -63,7 +63,7 @@ const router = createRouter({
         {
           path: "article/:articleId",
           name: "article",
-          component: () => import("../views/front/articleView.vue"),
+          component: () => import("../views/front/ArticleView.vue"),
         },
         {
           path: "bookmark",
