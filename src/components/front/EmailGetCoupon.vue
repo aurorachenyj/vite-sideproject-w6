@@ -55,6 +55,7 @@
         </button>
       </div>
     </div>
+
     <button
       @click="removeAlert"
       ref="delBtn"

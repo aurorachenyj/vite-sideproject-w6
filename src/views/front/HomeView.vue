@@ -35,85 +35,87 @@
     ></div>
 
     <!-- position-absolute top-30 start-10 -->
-    <div class="banner-text-position">
-      <p class="h2 text-primary fw-bold" data-aos="fade-right">
-        學習無限可能 遇見更好的自己
-      </p>
+    <div class="container">
+      <div class="banner-text-position">
+        <p class="h2 text-primary fw-bold" data-aos="fade-right">
+          學習無限可能 遇見更好的自己
+        </p>
 
-      <!-- <div class="typeAnimate">學習無限可能 遇見更好的自己</div> -->
+        <!-- <div class="typeAnimate">學習無限可能 遇見更好的自己</div> -->
 
-      <div class="input-group">
-        <div class="dropdown">
-          <button
-            class="btn btn-outline-primary dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton2"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            探索
+        <div class="input-group">
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-primary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton2"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              探索
+            </button>
+            <ul
+              class="dropdown-menu dropdown-menu-light"
+              aria-labelledby="dropdownMenuButton2"
+            >
+              <li><a class="dropdown-item" href=".#/courses">所有課程</a></li>
+
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('語言')"
+                  href="#"
+                  >語言</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('藝術')"
+                  href="#"
+                  >藝術</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('攝影')"
+                  href="#"
+                  >攝影</a
+                >
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('商業')"
+                  href="#"
+                  >商業</a
+                >
+              </li>
+
+              <li>
+                <a
+                  class="dropdown-item"
+                  @click.prevent="refreshPage('投資理財')"
+                  href="#"
+                  >投資理財</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <input
+            type="search"
+            id="form1"
+            class="form-control"
+            v-model="searchItem"
+            placeholder="想學什麼呢？"
+          />
+
+          <button @click="searchKeyWord" type="button" class="btn btn-primary">
+            <i class="bi bi-search"></i>
           </button>
-          <ul
-            class="dropdown-menu dropdown-menu-light"
-            aria-labelledby="dropdownMenuButton2"
-          >
-            <li><a class="dropdown-item" href=".#/courses">所有課程</a></li>
-
-            <li>
-              <a
-                class="dropdown-item"
-                @click.prevent="refreshPage('語言')"
-                href="#"
-                >語言</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                @click.prevent="refreshPage('藝術')"
-                href="#"
-                >藝術</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                @click.prevent="refreshPage('攝影')"
-                href="#"
-                >攝影</a
-              >
-            </li>
-            <li>
-              <a
-                class="dropdown-item"
-                @click.prevent="refreshPage('商業')"
-                href="#"
-                >商業</a
-              >
-            </li>
-
-            <li>
-              <a
-                class="dropdown-item"
-                @click.prevent="refreshPage('投資理財')"
-                href="#"
-                >投資理財</a
-              >
-            </li>
-          </ul>
         </div>
-
-        <input
-          type="search"
-          id="form1"
-          class="form-control"
-          v-model="searchItem"
-          placeholder="想學什麼呢？"
-        />
-
-        <button @click="searchKeyWord" type="button" class="btn btn-primary">
-          <i class="bi bi-search"></i>
-        </button>
       </div>
     </div>
   </header>

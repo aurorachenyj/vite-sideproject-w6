@@ -11,49 +11,51 @@
     <div class="row g-4">
       <div class="col-md-8">
         <div v-if="cartList.carts">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">課程名稱</th>
-                <th scope="col">課程狀態</th>
-                <th scope="col">售價</th>
-                <th scope="col" class="text-end">付款金額</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="cartList.carts.length === 0">
-                <td colspan="5" class="text-center">
-                  購物車尚無商品 <br />
-                  <a href="#/courses" class="btn btn-outline-primary my-2">
-                    探索課程
-                  </a>
-                </td>
-              </tr>
+          <div class="overflow-auto">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col" class="text-nowrap">課程名稱</th>
+                  <th scope="col" class="text-nowrap">課程狀態</th>
+                  <th scope="col">售價</th>
+                  <th scope="col" class="text-end text-nowrap">付款金額</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="cartList.carts.length === 0">
+                  <td colspan="5" class="text-center">
+                    購物車尚無商品 <br />
+                    <a href="#/courses" class="btn btn-outline-primary my-2">
+                      探索課程
+                    </a>
+                  </td>
+                </tr>
 
-              <tr v-for="item in cartList.carts" :key="item.id">
-                <td>
-                  <a
-                    @click="delCartItem(item.id, item.product_id)"
-                    class="link-primary"
-                  >
-                    <i class="bi bi-trash3"></i>
-                  </a>
-                </td>
-                <td>{{ item.product.title }}</td>
+                <tr v-for="item in cartList.carts" :key="item.id">
+                  <td>
+                    <a
+                      @click="delCartItem(item.id, item.product_id)"
+                      class="link-primary"
+                    >
+                      <i class="bi bi-trash3"></i>
+                    </a>
+                  </td>
+                  <td>{{ item.product.title }}</td>
 
-                <td v-if="item.product.courseStatus === 'classFunding'">
-                  募資中
-                </td>
-                <td v-else-if="item.product.courseStatus === 'classOpen'">
-                  已開課
-                </td>
+                  <td v-if="item.product.courseStatus === 'classFunding'">
+                    募資中
+                  </td>
+                  <td v-else-if="item.product.courseStatus === 'classOpen'">
+                    已開課
+                  </td>
 
-                <td>{{ item.product.origin_price }}</td>
-                <td class="text-end">{{ item.product.price }}</td>
-              </tr>
-            </tbody>
-          </table>
+                  <td>{{ item.product.origin_price }}</td>
+                  <td class="text-end">{{ item.product.price }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -81,16 +83,17 @@
                 >一鍵帶入</span
               >
             </div>
-            <div class="input-group">
-              <span class="input-group-text" id="discount">使用優惠券</span>
-              <input
-                v-model="couponCode"
-                type="text"
-                class="form-control"
-                placeholder="輸入代碼"
-              />
-            </div>
-
+            <keep-alive>
+              <div class="input-group">
+                <span class="input-group-text" id="discount">使用優惠券</span>
+                <input
+                  v-model="couponCode"
+                  type="text"
+                  class="form-control"
+                  placeholder="輸入代碼"
+                />
+              </div>
+            </keep-alive>
             <!-- <span
               @click="removeCoupon"
               v-if="couponCode !== ''"
@@ -173,20 +176,7 @@ export default {
   },
 
   methods: {
-    // getCartList() {
-    //   this.isLoading = true;
-    //   this.$http
-    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
-    //     .then((res) => {
-    //       console.log(res.data.data);
-
-    //       this.cartList = res.data.data;
-    //       this.isLoading = false;
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // },
+    ...mapActions(cartStore, ["getCartList"]),
 
     fillInCouponData() {
       console.log(localStorage.getItem("coupon"));
@@ -230,15 +220,10 @@ export default {
     },
 
     delCartItem(id, productId) {
-      // console.log(this.cartList);
-      console.log("id", id);
-      console.log("productId", productId);
-      console.log(this.showCheck);
       const targetDelIndex = this.showCheck.indexOf(productId);
       console.log(targetDelIndex);
 
       this.showCheck.splice(targetDelIndex, 1);
-      console.log(this.showCheck);
 
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart/${id}`)
@@ -261,7 +246,6 @@ export default {
           });
         });
     },
-    ...mapActions(cartStore, ["getCartList"]),
   },
 };
 </script>

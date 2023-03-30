@@ -44,6 +44,7 @@ export default defineStore("cartStore", {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
         .then((res) => {
+          console.log("getCartList");
           this.cartListData = res.data.data;
           this.isLoading = false;
         })
@@ -91,8 +92,6 @@ export default defineStore("cartStore", {
           });
 
           this.getCartList();
-
-          console.log("有跑最後");
         })
 
         .catch((err) => {

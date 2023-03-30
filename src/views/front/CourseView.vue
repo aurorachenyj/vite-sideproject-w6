@@ -29,7 +29,7 @@
           "
         ></i>
       </button>
-      <!-- <button class="btn btn-outline-primary w-75">立即購買</button> -->
+      <!-- <button class="btn btn-outline-primary w-75">加入購物車</button> -->
 
       <a v-if="checkBuyStatus" class="btn btn-primary w-75" href="#/cart">
         已購買，結帳去
@@ -41,7 +41,7 @@
         class="btn btn-outline-primary w-75"
         type="button"
       >
-        立即購買
+        加入購物車
       </button>
     </div>
   </div>
@@ -156,10 +156,10 @@
                 ></i>
               </button>
 
-              <!-- <button class="btn btn-outline-primary w-75">立即購買</button> -->
+              <!-- <button class="btn btn-outline-primary w-75">加入購物車</button> -->
               <a
                 v-if="checkBuyStatus"
-                class="btn btn-secondary w-75"
+                class="btn btn-primary w-75"
                 href="#/cart"
               >
                 已購買，結帳去
@@ -171,7 +171,7 @@
                 class="btn btn-outline-primary w-75"
                 type="button"
               >
-                立即購買
+                加入購物車
               </button>
             </div>
           </div>
@@ -265,7 +265,7 @@
                   class="btn btn-outline-primary w-75"
                   type="button"
                 >
-                  立即購買
+                  加入購物車
                 </button>
               </div>
             </div>
@@ -435,8 +435,6 @@ export default {
     },
 
     cartList() {
-      this.getCartList();
-
       this.checkBuyStatus = this.cartList.carts.some((item) => {
         return item.product_id === this.classId;
       });

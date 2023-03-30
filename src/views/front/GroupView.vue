@@ -9,7 +9,7 @@
       "
     >
       <div class="container">
-        <LoadingVue v-model:active="isLoading"> </LoadingVue>
+        <!-- <LoadingVue v-model:active="isLoading"> </LoadingVue> -->
 
         <nav
           class="pt-3"
@@ -172,7 +172,6 @@
 
                     <button
                       v-else
-                      :disabled="sendLoadItem === true"
                       @click="addToCart(course.id)"
                       class="btn btn-outline-primary btn-sm"
                       type="button"

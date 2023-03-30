@@ -154,3 +154,24 @@
     text-decoration-color: rgba(100, 97, 63, 0);
   }
 }
+
+// .anchor-link {
+//   position: relative;
+//   top: -150px; /* 将锚点链接向上移动 100 像素 */
+// }
+
+.nav-item.dropdown:hover {
+  .dropdown-menu {
+    display: block;
+  }
+}
+
+// alert關閉按鈕置中
+.alert-dismissible .btn-close {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 2;
+  padding: 1.25rem 1rem;
+  transform: translateY(-50%);
+}

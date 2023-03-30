@@ -51,12 +51,17 @@
             data-bs-toggle="collapse"
             data-bs-target="#burgerNavbar"
           >
-            <i class="bi bi-patch-plus text-muted fs-3"></i>
+            <i class="bi bi-list text-muted fs-2 fw-bold"></i>
+            <!-- bi-patch-plus -->
           </button>
         </div>
 
         <!--主角 MENU-->
-        <div class="collapse navbar-collapse" id="burgerNavbar">
+        <div
+          class="collapse navbar-collapse"
+          id="burgerNavbar"
+          ref="burgerMenu"
+        >
           <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown">
               <RouterLink
@@ -221,6 +226,7 @@ import EmailGetCoupon from "../components/front/EmailGetCoupon.vue";
 import cartStore from "../stores/cartStore.js";
 import Toast from "../utils/Toast";
 import { mapActions, mapState } from "pinia";
+// import collapse from "bootstrap/js/dist/collapse.js";
 import "bootstrap/js/dist/collapse.js";
 import "bootstrap/js/dist/dropdown.js";
 
@@ -231,11 +237,18 @@ export default {
     return {
       // isLoading: false,
       searchItem: "",
+      menuCollapse: null,
     };
   },
   components: { GoToTop, EmailGetCoupon },
   computed: {
     ...mapState(cartStore, ["cartList"]),
+  },
+  watch: {
+    $route() {
+      //console.log(this.$refs.burgerMenu.classList);
+      this.$refs.burgerMenu.classList.remove("show");
+    },
   },
   methods: {
     ...mapActions(cartStore, ["getCartList"]),
@@ -293,19 +306,6 @@ export default {
   },
   mounted() {
     this.getCartList();
-
-    // this.isLoading = true;
-    // setTimeout(() => {
-    //   this.isLoading = false;
-    // }, 1000);
-    // this.$http
-    //   .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     alert(err.response.data.message);
-    //   });
   },
 };
 </script>
