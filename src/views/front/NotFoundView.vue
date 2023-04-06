@@ -50,12 +50,11 @@ export default {
 
   mounted() {
     //3秒回首頁
-    setTimeout(() => {
-      this.$router.push("/");
-    }, 3000);
-
-    // 秒數倒數顯示
-    this.countdown();
+    // setTimeout(() => {
+    //   this.$router.push("/");
+    // }, 3000);
+    // // 秒數倒數顯示
+    // this.countdown();
   },
 };
 </script>

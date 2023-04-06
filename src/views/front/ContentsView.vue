@@ -205,10 +205,6 @@
 
           <h4 class="fw-bold my-3">最新文章</h4>
 
-          <!-- 到時改成router link -->
-
-          <!-- :to="`/article/${}`" -->
-          <!-- <RouterLink class="text-decoration-none"> -->
           <div
             class="row align-items-center g-3 border-bottom py-3"
             v-for="article in articleListData.articles"

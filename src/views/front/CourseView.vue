@@ -281,25 +281,40 @@
                 <a
                   :class="{ active: activeItem === 'course' }"
                   class="nav-link fw-bold"
-                  onclick="{document.getElementById('classSection').scrollIntoView(),activeItem='course'}"
+                  @click="
+                    {
+                      scrollScreen('classSection'), (activeItem = 'course');
+                    }
+                  "
                   >課程章節</a
                 >
+                <!-- document.getElementById('classSection').scrollIntoView() -->
               </li>
               <li class="nav-item">
                 <a
                   :class="{ active: activeItem === 'skillTree' }"
                   class="nav-link fw-bold"
-                  onclick="{document.getElementById('getSkill').scrollIntoView() ,activeItem='skillTree'}"
+                  @click="
+                    {
+                      scrollScreen('getSkill'), (activeItem = 'skillTree');
+                    }
+                  "
                   >收穫技能</a
                 >
+                <!-- document.getElementById('getSkill').scrollIntoView() -->
               </li>
               <li class="nav-item">
                 <a
                   :class="{ active: activeItem === 'teacherInfo' }"
                   class="nav-link fw-bold"
-                  onclick="{document.getElementById('teacherInfo').scrollIntoView(),activeItem='teacherInfo'}"
+                  @click="
+                    {
+                      scrollScreen('teacherInfo'), (activeItem = 'teacherInfo');
+                    }
+                  "
                   >講師介紹</a
                 >
+                <!-- document.getElementById('teacherInfo').scrollIntoView() -->
               </li>
             </ul>
 
@@ -461,6 +476,18 @@ export default {
       "getLocalStorageBookmark",
       "BookmarkAction",
     ]),
+
+    scrollScreen(targetElement) {
+      // console.log(document.getElementById(targetElement));
+      const rect = document
+        .getElementById(targetElement)
+        .getBoundingClientRect();
+
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const destination = rect.top + scrollTop;
+      window.scrollTo(0, destination - 200);
+    },
 
     countLeftDay(endTimeStr) {
       const todayDateStr = Date.parse(new Date());

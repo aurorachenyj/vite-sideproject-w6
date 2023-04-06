@@ -267,7 +267,6 @@ export default {
   },
   mounted() {
     this.keyword = this.keywordName;
-    this.matchSearchKeyword();
   },
   created() {
     moment.locale("zh-tw");

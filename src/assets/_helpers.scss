@@ -63,7 +63,6 @@
 
 .navbar-hover:hover {
   border-bottom: 2px solid pink;
-  /* background-color: pink; */
 }
 
 .router-link-exact-active {
@@ -154,11 +153,6 @@
     text-decoration-color: rgba(100, 97, 63, 0);
   }
 }
-
-// .anchor-link {
-//   position: relative;
-//   top: -150px; /* 将锚点链接向上移动 100 像素 */
-// }
 
 .nav-item.dropdown:hover {
   .dropdown-menu {

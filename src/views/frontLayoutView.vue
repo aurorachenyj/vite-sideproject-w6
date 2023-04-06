@@ -66,7 +66,7 @@
             <li class="nav-item dropdown">
               <RouterLink
                 to="/courses"
-                class="nav-link text-dark fw-bold me-5 dropdown-toggle"
+                class="nav-link text-dark fw-bold me-5 dropdown-toggle navbar-hover"
                 href="#"
                 data-bs-toggle="dropdown"
                 >探索課程</RouterLink
@@ -112,7 +112,9 @@
             </li>
 
             <li class="nav-item">
-              <RouterLink to="/contents" class="nav-link text-dark fw-bold me-5"
+              <RouterLink
+                to="/contents"
+                class="nav-link text-dark fw-bold me-5 navbar-hover"
                 >讀好文</RouterLink
               >
             </li>
@@ -122,6 +124,7 @@
                 <input
                   class="form-control"
                   type="search"
+                  @keyup.enter="searchKeyWord"
                   placeholder="想學什麼?"
                   aria-label="Search"
                   v-model="searchItem"
@@ -260,6 +263,7 @@ export default {
 
     searchKeyWord() {
       console.log(this.$route);
+      console.log(this.$route.path);
 
       if (this.searchItem === "") {
         console.log("no word");
@@ -268,6 +272,13 @@ export default {
           title: "尚未輸入關鍵字",
         });
         return;
+      }
+
+      if (this.$route.path.includes("/group")) {
+        this.$route.path = "/";
+        // console.log(this.$route.path);
+        // console.log("runnnnny");
+        this.$router.push(`/search/${this.searchItem}`);
       }
 
       if (!this.$route.path.includes("search")) {
