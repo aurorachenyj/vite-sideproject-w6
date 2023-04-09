@@ -1,6 +1,11 @@
 #  <a href="https://aurorachenyj.github.io/vue-learnFund/#/" target="_blank" > LearnFund 募課趣 ( 模擬線上課程平台 ) </a>
 以 Vue 框架製作的單頁式應用網站 (SPA) </br>
-DEMO: <a href="https://aurorachenyj.github.io/vue-learnFund/#/" target="_blank" > https://aurorachenyj.github.io/vue-learnFund/#/  </a>
+DEMO <a href="https://aurorachenyj.github.io/vue-learnFund/#/" target="_blank" > https://aurorachenyj.github.io/vue-learnFund/#/  </a>
+
+ <a href="https://aurorachenyj.github.io/vue-learnFund/#/" target="_blank" ><img src="https://i.imgur.com/4bbvjhG.png" >  </a>
+ <a href="https://aurorachenyj.github.io/vue-learnFund/#/" target="_blank" ><img src="https://i.imgur.com/DeCyQWZ.png" >  </a>
+ <a href="https://aurorachenyj.github.io/vue-learnFund/#/contents" target="_blank" ><img src="https://i.imgur.com/yWMvz9x.png" >  </a>
+
 
 
 ## 網站功能
