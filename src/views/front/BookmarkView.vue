@@ -177,7 +177,7 @@ export default {
       Promise.all(apiArr)
         .then((res) => {
           res.forEach((item) => {
-            console.log(item.data.product);
+            // console.log(item.data.product);
             this.bookmarkClassDetail.push(item.data.product);
           });
 

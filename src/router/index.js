@@ -31,7 +31,6 @@ const router = createRouter({
           name: "group",
           component: () => import("../views/front/GroupView.vue"),
           props: (route) => {
-            console.log(route.params.category);
             return { categoryName: route.params.category };
           },
         },
@@ -40,7 +39,6 @@ const router = createRouter({
           name: "search",
           component: () => import("../views/front/SearchView.vue"),
           props: (route) => {
-            console.log(route.params.keyword);
             return { keywordName: route.params.keyword };
           },
         },

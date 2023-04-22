@@ -262,9 +262,6 @@ export default {
     // },
 
     searchKeyWord() {
-      console.log(this.$route);
-      console.log(this.$route.path);
-
       if (this.searchItem === "") {
         console.log("no word");
         Toast.fire({
@@ -276,8 +273,7 @@ export default {
 
       if (this.$route.path.includes("/group")) {
         this.$route.path = "/";
-        // console.log(this.$route.path);
-        // console.log("runnnnny");
+
         this.$router.push(`/search/${this.searchItem}`);
       }
 
@@ -288,7 +284,7 @@ export default {
       }
 
       // this.$route.path = "";
-      console.log(this.$route);
+      // console.log(this.$route);
     },
 
     refreshPage(category) {
@@ -302,11 +298,9 @@ export default {
     },
 
     toTopBtnStatus() {
-      console.log(window.scrollY);
       this.toTopBtn = document.querySelector("#toTopBtn");
 
       if (window.scrollY > 100) {
-        console.log("u.3ql");
         this.toTopBtn.classList.remove("d-none");
         this.toTopBtn.classList.add("d-block");
       } else {

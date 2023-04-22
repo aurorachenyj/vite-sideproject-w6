@@ -81,8 +81,6 @@ export default {
   mounted() {},
   methods: {
     getEmailData() {
-      console.log(this.emailData);
-
       if (this.emailData === "") {
         Toast.fire({
           icon: "error",
@@ -105,7 +103,6 @@ export default {
     },
 
     removeAlert() {
-      console.log(this.$refs.emailGetCoupon);
       this.$refs.emailGetCoupon.style.display = "none";
     },
   },
