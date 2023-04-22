@@ -51,7 +51,7 @@
                 </ol>
               </td>
               <td class="text-end">{{ order.user.payment }}</td>
-              <td class="text-end">{{ order.total }}</td>
+              <td class="text-end">{{ Math.round(order.total) }}</td>
               <td class="text-end pe-3 text-danger">
                 <div class="btn-group" role="group">
                   <button
