@@ -73,7 +73,7 @@
 
                   <tr>
                     <th scope="row">總金額</th>
-                    <td>{{ checkOrderData.order.total }}</td>
+                    <td>{{ Math.round(checkOrderData.order.total) }}</td>
                   </tr>
 
                   <tr>
