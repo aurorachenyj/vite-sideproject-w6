@@ -154,7 +154,7 @@
   ></DelModal>
 
   <CouponModal
-    @rander-page="getCouponList(currentPage)"
+    @rander-list="getCouponList(currentPage)"
     :status="status"
     :edit-item="editItem"
     ref="CouponModal"
@@ -175,6 +175,7 @@ export default {
       mulitDelCoupon: [],
       isLoading: false,
       currentPage: 1,
+      totalPage: 1,
       delCoupon: "",
       delCouponTitle: "",
       allCouponList: {},
@@ -190,7 +191,7 @@ export default {
   methods: {
     // 刪除多個優惠券
     delMoreItem() {
-      console.log(this.mulitDelCoupon);
+      // console.log(this.mulitDelCoupon);
 
       Swal.fire({
         title: "確定要刪除這些優惠券?",
@@ -203,13 +204,13 @@ export default {
         confirmButtonText: "確認刪除",
       }).then((result) => {
         if (result.isConfirmed) {
-          const multiDelApi = this.mulitDelCoupon.map((item) => {
+          this.mulitDelCoupon.map((item) => {
             return this.$http
               .delete(
                 `${VITE_APP_URL}/api/${VITE_APP_PATH}/admin/coupon/${item}`
               )
-              .then((res) => {
-                console.log(res.data);
+              .then(() => {
+                // console.log(res.data);
                 this.getCouponList(this.currentPage);
                 this.mulitDelCoupon = [];
               })
@@ -218,7 +219,7 @@ export default {
               });
           });
 
-          console.log(multiDelApi.data);
+          // console.log(multiDelApi.data);
 
           Toast.fire({
             icon: "success",
@@ -232,6 +233,9 @@ export default {
 
     changePage(clickPage) {
       // console.log(clickPage);
+      if (clickPage > this.totalPage || clickPage === 0) {
+        return;
+      }
       this.currentPage = clickPage;
       this.getCouponList(this.currentPage);
     },
@@ -243,6 +247,7 @@ export default {
         .then((res) => {
           this.isLoading = false;
           this.allCouponList = res.data;
+          this.totalPage = this.allCouponList.pagination.total_pages;
         })
 
         .catch((err) => {
@@ -252,11 +257,9 @@ export default {
     },
 
     openDelModal(delId, title) {
-      console.log(delId);
-
       this.delCoupon = delId;
       this.delCouponTitle = title;
-      console.log(this.delCoupon);
+
       const delComponent = this.$refs.deleteModal;
       delComponent.showModal();
     },

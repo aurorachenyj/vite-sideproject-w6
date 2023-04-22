@@ -165,6 +165,7 @@ export default {
       isLoading: false,
       allCourseList: {},
       currentPage: 1,
+      totalPage: 1,
       delClassTitle: "",
       delClassId: "",
       checkedCourse: {},
@@ -241,6 +242,9 @@ export default {
         .then((res) => {
           this.isLoading = false;
           this.allCourseList = res.data;
+
+          this.totalPage = res.data.pagination.total_pages;
+
           if (res.data.success === true) {
             Toast.fire({
               icon: "success",
@@ -257,8 +261,11 @@ export default {
           });
         });
     },
-    changePage(page) {
-      this.currentPage = page;
+    changePage(clickPage) {
+      if (clickPage > this.totalPage || clickPage === 0) {
+        return;
+      }
+      this.currentPage = clickPage;
       this.getCoursesList(this.currentPage);
     },
 

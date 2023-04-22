@@ -38,7 +38,7 @@
               :key="order.id"
             >
               <td class="py-3 ps-3">
-                <input class="form-check-input" type="checkbox" name="" id="" />
+                <!-- <input class="form-check-input" type="checkbox" name="" id="" /> -->
               </td>
               <td class="">{{ order.id }}</td>
               <td>{{ order.user.email }}</td>
@@ -107,7 +107,7 @@
             :class="{ disabled: !allOrderList.pagination.has_next }"
             @click.prevent="changePage(currentPage + 1)"
           >
-            <a class="page-link" href="#" aria-label="Next">
+            <a class="page-link" aria-label="Next">
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
@@ -238,9 +238,9 @@ export default {
           this.allOrderList = res.data;
           this.totalPage = res.data.pagination.total_pages;
 
-          console.log(this.totalPage);
+          // console.log(this.totalPage);
 
-          console.log(this.allOrderList);
+          // console.log(this.allOrderList);
         })
         .catch((err) => {
           this.isLoading = false;
@@ -252,6 +252,10 @@ export default {
     },
 
     changePage(clickPage) {
+      if (clickPage > this.totalPage || clickPage === 0) {
+        return;
+      }
+
       this.currentPage = clickPage;
       this.getOrderList(this.currentPage);
     },

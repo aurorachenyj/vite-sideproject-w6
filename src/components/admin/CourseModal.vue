@@ -5,7 +5,7 @@
     tabindex="-1"
     aria-hidden="true"
   >
-    <LoadingVue v-model:active="isLoading"> </LoadingVue>
+    <!-- <LoadingVue v-model:active="isLoading"> </LoadingVue> -->
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -237,7 +237,10 @@
                   </div>
                 </div>
 
-                <div class="row">
+                <div
+                  class="row"
+                  v-if="tempProduct.courseStatus === 'classFunding'"
+                >
                   <div class="mb-3 col-md-3">
                     <label for="funding_price" class="form-label"
                       >募資價*</label
@@ -272,7 +275,6 @@
                     <label for="fundingEndDate" class="form-label"
                       >募資結束日*</label
                     >
-
                     {{ switchTimeStamp(tempProduct.fundingEndDate) }}
                     <input
                       :disabled="tempProduct.courseStatus === 'classOpen'"
@@ -299,16 +301,6 @@
               </div>
               <div class="mb-3">
                 <label for="content" class="form-label">課程章節介紹(長)</label>
-
-                <!-- <textarea
-                  v-model="tempProduct.content"
-                  id="description"
-                  type="text"
-                  class="form-control"
-                  placeholder="請輸入課程說明內容"
-                >
-                </textarea> -->
-
                 <ckeditor
                   :editor="editor"
                   v-model="tempProduct.content"
@@ -317,7 +309,6 @@
 
               <div class="mb-3">
                 <label for="teacherInfo" class="form-label">講師介紹</label>
-
                 <ckeditor
                   :editor="editor"
                   v-model="tempProduct.teacherInfo"
@@ -380,11 +371,10 @@ export default {
       modal: "",
       isLoadong: false,
       tempProduct: {
+        imageUrl: "",
         imagesUrl: [],
       },
       editor: ClassicEditor,
-      // editorTeacherData: "<p>請輸入講師內容</p>",
-      // editorSkillData: "<p>請輸入技能內容</p>",
       uploadPicData: {},
       uploadImgs: {},
     };
@@ -403,16 +393,11 @@ export default {
   },
   methods: {
     switchTimeStamp(timeStamp) {
-      // console.log(typeof timeStamp);
-
-      if (typeof timeStamp !== "number") {
+      if (typeof timeStamp !== "number" || Number.isNaN(timeStamp)) {
         return;
       }
 
-      console.log(timeStamp);
-
       const date = new Date(timeStamp);
-
       const year = date.getFullYear();
       const month = ("0" + (date.getMonth() + 1)).slice(-2);
       const day = ("0" + date.getDate()).slice(-2);
@@ -420,7 +405,6 @@ export default {
       const minute = ("0" + date.getMinutes()).slice(-2);
 
       const formattedDate = `${year}-${month}-${day}T${hour}:${minute}`;
-
       return (this.tempProduct.fundingEndDate = formattedDate);
     },
 

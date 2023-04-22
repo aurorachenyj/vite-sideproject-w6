@@ -496,8 +496,8 @@ export default {
     },
 
     getpageData(page = 1, category = null) {
-      console.log(page);
-      console.log(category);
+      // console.log(page);
+      // console.log(category);
 
       let url = "";
 
@@ -510,7 +510,7 @@ export default {
       axios
         .get(url)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.pageClassData = res.data;
 
           this.currentPage = res.data.pagination.current_page;
@@ -519,7 +519,7 @@ export default {
             top: 0,
             // behavior: "smooth",
           });
-          console.log(this.pageClassData);
+          // console.log(this.pageClassData);
         })
         .catch((err) => {
           console.log(err);

@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-// import axios from "axios";
 import Toast from "../utils/Toast";
-
-// const { VITE_APP_URL, VITE_APP_PATH } = import.meta.env;
 
 export default defineStore("bookmarkStore", {
   state: () => ({
@@ -16,18 +13,15 @@ export default defineStore("bookmarkStore", {
 
     getLocalStorageBookmark() {
       const bookmarkStr = localStorage.getItem("learnfundBookmark");
-      console.log(bookmarkStr);
+
       if (bookmarkStr === null) {
         return;
       }
 
       this.bookmarkData = bookmarkStr.split(",").filter(Boolean);
-      console.log(this.bookmarkData);
     },
 
     BookmarkAction(id) {
-      console.log(this.bookmarkData);
-
       if (event.target.classList.contains("bi-bookmark")) {
         event.target.classList.remove("bi-bookmark");
         event.target.classList.add("bi-bookmark-fill");
@@ -40,10 +34,10 @@ export default defineStore("bookmarkStore", {
         });
       } else {
         const targetIndex = this.bookmarkData.indexOf(id);
-        console.log(targetIndex);
+
         this.bookmarkData.splice(targetIndex, 1);
         this.setLocalStorageBookmark();
-        console.log(this.bookmarkData);
+
         event.target.classList.remove("bi-bookmark-fill");
         event.target.classList.add("bi-bookmark");
         Toast.fire({

@@ -414,17 +414,17 @@
               </p>
 
               <div class="d-flex flex-column justify-content-center">
-                <button
+                <!-- <button
                   class="btn btn-outline-primary btn-sm mb-2"
                   type="button"
+                > -->
+                <RouterLink
+                  :to="`/course/${fundClass.id}`"
+                  class="text-white text-decoration-none btn btn-outline-primary btn-sm mb-2"
                 >
-                  <RouterLink
-                    :to="`/course/${fundClass.id}`"
-                    class="text-white text-decoration-none"
-                  >
-                    查看詳情
-                  </RouterLink>
-                </button>
+                  查看詳情
+                </RouterLink>
+                <!-- </button> -->
 
                 <a
                   v-if="showCheck.includes(fundClass.id)"
@@ -819,23 +819,20 @@
             z-index: 100;
           "
         >
-          <!-- background-color: rgba(48, 45, 42, 0.8); -->
-
           <div class="card-body">
-            <!-- <h4>課程描述</h4> -->
             <p>
               {{ openClass.description }}
             </p>
 
             <div class="d-flex flex-column">
-              <button class="btn btn-outline-primary btn-sm mb-2" type="button">
-                <RouterLink
-                  :to="`/course/${openClass.id}`"
-                  class="text-white text-decoration-none"
-                >
-                  查看詳情
-                </RouterLink>
-              </button>
+              <!-- <button class="" type="button"> -->
+              <RouterLink
+                :to="`/course/${openClass.id}`"
+                class="text-white text-decoration-none btn btn-outline-primary btn-sm mb-2"
+              >
+                查看詳情
+              </RouterLink>
+              <!-- </button> -->
 
               <a
                 v-if="showCheck.includes(openClass.id)"
@@ -1274,14 +1271,13 @@ export default {
 
     searchKeyWord() {
       if (this.searchItem === "") {
-        console.log("no word");
         Toast.fire({
           icon: "error",
           title: "尚未輸入關鍵字",
         });
         return;
       }
-      console.log();
+
       this.$router.push(`/search/${this.searchItem}`);
     },
 
@@ -1291,28 +1287,22 @@ export default {
       window.scrollTo(0, 0);
     },
 
-    getCategoryData(category) {
-      console.log(category);
+    // getCategoryData(category) {
 
-      axios
-        .get(
-          `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${category}`
-        )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    //   axios
+    //     .get(
+    //       `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${category}`
+    //     )
+    //     .then((res) => {
+    //       console.log(res);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
 
     getpageData(page = 1, category = null) {
-      console.log(this);
-
       this.$router.push("./courses");
-
-      console.log(page);
-      console.log(category);
 
       let url = "";
 
@@ -1325,16 +1315,14 @@ export default {
       axios
         .get(url)
         .then((res) => {
-          console.log(res);
           this.pageClassData = res.data;
 
           this.currentPage = res.data.pagination.current_page;
 
           window.scrollTo({
             top: 0,
-            // behavior: "smooth",
           });
-          console.log(this.pageClassData);
+          // console.log(this.pageClassData);
         })
         .catch((err) => {
           console.log(err);
@@ -1344,12 +1332,7 @@ export default {
     // ...mapActions(courseStore, ["getpageData"]),
 
     latestFundingCourseList() {
-      console.log(this.fundingClass);
-
-      // const newestArr = [];
       const newestArr = this.fundingClass.slice(-6).slice().reverse();
-
-      console.log(newestArr);
       this.sixFundingClass = newestArr;
     },
 
@@ -1362,19 +1345,18 @@ export default {
 
       // 換回時間格式
       endTimeStr = new Date(endTimeStr).toISOString();
-
       return moment(endTimeStr).fromNow();
     },
 
     setHover(hoverClassId, status) {
-      console.log(hoverClassId, status);
+      // console.log(hoverClassId, status);
 
       if (status === true) {
         this.isHover = hoverClassId;
       } else {
         this.isHover = "";
       }
-      console.log(this.isHover);
+      // console.log(this.isHover);
     },
 
     getFundingAndOpenClassList() {
@@ -1382,8 +1364,6 @@ export default {
       this.$http
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          // console.log(res);
-          // console.log(res.data.products);
           this.isLoading = false;
 
           this.fundingClass = res.data.products.filter((course) => {
@@ -1394,8 +1374,6 @@ export default {
             this.fundingClass = this.fundingClass.slice(-6).slice();
           }
 
-          // console.log(this.fundingClass);
-
           this.openingClass = res.data.products.filter((course) => {
             return course.courseStatus === "classOpen";
           });
@@ -1403,8 +1381,6 @@ export default {
           if (this.openingClass.length >= 4) {
             this.openingClass = this.openingClass.slice(-4).slice();
           }
-
-          // console.log(this.openingClass);
         })
         .catch((err) => {
           this.isLoading = false;

@@ -163,8 +163,8 @@ export default {
     getBookmarkDetail() {
       this.bookmarkClassDetail = [];
 
-      console.log(this.showbookmarkData);
-      console.log(this.bookmarkClassDetail);
+      // console.log(this.showbookmarkData);
+      // console.log(this.bookmarkClassDetail);
 
       const apiArr = this.showbookmarkData.map((item) => {
         return axios.get(
@@ -172,12 +172,10 @@ export default {
         );
       });
 
-      console.log(apiArr);
+      // console.log(apiArr);
 
       Promise.all(apiArr)
         .then((res) => {
-          // console.log(res);
-
           res.forEach((item) => {
             console.log(item.data.product);
             this.bookmarkClassDetail.push(item.data.product);

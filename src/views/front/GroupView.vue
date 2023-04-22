@@ -376,8 +376,8 @@ export default {
     },
 
     filterData(filterTarget) {
-      console.log(filterTarget);
-      console.log(this.categoryName);
+      // console.log(filterTarget);
+      // console.log(this.categoryName);
 
       if (
         this.categoryName === "已開課課程" ||
@@ -394,7 +394,7 @@ export default {
             `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${this.categoryName}`
           )
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             this.categoryData.products = [];
             if (filterTarget === "funding") {
               res.data.products.forEach((item) => {
@@ -409,7 +409,7 @@ export default {
                 }
               });
             }
-            console.log(this.categoryData);
+            // console.log(this.categoryData);
             // this.categoryData = res.data;
           })
           .catch((err) => {
@@ -423,7 +423,6 @@ export default {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          console.log(res);
           this.categoryData = res.data;
         })
         .catch((err) => {
@@ -435,7 +434,7 @@ export default {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.categoryData.products = [];
           res.data.products.forEach((item) => {
             if (item.courseStatus === "classFunding") {
@@ -452,7 +451,6 @@ export default {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          console.log(res);
           this.categoryData.products = [];
           res.data.products.forEach((item) => {
             if (item.courseStatus === "classOpen") {
@@ -466,7 +464,7 @@ export default {
     },
 
     getCategoryData(category) {
-      console.log(category);
+      // console.log(category);
 
       const categoryArr = [
         "語言",
@@ -493,7 +491,6 @@ export default {
             `${VITE_APP_URL}/api/${VITE_APP_PATH}/products?category=${category}`
           )
           .then((res) => {
-            console.log(res);
             this.categoryData = res.data;
           })
           .catch((err) => {

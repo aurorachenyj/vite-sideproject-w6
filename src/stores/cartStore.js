@@ -26,7 +26,6 @@ export default defineStore("cartStore", {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/products/all`)
         .then((res) => {
-          //console.log("courseList", res.data.products);
           this.isLoading = false;
           this.courseList = res.data.products;
         })
@@ -35,7 +34,6 @@ export default defineStore("cartStore", {
             icon: "success",
             title: err.response.data.message,
           });
-          // alert(err.response.data.message);
         });
     },
 
@@ -44,7 +42,6 @@ export default defineStore("cartStore", {
       axios
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`)
         .then((res) => {
-          console.log("getCartList");
           this.cartListData = res.data.data;
           this.isLoading = false;
         })
@@ -60,8 +57,6 @@ export default defineStore("cartStore", {
 
     addToCart(product_id) {
       this.loadItem = true;
-      // console.log(product_id);
-      // console.log(this.cartListData);
 
       if (this.check.includes(product_id)) {
         return Toast.fire({
@@ -77,14 +72,10 @@ export default defineStore("cartStore", {
         qty: 1,
       };
 
-      console.log("有跑data");
-
       axios
         .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart`, { data })
         .then((res) => {
-          // this.getAllCourse();
           this.loadItem = false;
-          // console.log(res.data);
 
           Toast.fire({
             icon: "success",
@@ -95,7 +86,6 @@ export default defineStore("cartStore", {
         })
 
         .catch((err) => {
-          // console.log(err);
           Toast.fire({
             icon: "error",
             title: err.response.data.message,
@@ -104,8 +94,6 @@ export default defineStore("cartStore", {
     },
 
     checkedClass() {
-      console.log("已購買產品顯示", this.check);
-
       this.courseList.forEach((item) => {
         this.cartList.carts.forEach((i) => {
           if (item.id === i.product_id && !this.check.includes(item.id)) {

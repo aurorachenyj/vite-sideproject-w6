@@ -11,7 +11,7 @@
     <div class="row g-4 mt-2">
       <div class="col-md-8">
         <div class="bg-light mb-3 p-3">
-          <h5 class="mb-3 pb-3 border-bottom">付款方式</h5>
+          <h5 class="mb-3 pb-3 border-bottom">付款方式*</h5>
 
           <div class="form-check pb-2">
             <input
@@ -56,7 +56,7 @@
           <!-- @submit="" -->
           <v-form class="" v-slot="{ errors }" @submit="sendOrder">
             <div class="mb-3">
-              <label for="user" class="form-label">姓名</label>
+              <label for="user" class="form-label">姓名*</label>
               <v-field
                 name="姓名"
                 v-model="orderForm.user.name"
@@ -73,7 +73,7 @@
             </div>
 
             <div class="mb-3">
-              <label for="phone" class="form-label">手機</label>
+              <label for="phone" class="form-label">手機*</label>
               <v-field
                 name="手機號碼"
                 v-model="orderForm.user.tel"
@@ -88,7 +88,7 @@
               </error-message>
             </div>
             <div class="mb-3">
-              <label for="user" class="form-label">聯絡信箱</label>
+              <label for="user" class="form-label">聯絡信箱*</label>
               <v-field
                 name="信箱"
                 v-model="orderForm.user.email"
@@ -141,13 +141,15 @@
                 <p class="mb-1">
                   {{ classItem.product.title }}
                 </p>
-                <p class="text-end mb-1">NT$ {{ classItem.final_total }}</p>
+                <p class="text-end mb-1">
+                  NT$ {{ Math.round(classItem.final_total) }}
+                </p>
               </li>
             </ul>
 
             <p class="d-inline">總計</p>
             <h4 class="text-primary text-end">
-              NT$ {{ cartList.final_total }}
+              NT$ {{ Math.round(cartList.final_total) }}
             </h4>
           </div>
         </div>

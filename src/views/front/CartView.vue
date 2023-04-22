@@ -71,7 +71,7 @@
             </div>
 
             <h4 class="text-primary text-end border-bottom py-3">
-              NT$ {{ cartList.final_total }}
+              NT$ {{ Math.round(cartList.final_total) }}
             </h4>
             <br />
 
@@ -164,12 +164,12 @@ export default {
   },
 
   watch: {
-    cartList() {
-      console.log(this.cartList);
-      // if (this.cartList === ) {
-      //   this.clearCartList();
-      // }
-    },
+    // cartList() {
+    //   console.log(this.cartList);
+    //   // if (this.cartList === ) {
+    //   //   this.clearCartList();
+    //   // }
+    // },
     // couponCode() {
     //   this.fillInCouponData();
     // },
@@ -179,7 +179,7 @@ export default {
     ...mapActions(cartStore, ["getCartList"]),
 
     fillInCouponData() {
-      console.log(localStorage.getItem("coupon"));
+      // console.log(localStorage.getItem("coupon"));
 
       if (localStorage.getItem("coupon") === null) {
         Toast.fire({
@@ -199,8 +199,6 @@ export default {
       this.$http
         .post(`${VITE_APP_URL}/api/${VITE_APP_PATH}/coupon`, { data })
         .then((res) => {
-          console.log(res);
-
           this.couponResText = res.data.message;
           this.cartList.final_total = res.data.data.final_total;
 
@@ -221,15 +219,13 @@ export default {
 
     delCartItem(id, productId) {
       const targetDelIndex = this.showCheck.indexOf(productId);
-      console.log(targetDelIndex);
+      // console.log(targetDelIndex);
 
       this.showCheck.splice(targetDelIndex, 1);
 
       this.$http
         .delete(`${VITE_APP_URL}/api/${VITE_APP_PATH}/cart/${id}`)
         .then((res) => {
-          // alert(res.data.message);
-
           Toast.fire({
             icon: "success",
             title: res.data.message,
@@ -238,8 +234,6 @@ export default {
           this.getCartList();
         })
         .catch((err) => {
-          // alert(err.response.data.message);
-
           Toast.fire({
             icon: "error",
             title: err.response.data.message,

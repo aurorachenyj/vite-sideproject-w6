@@ -59,8 +59,6 @@ export default {
   methods: {
     adminLogin() {
       if (this.user.username === "" || this.user.password === "") {
-        // alert("請填寫完整");
-
         Toast.fire({
           icon: "error",
           title: "請填寫完整",
@@ -72,11 +70,9 @@ export default {
       this.$http
         .post(`${VITE_APP_URL}/admin/signin`, this.user)
         .then((res) => {
-          console.log(res.data);
           const { token, expired } = res.data;
 
           document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
-          // alert(res.data.message);
 
           Toast.fire({
             icon: "success",
@@ -87,12 +83,10 @@ export default {
         })
 
         .catch((err) => {
-          alert(err.response?.data?.message);
-
-          // Toast.fire({
-          //   icon: "error",
-          //   title: err.response.data.message,
-          // });
+          Toast.fire({
+            icon: "error",
+            title: err.response?.data?.message,
+          });
 
           this.user = {
             username: "",

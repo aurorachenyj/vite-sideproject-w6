@@ -156,6 +156,7 @@ export default {
       checkedItem: {},
       checkedStatus: "",
       currentPage: 1,
+      totalPage: 1,
       delArticleTitle: "",
       delArticleId: "",
     };
@@ -181,7 +182,7 @@ export default {
 
         .then((res) => {
           this.allArticleList = res.data;
-
+          this.totalPage = res.data.pagination.total_pages;
           if (res.data.success === true) {
             Toast.fire({
               icon: "success",
@@ -196,8 +197,11 @@ export default {
           alert(err.response.data.message);
         });
     },
-    changePage(page) {
-      this.currentPage = page;
+    changePage(clickPage) {
+      if (clickPage > this.totalPage || clickPage === 0) {
+        return;
+      }
+      this.currentPage = clickPage;
       this.getAllArticleList(this.currentPage);
     },
     deleteArticle() {

@@ -52,7 +52,7 @@ export default defineStore("orderStore", {
     },
 
     getTotalOrderList(orderTotalPage) {
-      console.log(orderTotalPage);
+      // console.log(orderTotalPage);
       const pageArr = [];
       for (let i = 1; i <= orderTotalPage; i++) {
         pageArr.push(i);
@@ -66,19 +66,18 @@ export default defineStore("orderStore", {
 
       Promise.all(apiArr)
         .then((res) => {
-          console.log(res);
           res.forEach((item) => {
             this.totalOrderList.push(...item.data.orders);
           });
 
-          console.log(this.totalOrderList);
+          // console.log(this.totalOrderList);
           this.calcClassmate();
         })
         .catch((err) => {
           console.log(err);
         });
 
-      console.log(this.totalOrderList); // 取得不分頁的全部訂單資料
+      // console.log(this.totalOrderList); // 取得不分頁的全部訂單資料
     },
 
     calcClassmate() {
@@ -106,7 +105,7 @@ export default defineStore("orderStore", {
       }, {});
 
       this.courseStudentNumData = totalClassmate;
-      console.log(this.courseStudentNumData);
+      // console.log(this.courseStudentNumData);
     },
 
     getOrderCourseDetail() {
@@ -150,7 +149,7 @@ export default defineStore("orderStore", {
             });
           });
 
-          console.log(orderInfo);
+          // console.log(orderInfo);
           this.finalorderInfoData = orderInfo;
 
           this.isLoading = false;

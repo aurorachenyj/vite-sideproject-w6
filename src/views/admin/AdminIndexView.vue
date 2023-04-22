@@ -38,7 +38,7 @@
 
 <script>
 // import orderStore from "../../stores/orderStore.js";
-import { mapState, mapActions } from "pinia";
+import { mapState } from "pinia";
 import frontOrderStore from "../../stores/frontOrderStore.js";
 // import { toRaw } from "vue";
 // import axios from "axios";
@@ -74,24 +74,21 @@ export default {
     // ]),
   },
   methods: {
-    ...mapActions(frontOrderStore, ["getStuOrderList"]),
+    // ...mapActions(frontOrderStore, ["getStuOrderList"]),
     // ...mapActions(orderStore, [
     //   "getTotalPage",
     //   "getTotalOrderList",
     //   "calcClassmate",
     //   "getOrderCourseDetail",
     // ]),
-
     // getOrderCourseDetail() {
     //   this.isLoading = true;
     //   // console.log(this.showStudentNumData);
-
     //   const obj = toRaw(this.showStudentNumData);
     //   const idArr = Object.keys(obj);
     //   const apiArr = idArr.map((id) => {
     //     return axios.get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/product/${id}`);
     //   });
-
     //   Promise.all(apiArr)
     //     .then((res) => {
     //       //console.log(res.data);
@@ -103,18 +100,13 @@ export default {
     //           ["fundingPrice"]: item.data.product.funding_price,
     //         });
     //       });
-
     //       //console.log(this.orderInfoData);
-
     //       const orderInfo = [...toRaw(this.orderInfoData)];
-
     //       //console.log(orderInfo);
-
     //       const objArr = Object.entries(obj).map(([key, value]) => ({
     //         ["id"]: key,
     //         ["classmateNum"]: value,
     //       }));
-
     //       objArr.forEach((item) => {
     //         orderInfo.forEach((i) => {
     //           if (item.id === i.productId) {
@@ -122,12 +114,9 @@ export default {
     //           }
     //         });
     //       });
-
     //       console.log(orderInfo);
     //       this.finalorderInfoData = orderInfo;
-
     //       this.isLoading = false;
-
     //       Toast.fire({
     //         icon: "success",
     //         title: "成功取得開課狀況資料",
@@ -140,7 +129,7 @@ export default {
     // },
   },
   mounted() {
-    this.getStuOrderList();
+    // this.getStuOrderList();
   },
 };
 </script>

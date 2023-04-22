@@ -171,9 +171,6 @@ export default {
       tempArticle: {},
       editor: ClassicEditor,
       editorData: "<p>請輸入文章內容</p>",
-      // editorConfig: {
-      //   toolbar: ["heading", "|", "bold", "italic", "link"],
-      // },
     };
   },
   props: { item: {}, status: {} },

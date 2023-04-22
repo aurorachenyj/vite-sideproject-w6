@@ -88,18 +88,16 @@ export default {
     // this.getAllOrderList();
   },
   methods: {
-    getAllOrderList() {
-      console.log("hhh");
-
-      this.$http
-        .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/orders`)
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    // getAllOrderList() {
+    //   this.$http
+    //     .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/orders`)
+    //     .then((res) => {
+    //       console.log(res);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
 
     getCurrentOrder() {
       const { id } = this.$route.params;
@@ -108,17 +106,11 @@ export default {
         .get(`${VITE_APP_URL}/api/${VITE_APP_PATH}/order/${id}`)
         .then((res) => {
           this.currentOrderData = res.data.order;
-          console.log(this.currentOrderData);
-
           this.orderProductList = Object.values(this.currentOrderData.products);
+          localStorage.removeItem("coupon");
         })
         .catch((err) => {
           console.log(err);
-
-          // Toast.fire({
-          //   icon: "error",
-          //   title: err.response.data.message,
-          // });
         });
     },
   },

@@ -131,6 +131,7 @@ export default {
     };
   },
   props: { editItem: {}, status: {} },
+  emits: ["randerList"],
   mounted() {
     this.modal = new Modal(this.$refs.modal);
   },
@@ -186,8 +187,8 @@ export default {
             icon: "success",
             title: res.data.message,
           });
+          this.$emit("randerList");
           this.modal.hide();
-          this.$emit("randerPage");
         })
         .catch((err) => {
           this.isLoading = false;

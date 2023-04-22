@@ -34,13 +34,10 @@ export default defineStore("frontOrderStore", {
 
           Promise.all(apiArr)
             .then((res) => {
-              //console.log(res);
-
               res.forEach((item) => {
                 this.totalStuOrderList.push(...item.data.orders);
               });
 
-              //console.log(this.totalStuOrderList);
               const arr = [...toRaw(this.totalStuOrderList)];
 
               const orderArr = arr.map((i) => {
@@ -68,8 +65,6 @@ export default defineStore("frontOrderStore", {
                 }, {})
               );
 
-              console.log(finalOrderNumArr);
-
               this.finalStuOrderData = finalOrderNumArr;
             })
             .catch((err) => {
@@ -82,9 +77,6 @@ export default defineStore("frontOrderStore", {
     },
 
     matchFundingTarget(targetId) {
-      // console.log(targetId);
-      // console.log(this.finalStuOrderData);
-
       let targetPrecent = null;
 
       this.finalStuOrderData.find((i) => {
@@ -102,9 +94,6 @@ export default defineStore("frontOrderStore", {
     },
 
     matchFundingMoney(targetId) {
-      // console.log(targetId);
-      // console.log(this.finalStuOrderData);
-
       let money = null;
 
       this.finalStuOrderData.find((i) => {
@@ -120,9 +109,6 @@ export default defineStore("frontOrderStore", {
     },
 
     matchStuNumAndClass(targetId) {
-      // console.log(targetId);
-      // console.log(this.finalStuOrderData);
-
       let showNum = null;
 
       this.finalStuOrderData.find((i) => {

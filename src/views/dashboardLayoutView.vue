@@ -134,7 +134,6 @@ export default {
         studentNum += item.stuNum;
 
         if (item.fundingPrice === undefined) {
-          console.log(item);
           money += item.stuNum * item.classPrice;
         } else {
           console.log(item);
